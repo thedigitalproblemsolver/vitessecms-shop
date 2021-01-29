@@ -17,4 +17,7 @@
       "VitesseCms\\Shop\\": "src/"
     }
   },
+  "require": {
+    "vitessecms/form": "~0.0.3"
+  }
 }

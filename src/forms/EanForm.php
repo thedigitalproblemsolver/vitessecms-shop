@@ -5,65 +5,59 @@ namespace VitesseCms\Shop\Forms;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Helpers\ItemHelper;
 use VitesseCms\Form\AbstractForm;
+use VitesseCms\Form\AbstractFormWithRepository;
+use VitesseCms\Form\Helpers\ElementHelper;
+use VitesseCms\Form\Interfaces\FormWithRepositoryInterface;
+use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Models\Ean;
 use Phalcon\Tag;
+use VitesseCms\Shop\Repositories\RepositoryCollection;
 
-class EanForm extends AbstractForm
+class EanForm extends AbstractFormWithRepository
 {
-    public function initialize(Ean $ean): void
+    /**
+     * @var Ean
+     */
+    protected $_entity;
+
+    /**
+     * @var RepositoryCollection
+     */
+
+    protected $repositories;
+
+    public function buildForm(): FormWithRepositoryInterface
     {
         $html = '';
-        $options = [
-            [
-                'value'    => '',
-                'label'    => '%ADMIN_TYPE_TO_SEARCH%',
-                'selected' => false,
-            ],
-        ];
-        if ($ean->_('parentItem')) :
+        $options = ['' => '%ADMIN_TYPE_TO_SEARCH%'];
+
+        if ($this->_entity->getParentItem() !== null) :
             /** @var Item $selectedItem */
-            $selectedItem = Item::findById($ean->_('parentItem'));
+            $selectedItem = Item::findById($this->_entity->getParentItem());
             $itemPath = ItemHelper::getPathFromRoot($selectedItem);
-            $options[] = [
-                'value'    => (string)$selectedItem->getId(),
-                'label'    => implode(' - ', $itemPath),
-                'selected' => true,
-            ];
+            $options[(string)$selectedItem->getId()] = implode(' - ', $itemPath);
+
             $html = Tag::linkTo([
                 'action' => $selectedItem->_('slug'),
                 'text'   => 'View item',
                 'target' => '_new'
             ]);
         endif;
-        $this->_(
-            'text',
-            '%CORE_NAME%',
-            'name',
-            ['required' => 'required']
-        )->_(
-            'select',
+
+        $this->addText('%CORE_NAME%', 'name',(new Attributes())->setRequired())
+            ->addDropdown(
             'Parent item',
             'parentItem',
-            [
-                'options'    => $options,
-                'inputClass' => 'select2-ajax',
-                'data-url'   => '/admin/shop/adminean/search/',
-            ]
-        )->_(
-            'html',
-            'html',
-            'html',
-            [
-                'html' => $html
-            ]
-        )->_(
-            'text',
-            'SKU',
-            'sku',
-            ['required' => 'required']
-        )->_(
-            'submit',
-            '%CORE_SAVE%'
-        );
+                (new Attributes())
+                    ->setInputClass('select2-ajax')
+                    ->setDataUrl('/admin/shop/adminean/search/')
+                    ->setOptions(ElementHelper::arrayToSelectOptions($options)
+            ))
+            ->addHtml($html)
+            ->addText('SKU', 'sku', (new Attributes())->setRequired())
+            ->addSubmitButton('%CORE_SAVE%')
+        ;
+
+        return $this;
     }
 }

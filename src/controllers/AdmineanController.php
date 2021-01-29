@@ -5,11 +5,14 @@ namespace VitesseCms\Shop\Controllers;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Admin\AbstractAdminController;
 use VitesseCms\Core\Helpers\ItemHelper;
+use VitesseCms\Database\Models\FindValue;
+use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Shop\Factories\EanFactory;
 use VitesseCms\Shop\Forms\EanForm;
+use VitesseCms\Shop\Interfaces\RepositoriesInterface;
 use VitesseCms\Shop\Models\Ean;
 
-class AdmineanController extends AbstractAdminController
+class AdmineanController extends AbstractAdminController implements RepositoriesInterface
 {
     public function onConstruct()
     {
@@ -24,33 +27,33 @@ class AdmineanController extends AbstractAdminController
         $result = ['items' => []];
 
         if ($this->request->isAjax() && \strlen($this->request->get('search')) > 1) :
-            Item::setFindValue(
-                'name.'.$this->configuration->getLanguageShort(),
-                $this->request->get('search'),
-                'like'
+            $items = $this->repositories->item->findAll(
+                new FindValueIterator([
+                    new FindValue(
+                        'name.'.$this->configuration->getLanguageShort(),
+                        $this->request->get('search'),
+                        'like'
+                    ),
+                    new FindValue('ean', ['$nin' => [null, '']])
+                ])
             );
-            Item::setFindValue('ean', ['$nin' => [null, '']]);
-            $items = Item::findAll();
 
             if ($items) :
-                foreach ($items as $item) :
-                    /** @var Item $item */
+                while ($items->valid()) :
+                    $item = $items->current();
                     $path = ItemHelper::getPathFromRoot($item);
-                    $tmp = [
+                    $result['items'][] = [
                         'id'   => (string)$item->getId(),
                         'name' => implode(' - ', $path),
                     ];
-                    $result['items'][] = $tmp;
-                endforeach;
+                    $items->next();
+                endwhile;
             endif;
         endif;
 
         $this->prepareJson($result);
     }
 
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function reloadAction(): void
     {
         Item::setFindValue('ean', ['$nin' => [null, '']]);
