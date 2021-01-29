@@ -1,28 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Factories;
 
 use VitesseCms\Shop\Models\Country;
 
-/**
- * Class CountryFactory
- */
 class CountryFactory
 {
-    /**
-     * @param string $name
-     * @param string $short
-     * @param string $shortThree
-     * @param bool $published
-     *
-     * @return Country
-     */
-    public static function create(
-        string $name,
-        string $short,
-        string $shortThree,
-        bool $published = false
-    ): Country {
+    public static function create(string $name, string $short, string $shortThree, bool $published = false): Country {
         return (new Country())
             ->set('name', $name, true)
             ->set('short', $short)

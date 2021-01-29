@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -6,16 +6,8 @@ use VitesseCms\Admin\AbstractAdminController;
 use VitesseCms\Shop\Forms\PaymentForm;
 use VitesseCms\Shop\Models\Payment;
 
-/**
- * Class AdminpaymentController
- */
 class AdminpaymentController extends AbstractAdminController
 {
-
-    /**
-     * onConstruct
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function onConstruct()
     {
         parent::onConstruct();

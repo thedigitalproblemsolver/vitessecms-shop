@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -13,14 +13,8 @@ use VitesseCms\User\Models\User;
 use MongoDB\BSON\ObjectID;
 use Phalcon\Mvc\Collection\Exception;
 
-/**
- * Class ShopperController
- */
 class ShopperController extends AbstractController
 {
-    /**
-     * editAction
-     */
     public function editAction(): void
     {
         Shopper::setFindValue('userId', (string)$this->user->getId());
@@ -41,9 +35,6 @@ class ShopperController extends AbstractController
         $this->prepareView();
     }
 
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function saveAction(): void
     {
         $form = new BaseForm();
@@ -82,9 +73,6 @@ class ShopperController extends AbstractController
         $this->redirect();
     }
 
-    /**
-     * @return Datagroup
-     */
     public function getEditForm(): Datagroup
     {
         /** @var Datagroup $datagroup */
@@ -97,10 +85,6 @@ class ShopperController extends AbstractController
         return $datagroup;
     }
 
-    /**
-     * editShipToAction
-     * @throws \MongoDB\Driver\Exception\InvalidArgumentException
-     */
     public function editShipToAction(): void
     {
         $shiptoAddress = ShiptoAddressFactory::createFromDatagroup($this->setting);
@@ -122,10 +106,6 @@ class ShopperController extends AbstractController
         $this->prepareView();
     }
 
-    /**
-     * @throws \MongoDB\Driver\Exception\InvalidArgumentException
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function saveShipToAction(): void
     {
         $datagroupId = $this->setting->get('SHOP_DATAGROUP_SHOPPERSHIPTO');

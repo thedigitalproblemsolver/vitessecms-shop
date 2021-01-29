@@ -1,18 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
 use VitesseCms\Core\AbstractController;
 
-/**
- * Class AffiliationController
- */
 class AffiliationController extends AbstractController
 {
-
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function tradeTrackerAction(): void
     {
         $trackBackURL = '/';

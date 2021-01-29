@@ -1,20 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Helpers;
 
 use VitesseCms\Shop\Interfaces\TaxRateInterface;
 
-/**
- * Class TaxrateHelper
- */
 class TaxrateHelper
 {
-    /**
-     * @param TaxRateInterface $taxrate
-     * @param float $price
-     *
-     * @return float
-     */
     public static function calculateExVatPrice(
         TaxRateInterface $taxrate,
         float $price

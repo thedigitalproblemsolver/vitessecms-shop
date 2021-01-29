@@ -6,12 +6,7 @@ use VitesseCms\Shop\Models\Ean;
 
 class EanFactory
 {
-    public static function create(
-        string $ean,
-        string $parentItem,
-        string $sku,
-        bool $published = false
-    ): Ean {
+    public static function create(string $ean, string $parentItem, string $sku, bool $published = false): Ean {
         return (new Ean())
             ->set('name', $ean)
             ->set('parentItem', $parentItem)

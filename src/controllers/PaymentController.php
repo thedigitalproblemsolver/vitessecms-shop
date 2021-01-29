@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -8,14 +8,8 @@ use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\OrderState;
 use VitesseCms\Shop\Models\Payment;
 
-/**
- * Class PaymentController
- */
 class PaymentController extends AbstractController
 {
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function processAction(): void
     {
         $doRedirect = true;
@@ -39,9 +33,6 @@ class PaymentController extends AbstractController
         endif;
     }
 
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function redirectAction(): void
     {
         if($this->dispatcher->getParam(0) !== null ) :
@@ -58,10 +49,6 @@ class PaymentController extends AbstractController
         endif;
     }
 
-    /**
-     * process payment
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function cancelAction(): void
     {
         $hasErrors = true;
@@ -87,12 +74,6 @@ class PaymentController extends AbstractController
         $this->redirect($this->shop->checkout->getStep()->_('slug'));
     }
 
-    /**
-     * @param Order $order
-     *
-     * @return Payment
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     protected function processPayment(Order $order): Payment
     {
         $this->session->set('currentOrderId', $order->getId());

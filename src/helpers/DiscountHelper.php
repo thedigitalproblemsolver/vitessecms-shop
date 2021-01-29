@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Helpers;
 
@@ -13,16 +13,8 @@ use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\TaxRate;
 use VitesseCms\Shop\Utils\PriceUtil;
 
-/**
- * Class DiscountHelper
- */
 class DiscountHelper extends AbstractInjectable
 {
-    /**
-     * @param AbstractCollection $item
-     * @param array $cartProduct
-     * @deprecated should use service
-     */
     public static function parseCartItem(AbstractCollection $item, array $cartProduct): void
     {
         $item->set('subTotalDiscountSale', $item->_('price_discountSale') * $cartProduct['quantity']);
@@ -31,13 +23,6 @@ class DiscountHelper extends AbstractInjectable
         $item->set('price_discountDisplay', PriceUtil::formatDisplay($item->_('price_discountSale')));
     }
 
-    /**
-     * @param DiscountInterface $discount
-     * @param float $price
-     *
-     * @return float
-     * @deprecated should use service
-     */
     public static function calculateFinalPrice(
         DiscountInterface $discount,
         float $price
@@ -59,10 +44,6 @@ class DiscountHelper extends AbstractInjectable
         return $discountPrice;
     }
 
-    /**
-     * @param AbstractCollection $item
-     * @param DiscountInterface $discount
-     */
     public function setPriceDisplay(AbstractCollection $item, DiscountInterface $discount): void
     {
         $item->set(
@@ -73,10 +54,6 @@ class DiscountHelper extends AbstractInjectable
         );
     }
 
-    /**
-     * @param AbstractCollection $item
-     * @param DiscountInterface $discount
-     */
     public function setPriceSale(AbstractCollection $item, DiscountInterface $discount): void
     {
         $item->set(
@@ -89,9 +66,6 @@ class DiscountHelper extends AbstractInjectable
         );
     }
 
-    /**
-     * @param AbstractCollection $item
-     */
     public function setPrice(AbstractCollection $item): void
     {
         $taxrate = TaxRate::findById($item->_('taxrate'));
@@ -104,12 +78,6 @@ class DiscountHelper extends AbstractInjectable
         );
     }
 
-    /**
-     * @param null|string $target
-     *
-     * @return $this|array|bool|\Phalcon\Mvc\CollectionInterface
-     * @deprecated should use service
-     */
     public static function getFromSession(?string $target = null)
     {
         if (SessionUtil::get('discountId')) :
@@ -123,13 +91,6 @@ class DiscountHelper extends AbstractInjectable
         return false;
     }
 
-    /**
-     * is replacement for getFromSession
-     *
-     * @param null|string $target
-     *
-     * @return Discount|null
-     */
     public function loadFromSession(?string $target = null): ?Discount
     {
         if ($this->session->get('discountId')) :
@@ -144,9 +105,6 @@ class DiscountHelper extends AbstractInjectable
     }
 
     /**
-     * @param float $total
-     *
-     * @return float
      * @deprecated should use service
      */
     public static function calculateTotal(float $total)
@@ -164,11 +122,6 @@ class DiscountHelper extends AbstractInjectable
         return $total;
     }
 
-    /**
-     * @param Discount $discount
-     *
-     * @return int
-     */
     public function getAmountOfUsedOrders(Discount $discount): int
     {
         if ($this->user->isLoggedIn()) :
@@ -181,11 +134,6 @@ class DiscountHelper extends AbstractInjectable
         return 0;
     }
 
-    /**
-     * @param Discount $discount
-     *
-     * @return bool
-     */
     public function isValid(Discount $discount): bool
     {
         $isValid = true;

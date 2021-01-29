@@ -1,10 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Repositories;
 
-/**
- * Class CountryRepository
- */
 class CountryRepository extends AbstractCollectionRepository
 {
     protected $model;

@@ -31,16 +31,10 @@ abstract class AbstractShippingType extends AbstractCollection implements
      */
     public $barcode;
 
-    /**
-     * @param ShippingForm $form
-     */
     public function buildAdminForm(ShippingForm $form)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabelLink(Order $order): string
     {
         if (
@@ -73,10 +67,6 @@ abstract class AbstractShippingType extends AbstractCollection implements
         return '';
     }
 
-    /**
-     * @inheritdoc
-     * @throws \MongoDB\Driver\Exception\InvalidArgumentException
-     */
     public function hasFreeShippingItems(array $items): bool
     {
         /** @var User $user */
@@ -116,9 +106,6 @@ abstract class AbstractShippingType extends AbstractCollection implements
         return false;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getTrackAndTraceLink(Order $order): string
     {
         return '';

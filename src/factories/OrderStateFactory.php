@@ -1,31 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Factories;
 
 use VitesseCms\Database\Utils\MongoUtil;
 use VitesseCms\Shop\Models\OrderState;
 
-/**
- * Class OrderStateFactory
- */
 class OrderStateFactory
 {
-    /**
-     * @param string $name
-     * @param string $calling_name
-     * @param bool $published
-     * @param string|null $parentId
-     * @param string $stockAction
-     * @param string $bodytext
-     * @param string $messageText
-     * @param string $messageType
-     * @param array $analyticsTriggers
-     * @param bool $clearCart
-     * @param bool $printShippingLabel
-     * @param int $ordering
-     *
-     * @return OrderState
-     */
     public static function create(
         string $name,
         string $calling_name,

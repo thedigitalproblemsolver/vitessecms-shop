@@ -12,10 +12,6 @@ use MongoDB\BSON\ObjectID;
 
 class CartController extends AbstractController
 {
-    /**
-     * indexAction
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function indexAction(): void
     {
         if ($this->request->get('embedded', 'int', 0)) :
@@ -35,10 +31,6 @@ class CartController extends AbstractController
         endif;
     }
 
-    /**
-     * @throws \MongoDB\Driver\Exception\InvalidArgumentException
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function addtocartAction(): void
     {
         if ($this->request->getPost('itemId')) :
@@ -75,9 +67,6 @@ class CartController extends AbstractController
         endif;
     }
 
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function removeitemAction(): void
     {
         if ($this->request->getPost('cartItemId')) :
@@ -98,9 +87,6 @@ class CartController extends AbstractController
         endif;
     }
 
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function changequantityAction(): void
     {
         if ($this->request->getPost('cartItemId')) :
@@ -128,9 +114,6 @@ class CartController extends AbstractController
         endif;
     }
 
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function getcarttextAction(): void
     {
         $this->cache->setNoCacheHeaders();
@@ -141,9 +124,6 @@ class CartController extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function setPackingForProductAction(): void
     {
         if ($this->request->getPost('cartItemId')) :

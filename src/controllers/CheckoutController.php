@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -8,24 +8,13 @@ use VitesseCms\Form\Forms\BaseForm;
 use VitesseCms\Shop\Models\Shopper;
 use VitesseCms\User\Models\User;
 
-/**
- * Class CartController
- */
 class CheckoutController extends AbstractController
 {
-    /**
-     * indexAction
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function indexAction()
     {
         $this->redirect();
     }
 
-    /**
-     * register
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function registerAction(): void
     {
         $form = new BaseForm();
@@ -49,9 +38,6 @@ class CheckoutController extends AbstractController
         $this->redirect();
     }
 
-    /**
-     * setShiptoAddressAction
-     */
     public function setShiptoAddressAction() :void
     {
         $this->session->set('shiptoAddress',$this->request->get('id'));

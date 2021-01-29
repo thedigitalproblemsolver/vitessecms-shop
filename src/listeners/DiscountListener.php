@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Listeners;
 
@@ -10,14 +10,8 @@ use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Discount;
 use Phalcon\Events\Event;
 
-/**
- * Class DiscountListener
- */
 class DiscountListener extends AbstractInjectable
 {
-    /**
-     * @param Event $event
-     */
     public function prepareItem(Event $event, Item $item): void
     {
         $item->set('price_discount', false);
@@ -68,9 +62,6 @@ class DiscountListener extends AbstractInjectable
         endif;
     }
 
-    /**
-     * @param Event $event
-     */
     public function onLoginSuccess(Event $event): void
     {
         $discount = $this->shop->discount->loadFromSession();

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -6,15 +6,8 @@ use VitesseCms\Content\Models\Item;
 use VitesseCms\Admin\AbstractAdminController;
 use VitesseCms\Core\Factories\ObjectFactory;
 
-/**
- * Class AdminstockController
- */
 class AdminstockController extends AbstractAdminController
 {
-
-    /**
-     * checkAction
-     */
     public function checkAction(): void
     {
         header('Content-Type: text/csv; charset=utf-8');

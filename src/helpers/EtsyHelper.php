@@ -95,13 +95,6 @@ class EtsyHelper extends AbstractInjectable
         $this->baseUrl = 'https://openapi.etsy.com/v2/';*/
     }
 
-    /**
-     * @param Item $item
-     *
-     * @return mixed
-     * @throws \OAuthException
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function createListingFromItem(Item $item)
     {
         $clothingCategory = Item::findById($item->_('parentId'));
@@ -123,46 +116,21 @@ class EtsyHelper extends AbstractInjectable
         return $this->fetch('listings', $params);
     }
 
-    /**
-     * @param string $imagePath
-     * @param int $listingId
-     *
-     * @return mixed
-     * @throws \OAuthException
-     */
     public function addImageToListing(string $imagePath, int $listingId)
     {
         return $this->fetch('listings/' . $listingId . '/images', ['@image' => '@' . $imagePath . ';type=image/jpeg']);
     }
 
-    /**
-     * @param int $listingId
-     *
-     * @return mixed
-     * @throws \OAuthException
-     */
     public function getListing(int $listingId)
     {
         return $this->fetch('listings/' . $listingId, [], OAUTH_HTTP_METHOD_GET);
     }
 
-    /**
-     * @param int $listingId
-     *
-     * @return mixed
-     * @throws \OAuthException
-     */
     public function getInventory(int $listingId)
     {
         return $this->fetch('listings/' . $listingId. '/inventory', [], OAUTH_HTTP_METHOD_GET);
     }
 
-    /**
-     * @param Item $item
-     *
-     * @return mixed
-     * @throws \OAuthException
-     */
     public function updateInventoryFromItem(Item $item)
     {
         $products = [];
@@ -190,14 +158,6 @@ class EtsyHelper extends AbstractInjectable
         return null;
     }
 
-    /**
-     * @param string $apiCall
-     * @param array $params
-     * @param string $method
-     *
-     * @return mixed
-     * @throws \OAuthException
-     */
     protected function fetch(string $apiCall, array $params = [], $method = 'POST' )
     {
         var_dump($this->baseUrl.$apiCall);
@@ -213,11 +173,6 @@ class EtsyHelper extends AbstractInjectable
         return $response;
     }
 
-    /**
-     * @param Item $item
-     *
-     * @return string
-     */
     protected function builDescription(Item $item):string
     {
         $description = strip_tags($item->_('introtext'));
@@ -247,11 +202,6 @@ class EtsyHelper extends AbstractInjectable
         return trim($description);
     }
 
-    /**
-     * @param $size
-     *
-     * @return int
-     */
     protected function getSizeId(string $size): int
     {
         switch (strtoupper($size)){
@@ -289,14 +239,6 @@ class EtsyHelper extends AbstractInjectable
         die();
     }
 
-    /**
-     * @param int $colorId
-     * @param int $sizeId
-     * @param int $quantity
-     * @param float $price
-     *
-     * @return mixed
-     */
     protected function inventoryItemFactory(
         int $colorId,
         int $sizeId,

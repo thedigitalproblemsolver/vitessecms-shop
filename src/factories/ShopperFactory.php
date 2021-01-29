@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Factories;
 
@@ -8,14 +8,8 @@ use VitesseCms\Core\Interfaces\FactoryInterface;
 use VitesseCms\Shop\Models\Shopper;
 use VitesseCms\User\Models\User;
 
-/**
- * Class ShopperFactory
- */
 class ShopperFactory extends AbstractFactory implements FactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function create(BaseObjectInterface $bindData = null) : BaseObjectInterface
     {
         $shopper = parent::createCollection(Shopper::class);
@@ -23,12 +17,6 @@ class ShopperFactory extends AbstractFactory implements FactoryInterface
         return $shopper;
     }
 
-    /**
-     * @param User $user
-     * @param array $data
-     *
-     * @return Shopper
-     */
     public static function createFromUser(User $user, array $data = []): Shopper
     {
         $shopper = new Shopper();

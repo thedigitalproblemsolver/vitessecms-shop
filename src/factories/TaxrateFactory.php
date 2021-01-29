@@ -1,26 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Factories;
 
 use VitesseCms\Shop\Models\TaxRate;
 
-/**
- * Class TaxrateFactory
- */
 class TaxrateFactory
 {
-    /**
-     * @param string $name
-     * @param float $taxrate
-     * @param bool $published
-     *
-     * @return TaxRate
-     */
-    public static function create(
-        string $name,
-        float $taxrate,
-        bool $published = false
-    ): TaxRate {
+    public static function create(string $name, float $taxrate, bool $published = false): TaxRate {
         return (new TaxRate())
             ->set('name', $name, true)
             ->set('taxrate', $taxrate)

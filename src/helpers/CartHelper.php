@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Helpers;
 
@@ -17,17 +17,8 @@ use Phalcon\Di;
 use Phalcon\Http\Response\Cookies;
 use Phalcon\Session\Adapter\Files as Session;
 
-/**
- * Class CartHelper
- */
 class CartHelper
 {
-    /**
-     * @param AbstractCollection $item
-     * @param string|null $chooseVariation
-     *
-     * @return string
-     */
     public static function getMainImage(AbstractCollection $item, string $chooseVariation = null): string
     {
         if (
@@ -49,9 +40,6 @@ class CartHelper
         return $item->_('image');
     }
 
-    /**
-     * @return Shipping
-     */
     public static function getShipping()
     {
         $shippings = Shipping::findAll();
@@ -63,11 +51,6 @@ class CartHelper
         endif;
     }
 
-    /**
-     * @param AbstractCollection $item
-     *
-     * @return string
-     */
     public static function getLogNameFromItem(AbstractCollection $item): string
     {
         $return = [$item->_('name')];
@@ -84,12 +67,6 @@ class CartHelper
         return implode(' ', $return);
     }
 
-    /**
-     * @param array $cartItems
-     * @param ShippingTypeInterface $shippingType
-     *
-     * @return float
-     */
     public static function calculateVat(array $cartItems, ShippingTypeInterface $shippingType): float
     {
         $total = self::calculateTotal($cartItems, $shippingType);
@@ -103,12 +80,6 @@ class CartHelper
         return $vat;
     }
 
-    /**
-     * @param array $cartItems
-     * @param ShippingTypeInterface $shippingType
-     *
-     * @return float
-     */
     public static function calculateTotal(array $cartItems, ShippingTypeInterface $shippingType): float
     {
         $total = $shippingType->calculateCartTotal($cartItems)+$cartItems['total'];
@@ -117,12 +88,6 @@ class CartHelper
         return $total;
     }
 
-    /**
-     * @param Block $block
-     * @param Cart $cart
-     *
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function setBlockBasics(Block $block, Cart $cart): void
     {
         $cartItems = $cart->getItems(true);
@@ -152,10 +117,6 @@ class CartHelper
         $block->set('checkoutBar', false);
     }
 
-    /**
-     * @return Cart
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function getCartFromSession(): Cart
     {
         /** @var Session $session */

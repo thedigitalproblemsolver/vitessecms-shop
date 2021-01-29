@@ -1,18 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
 use VitesseCms\Core\AbstractController;
 use VitesseCms\Shop\Models\Discount;
 
-/**
- * Class DiscountController
- */
 class DiscountController extends AbstractController
 {
-    /**
-     * @throws \Phalcon\Mvc\Collection\Exception
-     */
     public function parsecodeAction(): void
     {
         $redirectUrl = null;

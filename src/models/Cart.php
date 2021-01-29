@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
@@ -41,8 +41,6 @@ class Cart extends AbstractCollection
     }
 
     /**
-     * @return Cart
-     * @throws \Phalcon\Mvc\Collection\Exception
      * @deprecated should be used as a service
      */
     public static function getCart(): Cart
@@ -173,9 +171,6 @@ class Cart extends AbstractCollection
         endif;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function _(string $key, string $languageShort = null)
     {
         $return = parent::_($key);
