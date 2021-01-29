@@ -11,7 +11,7 @@ class OrderState extends AbstractCollection
      */
     public $stockAction;
 
-    public function getStockAction(): string
+    public function getStockAction(): ?string
     {
         return $this->stockAction;
     }

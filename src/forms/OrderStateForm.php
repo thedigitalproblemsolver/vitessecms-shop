@@ -1,128 +1,78 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
+use Phalcon\Mvc\View\Engine\Twig\TokenParsers\Assets;
 use VitesseCms\Communication\Models\Newsletter;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
+use VitesseCms\Form\Models\Attributes;
+use VitesseCms\Media\Enums\AssetsEnum;
 use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Models\OrderState;
 
-/**
- * Class OrderForm
- */
 class OrderStateForm extends AbstractForm
 {
-
-    /**
-     * @param OrderState|null $item
-     */
     public function initialize( OrderState $item = null)
     {
-        $this->_(
-            'text',
-            '%CORE_NAME%',
-            'name',
-            [
-                'multilang' => true
-            ]
-        )->_(
-            'textarea',
-            '%ADMIN_ORDERSTATE_PAGE_TEXT%',
-            'bodytext',
-            [
-                'multilang' => true,
-                'inputClass' => 'editor'
-            ]
-
-        )->_(
-            'text',
-            '%ADMIN_SYSTEM_MESSAGE%',
-            'messageText',
-            ['multilang' => true]
-        )->_(
-            'select',
+        $this->addText('%CORE_NAME%', 'name',(new Attributes())->setMultilang())
+            ->addEditor('%ADMIN_ORDERSTATE_PAGE_TEXT%', 'bodytext',(new Attributes())->setMultilang())
+            ->addText('%ADMIN_SYSTEM_MESSAGE%', 'messageText',( new Attributes())->setMultilang())
+            ->addDropdown(
             '%ADMIN_SYSTEM_MESSAGE_TYPE%',
             'messageType',
-            [
-                'options' => ElementHelper::arrayToSelectOptions([
+                (new Attributes())->setOptions(ElementHelper::arrayToSelectOptions([
                     'success' => '%ADMIN_ALERT_SUCCESS%',
                     'error' => '%ADMIN_ALERT_DANGER%',
                     'notice' => '%ADMIN_ALERT_INFO%',
                     'warning' => '%ADMIN_ALERT_WARNING%',
                 ])
-            ]
-        )->_(
-            'select',
+                ))
+            ->addDropdown(
             '%ADMIN_ORDERSTATE_CHANGE_STOCK%',
             'stockAction',
-            [
-                'options' => ElementHelper::arrayToSelectOptions([
-                    OrderStateEnum::STOCK_ACTION_INCREASE => '%ADMIN_INCREASE%',
-                    OrderStateEnum::STOCK_ACTION_DECREASE => '%ADMIN_DECREASE%',
-                ])
-            ]
-        )->_(
-            'select',
+                (new Attributes())->setOptions(
+                    ElementHelper::arrayToSelectOptions([
+                        OrderStateEnum::STOCK_ACTION_INCREASE => '%ADMIN_INCREASE%',
+                        OrderStateEnum::STOCK_ACTION_DECREASE => '%ADMIN_DECREASE%',
+                    ])
+                ))
+            ->addDropdown(
             '%ADMIN_ORDERSTATE_CHANGE_ANALYTICS_TRIGGERS%',
             'analyticsTriggers',
-            [
-                'multiple' => true,
-                'options' => ElementHelper::arrayToSelectOptions(OrderStateEnum::ANALYTICS_TRIGGERS),
-            ]
-        );
+                (new Attributes())->setMultiple()
+                    ->setOptions(ElementHelper::arrayToSelectOptions(OrderStateEnum::ANALYTICS_TRIGGERS))
+            )
+        ;
 
         Newsletter::setFindValue('parentId',null);
         $newsletters = Newsletter::findAll();
-        $this->_(
-            'select',
+        $this->addDropdown(
             'Add to newsletter',
             'addToNewsletters',
-            [
-                'multilang' => true,
-                'multiple' => true,
-                'options'  => ElementHelper::arrayToSelectOptions($newsletters),
-                'inputClass' => 'select2'
-            ]
-        )->_(
-            'select',
+            (new Attributes())->setMultilang()
+                ->setMultiple()
+                ->setInputClass(AssetsEnum::SELECT2)
+                ->setOptions(ElementHelper::arrayToSelectOptions($newsletters)))
+            ->addDropdown(
             'Unsubscribe from newsletter<br /><small>never end again</small>',
             'unsubscribeFromNewsletters',
-            [
-                'multilang' => true,
-                'multiple' => true,
-                'options'  => ElementHelper::arrayToSelectOptions($newsletters),
-                'inputClass' => 'select2'
-            ]
-        )->_(
-            'select',
+                (new Attributes())->setMultilang()
+                    ->setMultiple()
+                    ->setInputClass(AssetsEnum::SELECT2)
+                    ->setOptions(ElementHelper::arrayToSelectOptions($newsletters)))
+            ->addDropdown(
             'Remove from newsletters<br /><small>Can be send again</small>',
             'removeFromNewsletters',
-            [
-                'multilang' => true,
-                'multiple' => true,
-                'options'  => ElementHelper::arrayToSelectOptions($newsletters),
-                'inputClass' => 'select2'
-            ]
-        )->_(
-            'checkbox',
-            '%ADMIN_ORDERSTATE_CLEAR_THE_CART%',
-            'clearCart'
-        )->_(
-            'checkbox',
-            '%ADMIN_ORDERSTATE_PRINT_SHIPPING_LABEL%',
-            'printShippingLabel'
-        )->_(
-            'checkbox',
-            'Can switch to state on same level',
-            'canSwitchToSameLevel'
-        )->_(
-            'text',
-            '%ADMIN_CALLING_NAME%',
-            'calling_name'
-        )->_(
-            'submit',
-            '%CORE_SAVE%'
-        );
+                (new Attributes())->setMultilang()
+                    ->setMultiple()
+                    ->setInputClass(AssetsEnum::SELECT2)
+                    ->setOptions(ElementHelper::arrayToSelectOptions($newsletters)))
+            ->addToggle('%ADMIN_ORDERSTATE_CLEAR_THE_CART%', 'clearCart')
+            ->addToggle('%ADMIN_ORDERSTATE_PRINT_SHIPPING_LABEL%', 'printShippingLabel')
+            ->addToggle('Can switch to state on same level', 'canSwitchToSameLevel')
+            ->addText('%ADMIN_CALLING_NAME%', 'calling_name')
+            ->addSubmitButton('%CORE_SAVE%')
+        ;
     }
 }

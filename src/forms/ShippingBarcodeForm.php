@@ -1,30 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
 use VitesseCms\Form\AbstractForm;
+use VitesseCms\Form\Models\Attributes;
 
-/**
- * Class ShippingBarcodeForm
- */
 class ShippingBarcodeForm extends AbstractForm
 {
-
-    /**
-     * initialize
-     */
     public function initialize(): void
     {
-        $this->_(
-            'text',
-            'Barcode',
-            'barcode',
-            [
-                'required' => true
-            ]
-        )->_(
-            'submit',
-            '%CORE_SAVE%'
-        );
+        $this->addText('Barcode', 'barcode', (new Attributes())->setRequired())
+            ->addSubmitButton('%CORE_SAVE%')
+        ;
     }
 }

@@ -2,9 +2,7 @@
 
 namespace VitesseCms\Shop\Forms;
 
-use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Helpers\ItemHelper;
-use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\AbstractFormWithRepository;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Interfaces\FormWithRepositoryInterface;
@@ -32,8 +30,7 @@ class EanForm extends AbstractFormWithRepository
         $options = ['' => '%ADMIN_TYPE_TO_SEARCH%'];
 
         if ($this->_entity->getParentItem() !== null) :
-            /** @var Item $selectedItem */
-            $selectedItem = Item::findById($this->_entity->getParentItem());
+            $selectedItem = $this->repositories->item->getById($this->_entity->getParentItem(), false);
             $itemPath = ItemHelper::getPathFromRoot($selectedItem);
             $options[(string)$selectedItem->getId()] = implode(' - ', $itemPath);
 

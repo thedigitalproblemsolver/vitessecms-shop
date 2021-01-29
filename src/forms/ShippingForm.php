@@ -1,53 +1,36 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
+use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Helpers\ShippingHelper;
 use VitesseCms\Shop\Models\Shipping;
 use Phalcon\Di;
 
-/**
- * Class PaymentForm
- */
 class ShippingForm extends AbstractForm
 {
-
-    /**
-     * @param Shipping|null $item
-     */
     public function initialize( Shipping $item = null)
     {
         if( $item === null) :
             $item = new Shipping();
-            $item ->set('type', null);
         endif;
 
-        $this->_(
-            'text',
-            '%CORE_NAME%',
-            'name',
-            [
-                'required' => 'required',
-                'multilang' => true,
-            ]
-        );
+        $this->addText('%CORE_NAME%', 'name',(new Attributes())->setRequired()->setMultilang());
 
         if( !$item->_('type') ) :
-            $this->_(
-                'select',
+            $this->addDropdown(
                 '%ADMIN_TYPE%',
                 'type',
-                [
-                    'options' => ElementHelper::arrayToSelectOptions(ShippingHelper::getTypes(
+                (new Attributes())->setRequired()
+                    ->setOptions(ElementHelper::arrayToSelectOptions(ShippingHelper::getTypes(
                         $this->configuration->getRootDir(),
                         $this->configuration->getAccount()
-                    )),
-                    'required' => 'required'
-                ]
-            );
+                    )
+                )
+            ));
         else :
             $object = ShippingHelper::getClass($item->_('type'));
             /** @var AbstractCollection $item */
@@ -55,9 +38,6 @@ class ShippingForm extends AbstractForm
             $item->buildAdminForm($this);
         endif;
 
-        $this->_(
-            'submit',
-            '%CORE_SAVE%'
-        );
+        $this->addSubmitButton('%CORE_SAVE%');
     }
 }

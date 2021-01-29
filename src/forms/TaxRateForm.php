@@ -1,36 +1,24 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
 use VitesseCms\Form\AbstractForm;
+use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Models\TaxRate;
 
 
-/**
- * Class TaxRateForm
- */
 class TaxRateForm extends AbstractForm
 {
-
-    /**
-     * @param TaxRate|null $item
-     */
     public function initialize( TaxRate $item = null)
     {
-        $this->_(
-            'number',
+        $this->addNumber(
             '%ADMIN_TAX_RATE%',
             'taxrate',
-            [
-                'required' => 'required',
-                'min' => 0,
-                'max' => 100
-            ]
-        );
-
-        $this->_(
-            'submit',
-            '%CORE_SAVE%'
-        );
+            (new Attributes())->setRequired()
+                ->setMin(0)
+                ->setMax(100)
+            )
+            ->addSubmitButton('%CORE_SAVE%')
+        ;
     }
 }
