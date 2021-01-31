@@ -20,6 +20,7 @@
   "require": {
     "vitessecms/form": "~0.0.3",
     "vitessecms/communication": "~0.0.9",
-    "vitessecms/media": "~0.0.1"
+    "vitessecms/media": "~0.0.1",
+    "vitessecms/user": "~0.0.1"
   }
 }
