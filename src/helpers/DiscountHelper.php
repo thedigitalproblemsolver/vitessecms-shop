@@ -158,7 +158,7 @@ class DiscountHelper extends AbstractInjectable
     public static function getTypes(string $rootDir) : array
     {
         $types = [];
-        $files = DirectoryUtil::getFilelist($rootDir . 'src/shop/discountTypes/');
+        $files = DirectoryUtil::getFilelist($rootDir . 'shop/src/discountTypes/');
         foreach ($files as $path => $file) :
             $name = FileUtil::getName($file);
             $types[$name] = $name;
