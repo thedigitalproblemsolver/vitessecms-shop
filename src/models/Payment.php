@@ -16,7 +16,7 @@ class Payment extends AbstractCollection
     public function getTypes() : array
     {
         $types = [];
-        $files = DirectoryUtil::getFilelist($this->di->config->get('rootDir') . 'src/shop/paymentTypes/');
+        $files = DirectoryUtil::getFilelist($this->di->config->get('rootDir') . 'shop/src/paymentTypes/');
         foreach ($files as $path => $file) :
             $name = FileUtil::getName($file);
             $types[$name] = $name;

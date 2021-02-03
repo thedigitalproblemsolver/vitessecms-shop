@@ -11,7 +11,7 @@ class ShippingHelper
     public static function getClass(string $type): string
     {
         if (is_file(
-            Di::getDefault()->get('config')->get('accountDir').'/src/shop/shippingTypes/'.$type.'.php'
+            Di::getDefault()->get('config')->get('accountDir').'/sop/src/shippingTypes/'.$type.'.php'
         )
         ) :
             return 'VitesseCms\\'.ucfirst(Di::getDefault()->get('config')->get('account')).'\Shop\ShippingTypes\\'.$type;
@@ -23,12 +23,12 @@ class ShippingHelper
     public static function getTypes(string $rootDir, string $account) : array
     {
         $types = [];
-        $shippingFiles = DirectoryUtil::getFilelist($rootDir.'src/shop/shippingTypes/');
+        $shippingFiles = DirectoryUtil::getFilelist($rootDir.'shop/src/shippingTypes/');
         $shippingFilesAccount = DirectoryUtil::getFilelist(
             $rootDir .
             'config/account/'.
             $account .
-            '/src/shop/shippingTypes/'
+            '/shop/src/shippingTypes/'
         );
         $files = array_merge($shippingFilesAccount, $shippingFiles);
         foreach ($files as $path => $file) :
