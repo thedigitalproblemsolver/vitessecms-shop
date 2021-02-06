@@ -2,7 +2,7 @@
 
 namespace VitesseCms\Shop\Models;
 
-use VitesseCms\Core\Models\Datagroup;
+use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\User\Models\User;
 use MongoDB\BSON\ObjectID;
 

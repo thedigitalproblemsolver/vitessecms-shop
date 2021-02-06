@@ -3,7 +3,7 @@
 namespace VitesseCms\Shop\Controllers;
 
 use VitesseCms\Core\AbstractController;
-use VitesseCms\Core\Models\Datagroup;
+use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\Form\Forms\BaseForm;
 use VitesseCms\Shop\Models\Shopper;
 use VitesseCms\User\Models\User;

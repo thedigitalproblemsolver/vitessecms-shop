@@ -5,7 +5,7 @@ namespace VitesseCms\Shop\Controllers;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractController;
 use VitesseCms\Communication\Helpers\CommunicationHelper;
-use VitesseCms\Core\Models\Datagroup;
+use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\Form\Forms\BaseForm;
 use VitesseCms\Shop\Factories\ShiptoAddressFactory;
 use VitesseCms\Shop\Models\Shopper;
