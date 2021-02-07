@@ -6,7 +6,7 @@ use VitesseCms\Communication\Services\MailchimpService;
 use VitesseCms\Content\Repositories\ItemRepository;
 use VitesseCms\Core\AbstractModule;
 use VitesseCms\Datafield\Repositories\DatafieldRepository;
-use VitesseCms\Core\Repositories\DatagroupRepository;
+use VitesseCms\Datagroup\Repositories\DatagroupRepository;
 use VitesseCms\Shop\Repositories\DiscountRepository;
 use VitesseCms\Shop\Repositories\OrderRepository;
 use VitesseCms\Shop\Repositories\OrderStateRepository;
