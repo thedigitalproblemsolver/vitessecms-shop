@@ -6,7 +6,7 @@ use VitesseCms\Communication\Helpers\CommunicationHelper;
 use VitesseCms\Communication\Helpers\NewsletterHelper;
 use VitesseCms\Communication\Models\Newsletter;
 use VitesseCms\Content\Models\Item;
-use VitesseCms\Core\Factories\LogFactory;
+use VitesseCms\Log\Factories\LogFactory;
 use VitesseCms\Core\Services\ViewService;
 use VitesseCms\Sef\Utils\UtmUtil;
 use VitesseCms\Shop\Enum\OrderStateEnum;
