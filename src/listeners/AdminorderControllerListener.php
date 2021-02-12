@@ -2,9 +2,19 @@
 
 namespace VitesseCms\Shop\Listeners;
 
+use VitesseCms\Admin\AbstractAdminController;
+use VitesseCms\Admin\Forms\AdminlistFormInterface;
 use VitesseCms\Admin\Utils\AdminUtil;
+use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Factories\ObjectFactory;
+use VitesseCms\Core\Interfaces\BaseObjectInterface;
+use VitesseCms\Database\Models\FindValue;
+use VitesseCms\Database\Models\FindValueIterator;
+use VitesseCms\Form\Helpers\ElementHelper;
+use VitesseCms\Form\Interfaces\AbstractFormInterface;
+use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Controllers\AdminorderController;
+use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Forms\OrderOrderStateForm;
 use VitesseCms\Shop\Forms\ShippingBarcodeForm;
 use VitesseCms\Shop\Models\Order;
@@ -105,5 +115,40 @@ class AdminorderControllerListener
                 'orderStateForm' => $orderStateForm,
             ]
         ));
+    }
+
+    public function adminListFilter(
+        Event $event,
+        AdminorderController $controller,
+        AdminlistFormInterface $form
+    ): string
+    {
+        $form->addNumber('%SHOP_ORDERID%', 'filter[orderId]')
+            ->addDropdown(
+                'Order state',
+                'filter[orderState.calling_name]',
+                (new Attributes())->setOptions(
+                    ElementHelper::arrayToSelectOptions(OrderStateEnum::ORDER_STATES)
+                )
+            );
+
+        if($form->setting !== null && $form->setting->has('SHOP_DATAGROUP_AFFILIATE')) :
+            $form->addDropdown(
+                'Affiliate property',
+                'filter[affiliateId]',
+                (new Attributes())->setOptions(ElementHelper::modelIteratorToOptions(
+                    $controller->repositories->item->findAll(
+                        new FindValueIterator(
+                            [new FindValue('datagroup', $form->setting->get('SHOP_DATAGROUP_AFFILIATE'))]
+                        )
+                    )
+                ))
+            );
+        endif;
+
+        return $form->renderForm(
+            $controller->getLink() . '/' . $controller->router->getActionName(),
+            'adminFilter'
+        );
     }
 }
