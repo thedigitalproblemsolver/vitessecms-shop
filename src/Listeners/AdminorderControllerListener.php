@@ -66,7 +66,7 @@ class AdminorderControllerListener
             'sendemail'
         )) :
             $return .= Tag::linkTo([
-                'action' => '/admin/shop/adminorder/sendemail/'.$order->getId(),
+                'action' => '/Admin/shop/adminorder/sendemail/'.$order->getId(),
                 'class'  => 'fa fa-envelope',
             ]);
         endif;
