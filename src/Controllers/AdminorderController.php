@@ -25,13 +25,13 @@ class AdminorderController extends AbstractAdminController implements Repositori
     public function editAction(
         string $itemId = null,
         string $template = 'adminEditForm',
-        string $templatePath = 'core/src/resources/views/',
+        string $templatePath = 'core/src/Resources/views/',
         AbstractForm $form = null
     ): void {
         parent::editAction(
             $itemId,
             'orderEdit',
-            'shop/src/resources/views/admin/'
+            'shop/src/Resources/views/admin/'
         );
     }
 

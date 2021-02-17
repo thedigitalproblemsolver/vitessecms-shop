@@ -47,7 +47,7 @@ class EanForm extends AbstractFormWithRepository
             'parentItem',
                 (new Attributes())
                     ->setInputClass('select2-ajax')
-                    ->setDataUrl('/admin/shop/adminean/search/')
+                    ->setDataUrl('/Admin/shop/adminean/search/')
                     ->setOptions(ElementHelper::arrayToSelectOptions($options)
             ))
             ->addHtml($html)
