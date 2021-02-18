@@ -24,10 +24,10 @@ class CheckoutController extends AbstractController
         if ($form->validate($this)) :
             $post = $this->request->getPost();
             $post['email'] = strtolower($post['email']);
-            User::setFindValue('email', $post['email'] );
+            User::setFindValue('email', $post['email']);
             User::setFindPublished(false);
             $user = User::findFirst();
-            if( \is_object($user) ) :
+            if (\is_object($user)) :
                 $this->flash->setError('USER_EXISTS');
             else :
                 $shopper = Shopper::createNew($post);
@@ -38,9 +38,9 @@ class CheckoutController extends AbstractController
         $this->redirect();
     }
 
-    public function setShiptoAddressAction() :void
+    public function setShiptoAddressAction(): void
     {
-        $this->session->set('shiptoAddress',$this->request->get('id'));
+        $this->session->set('shiptoAddress', $this->request->get('id'));
         $this->view->disable();
     }
 }

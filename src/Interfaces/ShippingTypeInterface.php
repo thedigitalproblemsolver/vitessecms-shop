@@ -6,15 +6,15 @@ use VitesseCms\Shop\Models\Order;
 
 interface ShippingTypeInterface
 {
-    public function calculateOrderAmount(Order $order) : float;
+    public function calculateOrderAmount(Order $order): float;
 
-    public function calculateOrderVat(Order $order) : float;
+    public function calculateOrderVat(Order $order): float;
 
-    public function calculateCartAmount(array $items) : float;
+    public function calculateCartAmount(array $items): float;
 
-    public function calculateCartVat(array $items) : float;
+    public function calculateCartVat(array $items): float;
 
-    public function calculateCartTotal(array $items) : float;
+    public function calculateCartTotal(array $items): float;
 
     public function getLabelLink(Order $order): string;
 

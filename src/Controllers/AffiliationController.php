@@ -22,11 +22,11 @@ class AffiliationController extends AbstractController
 
         if (isset($_GET['tt'])) :
             $trackingParam = explode('_', $_GET['tt']);
-            $campaignID = $trackingParam[0]??'';
-            $materialID = $trackingParam[1]??'';
-            $affiliateID = $trackingParam[2]??'';
-            $reference = $trackingParam[3]??'';
-            $redirectURL = $_GET['r']??'';
+            $campaignID = $trackingParam[0] ?? '';
+            $materialID = $trackingParam[1] ?? '';
+            $affiliateID = $trackingParam[2] ?? '';
+            $reference = $trackingParam[3] ?? '';
+            $redirectURL = $_GET['r'] ?? '';
 
             // Calculate MD5 checksum.
             $checkSum = md5('CHK_' . $campaignID . '::' . $materialID . '::' . $affiliateID . '::' . $reference);

@@ -10,7 +10,7 @@ use VitesseCms\User\Models\User;
 
 class ShopperFactory extends AbstractFactory implements FactoryInterface
 {
-    public static function create(BaseObjectInterface $bindData = null) : BaseObjectInterface
+    public static function create(BaseObjectInterface $bindData = null): BaseObjectInterface
     {
         $shopper = parent::createCollection(Shopper::class);
 

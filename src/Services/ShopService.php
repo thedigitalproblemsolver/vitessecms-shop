@@ -27,7 +27,8 @@ class ShopService
         CartHelper $cart,
         DiscountHelper $discount,
         CheckoutHelper $checkout
-    ) {
+    )
+    {
         $this->discount = $discount;
         $this->checkout = $checkout;
         $this->cart = $cart;

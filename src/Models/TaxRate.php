@@ -12,14 +12,14 @@ class TaxRate extends AbstractCollection implements TaxRateInterface
      */
     public $taxrate;
 
-    public function getName(?string $languageShort = NULL): string
-    {
-        return (string)$this->taxrate;
-    }
-
     public function getAdminlistName(): string
     {
         return $this->getName() . '%';
+    }
+
+    public function getName(?string $languageShort = NULL): string
+    {
+        return (string)$this->taxrate;
     }
 
     public function getTaxRate(): int

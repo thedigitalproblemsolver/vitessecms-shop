@@ -27,7 +27,7 @@ class OrderRepository
         /** @var Order $order */
         $order = Order::findById($id);
 
-        if($order instanceof Order):
+        if ($order instanceof Order):
             return $order;
         endif;
 

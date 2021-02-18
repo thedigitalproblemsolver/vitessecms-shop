@@ -26,10 +26,11 @@ class ShippingTypeRepository extends AbstractCollectionRepository
     public function findAll(
         ?FindValueIterator $findValues = null,
         bool $hideUnpublished = true
-    ): ShippingIterator {
+    ): ShippingIterator
+    {
         Shipping::setFindPublished($hideUnpublished);
 
-        if($findValues !== null) :
+        if ($findValues !== null) :
             while ($findValues->valid()) :
                 $findValue = $findValues->current();
                 Shipping::setFindValue(

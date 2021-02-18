@@ -14,7 +14,7 @@ class NoPayment extends AbstractPaymentType
         $this->log->write(
             $order->getId(),
             Order::class,
-            'Order '.$order->_('orderId').' user with no payment redirected to payment process'
+            'Order ' . $order->_('orderId') . ' user with no payment redirected to payment process'
         );
 
         header('Location: ' . $this->url->getBaseUri() . 'shop/payment/process/' . $order->getId());

@@ -29,7 +29,7 @@ class CartHelper
         ) :
             foreach ($item->_('variations') as $variation) :
                 if ($variation['sku'] === $chooseVariation) :
-                    if(\is_array($variation['image'])) :
+                    if (\is_array($variation['image'])) :
                         return $variation['image'][0];
                     endif;
                     return $variation['image'];
@@ -38,17 +38,6 @@ class CartHelper
         endif;
 
         return $item->_('image');
-    }
-
-    public static function getShipping()
-    {
-        $shippings = Shipping::findAll();
-        if (\count($shippings) === 1) :
-            /** @var Shipping $shipping */
-            return $shippings[0];
-        else :
-            die('Shipping choice is not implemented');
-        endif;
     }
 
     public static function getLogNameFromItem(AbstractCollection $item): string
@@ -65,27 +54,6 @@ class CartHelper
         endif;
 
         return implode(' ', $return);
-    }
-
-    public static function calculateVat(array $cartItems, ShippingTypeInterface $shippingType): float
-    {
-        $total = self::calculateTotal($cartItems, $shippingType);
-        $totalExVat = ( $total / 121 ) * 100;
-        $vat = $total - $totalExVat;
-
-        if($vat < 0 ) :
-            return 0.00;
-        endif;
-
-        return $vat;
-    }
-
-    public static function calculateTotal(array $cartItems, ShippingTypeInterface $shippingType): float
-    {
-        $total = $shippingType->calculateCartTotal($cartItems)+$cartItems['total'];
-        $total = DiscountHelper::calculateTotal($total);
-
-        return $total;
     }
 
     public function setBlockBasics(Block $block, Cart $cart): void
@@ -115,6 +83,38 @@ class CartHelper
             '<i class="fa fa-trash"></i> = %SHOP_REMOVE%&nbsp;&nbsp;&nbsp;<i class="fa fa-refresh"></i> = %SHOP_UPDATE_QUANTITY%'
         );
         $block->set('checkoutBar', false);
+    }
+
+    public static function getShipping()
+    {
+        $shippings = Shipping::findAll();
+        if (\count($shippings) === 1) :
+            /** @var Shipping $shipping */
+            return $shippings[0];
+        else :
+            die('Shipping choice is not implemented');
+        endif;
+    }
+
+    public static function calculateVat(array $cartItems, ShippingTypeInterface $shippingType): float
+    {
+        $total = self::calculateTotal($cartItems, $shippingType);
+        $totalExVat = ($total / 121) * 100;
+        $vat = $total - $totalExVat;
+
+        if ($vat < 0) :
+            return 0.00;
+        endif;
+
+        return $vat;
+    }
+
+    public static function calculateTotal(array $cartItems, ShippingTypeInterface $shippingType): float
+    {
+        $total = $shippingType->calculateCartTotal($cartItems) + $cartItems['total'];
+        $total = DiscountHelper::calculateTotal($total);
+
+        return $total;
     }
 
     public function getCartFromSession(): Cart

@@ -6,7 +6,8 @@ use VitesseCms\Shop\Models\Product;
 
 class ProductFactory
 {
-    public static function createFromOrderItem(array $orderItem): Product {
+    public static function createFromOrderItem(array $orderItem): Product
+    {
         return (new Product());
     }
 }

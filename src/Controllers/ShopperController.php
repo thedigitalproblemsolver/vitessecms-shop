@@ -35,6 +35,18 @@ class ShopperController extends AbstractController
         $this->prepareView();
     }
 
+    public function getEditForm(): Datagroup
+    {
+        /** @var Datagroup $datagroup */
+        $datagroup = Datagroup::findById($this->setting->get('SHOP_DATAGROUP_REGISTRATIONFORM'));
+        $datagroup->addExcludeField('password');
+        $datagroup->addExcludeField('password2');
+        $datagroup->addExcludeField('refferer');
+        $datagroup->addExcludeField('agreedTerms');
+
+        return $datagroup;
+    }
+
     public function saveAction(): void
     {
         $form = new BaseForm();
@@ -71,18 +83,6 @@ class ShopperController extends AbstractController
         endif;
 
         $this->redirect();
-    }
-
-    public function getEditForm(): Datagroup
-    {
-        /** @var Datagroup $datagroup */
-        $datagroup = Datagroup::findById($this->setting->get('SHOP_DATAGROUP_REGISTRATIONFORM'));
-        $datagroup->addExcludeField('password');
-        $datagroup->addExcludeField('password2');
-        $datagroup->addExcludeField('refferer');
-        $datagroup->addExcludeField('agreedTerms');
-
-        return $datagroup;
     }
 
     public function editShipToAction(): void

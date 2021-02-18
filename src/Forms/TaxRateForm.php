@@ -9,7 +9,7 @@ use VitesseCms\Shop\Models\TaxRate;
 
 class TaxRateForm extends AbstractForm
 {
-    public function initialize( TaxRate $item = null)
+    public function initialize(TaxRate $item = null)
     {
         $this->addNumber(
             '%ADMIN_TAX_RATE%',
@@ -17,8 +17,7 @@ class TaxRateForm extends AbstractForm
             (new Attributes())->setRequired()
                 ->setMin(0)
                 ->setMax(100)
-            )
-            ->addSubmitButton('%CORE_SAVE%')
-        ;
+        )
+            ->addSubmitButton('%CORE_SAVE%');
     }
 }

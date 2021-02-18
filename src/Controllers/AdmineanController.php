@@ -30,7 +30,7 @@ class AdmineanController extends AbstractAdminController implements Repositories
             $items = $this->repositories->item->findAll(
                 new FindValueIterator([
                     new FindValue(
-                        'name.'.$this->configuration->getLanguageShort(),
+                        'name.' . $this->configuration->getLanguageShort(),
                         $this->request->get('search'),
                         'like'
                     ),
@@ -43,7 +43,7 @@ class AdmineanController extends AbstractAdminController implements Repositories
                     $item = $items->current();
                     $path = ItemHelper::getPathFromRoot($item);
                     $result['items'][] = [
-                        'id'   => (string)$item->getId(),
+                        'id' => (string)$item->getId(),
                         'name' => implode(' - ', $path),
                     ];
                     $items->next();

@@ -20,7 +20,8 @@ class OrderStateFactory
         bool $clearCart = false,
         bool $printShippingLabel = false,
         int $ordering = 0
-    ): OrderState {
+    ): OrderState
+    {
         if ($parentId !== null && MongoUtil::isObjectId($parentId)) :
             $parent = OrderState::findById($parentId);
             $parent->set('hasChildren', true)->save();

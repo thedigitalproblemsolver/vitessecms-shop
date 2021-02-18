@@ -8,15 +8,15 @@ use VitesseCms\Shop\Models\OrderState;
 
 class OrderFactory
 {
-    public static function create(BaseObjectInterface $bindData = null) : Order
+    public static function create(BaseObjectInterface $bindData = null): Order
     {
         $order = new Order();
         $order->setIpAddress($_SERVER['REMOTE_ADDR']);
         $order->setProperty($_SERVER['HTTP_HOST']);
         $order->setOrderState(OrderState::findFirst());
 
-        if($bindData) :
-            if(!empty($bindData->_('ipAddress'))) :
+        if ($bindData) :
+            if (!empty($bindData->_('ipAddress'))) :
                 $order->setIpAddress($bindData->_('ipAddress'));
             endif;
             $cartItems = $bindData->_('cart')->getItems();

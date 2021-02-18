@@ -10,7 +10,6 @@ class ShippingBarcodeForm extends AbstractForm
     public function initialize(): void
     {
         $this->addText('Barcode', 'barcode', (new Attributes())->setRequired())
-            ->addSubmitButton('%CORE_SAVE%')
-        ;
+            ->addSubmitButton('%CORE_SAVE%');
     }
 }

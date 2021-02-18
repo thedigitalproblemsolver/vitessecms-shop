@@ -9,7 +9,7 @@ use VitesseCms\Shop\Models\Cart;
 
 class CartFactory extends AbstractFactory implements FactoryInterface
 {
-    public static function create(BaseObjectInterface $bindData = null) : BaseObjectInterface
+    public static function create(BaseObjectInterface $bindData = null): BaseObjectInterface
     {
         $cart = parent::createCollection(Cart::class);
 

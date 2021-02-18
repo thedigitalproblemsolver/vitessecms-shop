@@ -6,7 +6,8 @@ use VitesseCms\Shop\Models\Country;
 
 class CountryFactory
 {
-    public static function create(string $name, string $short, string $shortThree, bool $published = false): Country {
+    public static function create(string $name, string $short, string $shortThree, bool $published = false): Country
+    {
         return (new Country())
             ->set('name', $name, true)
             ->set('short', $short)

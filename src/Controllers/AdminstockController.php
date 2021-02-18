@@ -23,25 +23,25 @@ class AdminstockController extends AbstractAdminController
         ]);
 
         Item::setFindValue('availableForReselling', '1');
-        Item::addFindOrder('gender',-1);
+        Item::addFindOrder('gender', -1);
         Item::addFindOrder('name');
         $items = Item::findAll();
         foreach ($items as $item) :
             $totalItems = 0;
             $gender = ObjectFactory::create();
-            if($item->_('gender')) :
+            if ($item->_('gender')) :
                 $gender = Item::findById($item->_('gender'));
             endif;
-            if(\is_array($item->_('variations'))) :
+            if (\is_array($item->_('variations'))) :
                 foreach ($item->_('variations') as $variation) :
-                    if(
+                    if (
                         $variation['stockMinimal'] > 0
                         && isset($variation['stockMinimal'], $variation['stock'])
                         && $variation['stock'] < $variation['stockMinimal']
                     ) :
                         fputcsv($output, [
                             $item->_('name'),
-                            strtoupper($gender->_('name')).'_'.$variation['sku'],
+                            strtoupper($gender->_('name')) . '_' . $variation['sku'],
                             $item->_('printId'),
                             $variation['stock'],
                             $variation['stockMinimal'],
@@ -50,11 +50,11 @@ class AdminstockController extends AbstractAdminController
                         $totalItems += (int)$variation['stockMinimal'] - (int)$variation['stock'];
                     endif;
                 endforeach;
-            elseif($item->_('stock')) :
+            elseif ($item->_('stock')) :
                 die('stock nog verder uitwerken');
             endif;
 
-            if($totalItems > 0 ) :
+            if ($totalItems > 0) :
                 fputcsv($output, [
                     '',
                     '',

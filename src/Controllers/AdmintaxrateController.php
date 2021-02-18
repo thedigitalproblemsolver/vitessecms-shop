@@ -13,6 +13,6 @@ class AdmintaxrateController extends AbstractAdminController
         parent::onConstruct();
 
         $this->class = TaxRate::class;
-        $this->classForm  = TaxRateForm::class;
+        $this->classForm = TaxRateForm::class;
     }
 }

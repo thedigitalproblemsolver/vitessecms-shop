@@ -65,7 +65,8 @@ class RepositoryCollection implements RepositoryInterface, BaseRepositoriesInter
         OrderStateRepository $orderStateRepository,
         DatagroupRepository $datagroupRepository,
         DatafieldRepository $datafieldRepository
-    ) {
+    )
+    {
         $this->shippingType = $shippingTypeRepository;
         $this->item = $itemRepository;
         $this->order = $orderRepository;

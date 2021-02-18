@@ -23,10 +23,64 @@ class DiscountHelper extends AbstractInjectable
         $item->set('price_discountDisplay', PriceUtil::formatDisplay($item->_('price_discountSale')));
     }
 
+    /**
+     * @deprecated should use service
+     */
+    public static function calculateTotal(float $total)
+    {
+        /** @var Discount $discount */
+        $discount = DiscountHelper::getFromSession();
+        if ($discount) :
+            $total = self::calculateFinalPrice($discount, $total);
+        endif;
+
+        if (0 > $total) :
+            return 0.00;
+        endif;
+
+        return $total;
+    }
+
+    public static function getFromSession(?string $target = null)
+    {
+        if (SessionUtil::get('discountId')) :
+            if ($target):
+                Discount::setFindValue('target', $target);
+            endif;
+
+            return Discount::findById(SessionUtil::get('discountId'));
+        endif;
+
+        return false;
+    }
+
+    public static function getTypes(string $rootDir): array
+    {
+        $types = [];
+        $files = DirectoryUtil::getFilelist($rootDir . 'shop/src/discountTypes/');
+        foreach ($files as $path => $file) :
+            $name = FileUtil::getName($file);
+            $types[$name] = $name;
+        endforeach;
+
+        return $types;
+    }
+
+    public function setPriceDisplay(AbstractCollection $item, DiscountInterface $discount): void
+    {
+        $item->set(
+            'price_discountDisplay',
+            PriceUtil::formatDisplay(
+                DiscountHelper::calculateFinalPrice($discount, $item->_('price_sale'))
+            )
+        );
+    }
+
     public static function calculateFinalPrice(
         DiscountInterface $discount,
         float $price
-    ): float {
+    ): float
+    {
         $discountPrice = $price;
         switch ($discount->_('type')) {
             case 'currency':
@@ -42,16 +96,6 @@ class DiscountHelper extends AbstractInjectable
         endif;
 
         return $discountPrice;
-    }
-
-    public function setPriceDisplay(AbstractCollection $item, DiscountInterface $discount): void
-    {
-        $item->set(
-            'price_discountDisplay',
-            PriceUtil::formatDisplay(
-                DiscountHelper::calculateFinalPrice($discount, $item->_('price_sale'))
-            )
-        );
     }
 
     public function setPriceSale(AbstractCollection $item, DiscountInterface $discount): void
@@ -78,19 +122,6 @@ class DiscountHelper extends AbstractInjectable
         );
     }
 
-    public static function getFromSession(?string $target = null)
-    {
-        if (SessionUtil::get('discountId')) :
-            if ($target):
-                Discount::setFindValue('target', $target);
-            endif;
-
-            return Discount::findById(SessionUtil::get('discountId'));
-        endif;
-
-        return false;
-    }
-
     public function loadFromSession(?string $target = null): ?Discount
     {
         if ($this->session->get('discountId')) :
@@ -102,24 +133,6 @@ class DiscountHelper extends AbstractInjectable
         endif;
 
         return null;
-    }
-
-    /**
-     * @deprecated should use service
-     */
-    public static function calculateTotal(float $total)
-    {
-        /** @var Discount $discount */
-        $discount = DiscountHelper::getFromSession();
-        if ($discount) :
-            $total = self::calculateFinalPrice($discount, $total);
-        endif;
-
-        if (0 > $total) :
-            return 0.00;
-        endif;
-
-        return $total;
     }
 
     public function getAmountOfUsedOrders(Discount $discount): int
@@ -137,33 +150,21 @@ class DiscountHelper extends AbstractInjectable
     public function isValid(Discount $discount): bool
     {
         $isValid = true;
-        if(
+        if (
             !empty($discount->_('fromDate'))
-            && date_create_from_format('Y-m-d',$discount->_('fromDate')) > new \DateTime()
+            && date_create_from_format('Y-m-d', $discount->_('fromDate')) > new \DateTime()
         ) :
             $isValid = false;
         endif;
 
-        if(
+        if (
             $isValid
             && !empty($discount->_('tillDate'))
-            && date_create_from_format('Y-m-d',$discount->_('tillDate')) < new \DateTime()
+            && date_create_from_format('Y-m-d', $discount->_('tillDate')) < new \DateTime()
         ) :
             $isValid = false;
         endif;
 
         return $isValid;
-    }
-
-    public static function getTypes(string $rootDir) : array
-    {
-        $types = [];
-        $files = DirectoryUtil::getFilelist($rootDir . 'shop/src/discountTypes/');
-        foreach ($files as $path => $file) :
-            $name = FileUtil::getName($file);
-            $types[$name] = $name;
-        endforeach;
-
-        return $types;
     }
 }

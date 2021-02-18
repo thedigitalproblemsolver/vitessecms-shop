@@ -13,7 +13,7 @@ class Payment extends AbstractCollection
      */
     public $type;
 
-    public function getTypes() : array
+    public function getTypes(): array
     {
         $types = [];
         $files = DirectoryUtil::getFilelist($this->di->config->get('rootDir') . 'shop/src/paymentTypes/');
@@ -25,15 +25,15 @@ class Payment extends AbstractCollection
         return $types;
     }
 
-    public function getTypeClass(): string
-    {
-        return 'VitesseCms\Shop\PaymentTypes\\'.$this->type;
-    }
-
     public function doPayment(Order $order): void
     {
         $object = $this->getTypeClass();
         (new $object())->doPayment($order, $this);
+    }
+
+    public function getTypeClass(): string
+    {
+        return 'VitesseCms\Shop\PaymentTypes\\' . $this->type;
     }
 
     public function getTransactionState(
@@ -50,7 +50,7 @@ class Payment extends AbstractCollection
         /** @var OrderState $orderState */
         $orderState = OrderState::findFirst();
 
-        if(!$orderState && $orderStateParent !== null) :
+        if (!$orderState && $orderStateParent !== null) :
             $orderState = OrderState::findById($orderStateParent);
         endif;
 

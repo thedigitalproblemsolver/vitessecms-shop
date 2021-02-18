@@ -7,7 +7,8 @@ use VitesseCms\Shop\Helpers\ShippingHelper;
 
 class ShippingTypeFactory
 {
-    public static function createFromArray(array $data): AbstractShippingType {
+    public static function createFromArray(array $data): AbstractShippingType
+    {
         $class = ShippingHelper::getClass($data['type']);
         /** @var AbstractShippingType $shippingType */
         $shippingType = new $class();

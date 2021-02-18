@@ -25,10 +25,11 @@ class PaymentRepository extends AbstractCollectionRepository
     public function findAll(
         ?FindValueIterator $findValues = null,
         bool $hideUnpublished = true
-    ): PaymentIterator {
+    ): PaymentIterator
+    {
         Payment::setFindPublished($hideUnpublished);
 
-        if($findValues !== null) :
+        if ($findValues !== null) :
             while ($findValues->valid()) :
                 $findValue = $findValues->current();
                 Payment::setFindValue(

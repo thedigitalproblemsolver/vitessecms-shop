@@ -7,7 +7,7 @@ use VitesseCms\Shop\Models\Order;
 
 class OrderForm extends AbstractForm
 {
-    public function initialize( Order $item = null)
+    public function initialize(Order $item = null)
     {
         $this->addText('Orderid', 'orderId')
             ->addText('subTotal', 'subTotal')
@@ -15,7 +15,6 @@ class OrderForm extends AbstractForm
             ->addText('total', 'total')
             ->addText('shippingAmount', 'shippingAmount')
             ->addText('shippingTax', 'shippingTax')
-            ->addText('orderState', 'orderState')
-        ;
+            ->addText('orderState', 'orderState');
     }
 }

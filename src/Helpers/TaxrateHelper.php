@@ -9,9 +9,10 @@ class TaxrateHelper
     public static function calculateExVatPrice(
         TaxRateInterface $taxrate,
         float $price
-    ): float {
-        $taxBase = 100 +  $taxrate->_('taxrate');
+    ): float
+    {
+        $taxBase = 100 + $taxrate->_('taxrate');
 
-        return ( $price / $taxBase ) * 100;
+        return ($price / $taxBase) * 100;
     }
 }

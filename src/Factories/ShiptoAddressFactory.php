@@ -17,14 +17,14 @@ class ShiptoAddressFactory extends AbstractFactory implements FactoryInterface
     /**
      * @deprecated is nodig voor CBS import functie
      */
-    public static function create(BaseObjectInterface $bindData = null) : BaseObjectInterface
+    public static function create(BaseObjectInterface $bindData = null): BaseObjectInterface
     {
         $shiptoAddress = parent::createCollection(ShiptoAddress::class);
 
         return $shiptoAddress;
     }
 
-    public static function createFromDatagroup(SettingService $setting) : BaseObjectInterface
+    public static function createFromDatagroup(SettingService $setting): BaseObjectInterface
     {
         $shiptoAddress = parent::createCollection(Item::class);
         $shiptoAddress->set('datagroup', $setting->get('SHOP_DATAGROUP_SHOPPERSHIPTO'));
@@ -36,7 +36,8 @@ class ShiptoAddressFactory extends AbstractFactory implements FactoryInterface
         User $user,
         Datagroup $datagroup,
         DatafieldRepository $datafieldRepository
-    ): ShiptoAddress {
+    ): ShiptoAddress
+    {
         $shipToAddress = new ShiptoAddress();
         foreach ($datagroup->getDatafields() as $datafield):
             $datafieldModel = $datafieldRepository->getById($datafield['id']);
@@ -56,7 +57,8 @@ class ShiptoAddressFactory extends AbstractFactory implements FactoryInterface
         Item $item,
         Datagroup $datagroup,
         DatafieldRepository $datafieldRepository
-    ): ShiptoAddress {
+    ): ShiptoAddress
+    {
         $shipToAddress = new ShiptoAddress();
         foreach ($datagroup->getDatafields() as $datafield):
             $datafieldModel = $datafieldRepository->getById($datafield['id']);
@@ -74,7 +76,6 @@ class ShiptoAddressFactory extends AbstractFactory implements FactoryInterface
     public static function createFromOrderArray(array $shipToAddressArray): ShiptoAddress
     {
         return (new ShiptoAddress())
-            ->setCountryId($shipToAddressArray['country'])
-            ;
+            ->setCountryId($shipToAddressArray['country']);
     }
 }

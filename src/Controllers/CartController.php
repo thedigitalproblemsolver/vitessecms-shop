@@ -37,7 +37,7 @@ class CartController extends AbstractController
             $cart = $this->shop->cart->getCartFromSession();
             $cart->addProduct(
                 $this->request->getPost('itemId'),
-                (int) $this->request->getPost('quantity', 'int'),
+                (int)$this->request->getPost('quantity', 'int'),
                 $this->request->getPost('variation', 'string')
             );
             $cart->save();
@@ -45,7 +45,7 @@ class CartController extends AbstractController
             $logMessage = CartHelper::getLogNameFromItem(
                 Item::findById($this->request->getPost('itemId'))
             );
-            $logMessage .= ' x '.$this->request->getPost('quantity', 'int').' added to cart';
+            $logMessage .= ' x ' . $this->request->getPost('quantity', 'int') . ' added to cart';
             $this->log->write(
                 new ObjectID($this->request->getPost('itemId')),
                 Item::class,
@@ -54,9 +54,9 @@ class CartController extends AbstractController
 
             $this->flash->setSucces('SHOP_CART_PRODUCT_ADDED');
 
-            $successFunction = "ui.fill('.shopcart-content','".$cart->getTotalText()."')";
+            $successFunction = "ui.fill('.shopcart-content','" . $cart->getTotalText() . "')";
             if ($this->setting->has('FACEBOOK_PIXEL_ID')) :
-                $successFunction .= ";facebook.addToCart('".$this->request->getPost('itemId')."')";
+                $successFunction .= ";facebook.addToCart('" . $this->request->getPost('itemId') . "')";
             endif;
             $this->redirect(
                 null,
@@ -76,12 +76,12 @@ class CartController extends AbstractController
             $cart->removeProduct($this->request->getPost('cartItemId'));
             $cart->save();
 
-            $logMessage = CartHelper::getLogNameFromItem($item).' x '.$item->_('quantity').' removed from cart';
+            $logMessage = CartHelper::getLogNameFromItem($item) . ' x ' . $item->_('quantity') . ' removed from cart';
             $this->log->write($item->getId(), Item::class, $logMessage);
 
             $this->flash->setSucces('SHOP_CART_PRODUCT_REMOVED');
             $this->redirect(null,
-                ['successFunction' => "ui.remove('product-row-".$this->request->getPost('cartItemId')."');ui.fill('.shopcart-content','".$this->language->parsePlaceholders($cart->getTotalText())."')"]);
+                ['successFunction' => "ui.remove('product-row-" . $this->request->getPost('cartItemId') . "');ui.fill('.shopcart-content','" . $this->language->parsePlaceholders($cart->getTotalText()) . "')"]);
         else :
             $this->redirect();
         endif;
@@ -95,20 +95,20 @@ class CartController extends AbstractController
 
             $cart->changeQuantity(
                 $this->request->getPost('cartItemId'),
-                (int) $this->request->getPost('quantity', 'int')
+                (int)$this->request->getPost('quantity', 'int')
             );
             $cart->save();
 
             $logMessage = CartHelper::getLogNameFromItem($item);
-            $logMessage .= ' cart-quantity changed from '.
-                $item->_('quantity').
-                ' to '.
+            $logMessage .= ' cart-quantity changed from ' .
+                $item->_('quantity') .
+                ' to ' .
                 $this->request->getPost('quantity', 'int');
             $this->log->write($item->getId(), Item::class, $logMessage);
 
             $this->flash->setSucces('SHOP_CART_QUANTITY_ADJUSTED');
             $this->redirect(null,
-                ['successFunction' => "ui.fill('.shopcart-content','".$this->language->parsePlaceholders($cart->getTotalText())."');refresh(false)"]);
+                ['successFunction' => "ui.fill('.shopcart-content','" . $this->language->parsePlaceholders($cart->getTotalText()) . "');refresh(false)"]);
         else :
             $this->redirect();
         endif;
@@ -136,7 +136,7 @@ class CartController extends AbstractController
             $this->log->write(
                 $item->getId(),
                 Item::class,
-                CartHelper::getLogNameFromItem($item).' cart-packing changed'
+                CartHelper::getLogNameFromItem($item) . ' cart-packing changed'
             );
 
             $this->flash->setSucces('SHOP_PACKING_TYPE_ADJUSTED');

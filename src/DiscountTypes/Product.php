@@ -23,7 +23,6 @@ class Product extends AbstractDiscountType
                             'percentage' => 'Percentage'
                         ])
                     )
-            )
-        ;
+            );
     }
 }

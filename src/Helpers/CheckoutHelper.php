@@ -11,6 +11,30 @@ use VitesseCms\User\Models\User;
 
 class CheckoutHelper extends AbstractInjectable
 {
+    /**
+     * @param User $user
+     *
+     * @return array|bool|Item|User|null|\Phalcon\Mvc\CollectionInterface
+     * @deprecated should use service
+     */
+    public static function getShiptoAddress(User $user)
+    {
+        $session = Di::getDefault()->get('session');
+        $shiptoAddresses = null;
+
+        if (
+            $session->get('shiptoAddress') !== 'invoice'
+            && $session->get('shiptoAddress') !== null
+            && MongoUtil::isObjectId($session->get('shiptoAddress'))
+        ) :
+            $shiptoAddresses = Item::findById($session->get('shiptoAddress'));
+        else :
+            $shiptoAddresses = User::findById($user->getId());
+        endif;
+
+        return $shiptoAddresses;
+    }
+
     public function getStep(int $step = 1): Item
     {
         Item::setFindValue('datagroup', $this->setting->get('SHOP_DATAGROUP_CHECKOUT'));
@@ -61,29 +85,5 @@ class CheckoutHelper extends AbstractInjectable
         endforeach;
 
         return false;
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return array|bool|Item|User|null|\Phalcon\Mvc\CollectionInterface
-     * @deprecated should use service
-     */
-    public static function getShiptoAddress(User $user)
-    {
-        $session = Di::getDefault()->get('session');
-        $shiptoAddresses = null;
-
-        if (
-            $session->get('shiptoAddress') !== 'invoice'
-            && $session->get('shiptoAddress') !== null
-            && MongoUtil::isObjectId($session->get('shiptoAddress'))
-        ) :
-            $shiptoAddresses = Item::findById($session->get('shiptoAddress'));
-        else :
-            $shiptoAddresses = User::findById($user->getId());
-        endif;
-
-        return $shiptoAddresses;
     }
 }

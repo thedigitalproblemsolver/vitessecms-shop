@@ -33,13 +33,6 @@ class Cart extends AbstractCollection
      */
     public $productsTotal;
 
-    public function onConstruct()
-    {
-        if (!\is_object($this->products)) :
-            $this->products = ObjectFactory::create();
-        endif;
-    }
-
     /**
      * @deprecated should be used as a service
      */
@@ -78,9 +71,16 @@ class Cart extends AbstractCollection
         return $cart;
     }
 
+    public function onConstruct()
+    {
+        if (!\is_object($this->products)) :
+            $this->products = ObjectFactory::create();
+        endif;
+    }
+
     public function addProduct(string $itemId, int $quantity, string $variation = null): void
     {
-        $cartItemId = $itemId.$variation;
+        $cartItemId = $itemId . $variation;
 
         $quantityToCheck = $quantity;
         if (isset($this->products->$cartItemId['quantity'])) :
@@ -92,22 +92,14 @@ class Cart extends AbstractCollection
         $this->calculateTotalProducts();
     }
 
-    public function removeProduct(string $cartItemId): void
+    public function setProduct(string $cartItemId, string $itemId, string $variation = null): void
     {
-        if (isset($this->products->$cartItemId)) :
-            unset($this->products->$cartItemId);
-            $this->calculateTotalProducts();
-        endif;
-    }
-
-    public function changeQuantity(string $cartItemId, Int $quantity): void
-    {
-        if (isset($this->products->$cartItemId)) :
-            if ($quantity < 1) :
-                $quantity = 1;
-            endif;
-            $this->products->$cartItemId['quantity'] = $this->checkStock($cartItemId, $quantity);
-            $this->calculateTotalProducts();
+        if (!isset($this->products->$cartItemId)) :
+            $this->products->$cartItemId = [];
+            $this->products->$cartItemId['quantity'] = 0;
+            $this->products->$cartItemId['itemId'] = $itemId;
+            $this->products->$cartItemId['variation'] = $variation;
+            $this->products->$cartItemId['packing'] = null;
         endif;
     }
 
@@ -153,6 +145,34 @@ class Cart extends AbstractCollection
         return $quantity;
     }
 
+    public function calculateTotalProducts(): void
+    {
+        $total = 0;
+        foreach ($this->products as $cartItemId => $product) :
+            $total += $product['quantity'];
+        endforeach;
+        $this->productsTotal = $total;
+    }
+
+    public function removeProduct(string $cartItemId): void
+    {
+        if (isset($this->products->$cartItemId)) :
+            unset($this->products->$cartItemId);
+            $this->calculateTotalProducts();
+        endif;
+    }
+
+    public function changeQuantity(string $cartItemId, int $quantity): void
+    {
+        if (isset($this->products->$cartItemId)) :
+            if ($quantity < 1) :
+                $quantity = 1;
+            endif;
+            $this->products->$cartItemId['quantity'] = $this->checkStock($cartItemId, $quantity);
+            $this->calculateTotalProducts();
+        endif;
+    }
+
     public function changePacking(string $cartItemId, ?string $packingId = null): void
     {
         if (isset($this->products->$cartItemId)) :
@@ -160,15 +180,15 @@ class Cart extends AbstractCollection
         endif;
     }
 
-    public function setProduct(string $cartItemId, string $itemId, string $variation = null): void
+    public function getTotalText(): string
     {
-        if (!isset($this->products->$cartItemId)) :
-            $this->products->$cartItemId = [];
-            $this->products->$cartItemId['quantity'] = 0;
-            $this->products->$cartItemId['itemId'] = $itemId;
-            $this->products->$cartItemId['variation'] = $variation;
-            $this->products->$cartItemId['packing'] = null;
+        if ($this->_('productsTotal') === 1) :
+            return '1 %SHOP_PRODUCT%';
+        elseif ($this->_('productsTotal') > 1) :
+            return $this->_('productsTotal') . ' %SHOP_PRODUCTS%';
         endif;
+
+        return '%SHOP_CART_EMPTY%';
     }
 
     public function _(string $key, string $languageShort = null)
@@ -181,17 +201,6 @@ class Cart extends AbstractCollection
         endif;
 
         return $return;
-    }
-
-    public function getTotalText(): string
-    {
-        if ($this->_('productsTotal') === 1) :
-            return '1 %SHOP_PRODUCT%';
-        elseif ($this->_('productsTotal') > 1) :
-            return $this->_('productsTotal').' %SHOP_PRODUCTS%';
-        endif;
-
-        return '%SHOP_CART_EMPTY%';
     }
 
     public function getItems(bool $parseBeforeMainContent = false): array
@@ -276,15 +285,6 @@ class Cart extends AbstractCollection
         CookieUtil::delete('cartId');
         SessionUtil::remove('cartId');
         SessionUtil::remove('discountId');
-    }
-
-    public function calculateTotalProducts(): void
-    {
-        $total = 0;
-        foreach ($this->products as $cartItemId => $product) :
-            $total += $product['quantity'];
-        endforeach;
-        $this->productsTotal = $total;
     }
 
     public function hasProducts(): bool

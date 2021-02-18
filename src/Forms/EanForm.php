@@ -36,24 +36,23 @@ class EanForm extends AbstractFormWithRepository
 
             $html = Tag::linkTo([
                 'action' => $selectedItem->_('slug'),
-                'text'   => 'View item',
+                'text' => 'View item',
                 'target' => '_new'
             ]);
         endif;
 
-        $this->addText('%CORE_NAME%', 'name',(new Attributes())->setRequired())
+        $this->addText('%CORE_NAME%', 'name', (new Attributes())->setRequired())
             ->addDropdown(
-            'Parent item',
-            'parentItem',
+                'Parent item',
+                'parentItem',
                 (new Attributes())
                     ->setInputClass('select2-ajax')
                     ->setDataUrl('/Admin/shop/adminean/search/')
                     ->setOptions(ElementHelper::arrayToSelectOptions($options)
-            ))
+                    ))
             ->addHtml($html)
             ->addText('SKU', 'sku', (new Attributes())->setRequired())
-            ->addSubmitButton('%CORE_SAVE%')
-        ;
+            ->addSubmitButton('%CORE_SAVE%');
 
         return $this;
     }

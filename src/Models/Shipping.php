@@ -16,7 +16,7 @@ class Shipping extends AbstractShippingType
     {
         parent::afterFetch();
 
-        if($this->_('type')) :
+        if ($this->_('type')) :
             $object = ShippingHelper::getClass($this->_('type'));
             $this->engine = new $object();
             $this->engine->set('shipping', $this);

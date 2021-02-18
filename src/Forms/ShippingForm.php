@@ -11,15 +11,15 @@ use VitesseCms\Shop\Models\Shipping;
 
 class ShippingForm extends AbstractForm
 {
-    public function initialize( Shipping $item = null)
+    public function initialize(Shipping $item = null)
     {
-        if( $item === null) :
+        if ($item === null) :
             $item = new Shipping();
         endif;
 
-        $this->addText('%CORE_NAME%', 'name',(new Attributes())->setRequired()->setMultilang());
+        $this->addText('%CORE_NAME%', 'name', (new Attributes())->setRequired()->setMultilang());
 
-        if( !$item->_('type') ) :
+        if (!$item->_('type')) :
             $this->addDropdown(
                 '%ADMIN_TYPE%',
                 'type',
@@ -28,8 +28,8 @@ class ShippingForm extends AbstractForm
                         $this->configuration->getRootDir(),
                         $this->configuration->getAccount()
                     )
-                )
-            ));
+                    )
+                    ));
         else :
             $object = ShippingHelper::getClass($item->_('type'));
             /** @var AbstractCollection $item */

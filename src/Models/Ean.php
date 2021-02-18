@@ -13,7 +13,7 @@ class Ean extends AbstractCollection
 
     public function getParentItem(): ?string
     {
-        if(empty($this->parentItem)) :
+        if (empty($this->parentItem)) :
             return null;
         endif;
 

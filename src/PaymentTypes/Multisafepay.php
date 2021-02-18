@@ -92,6 +92,16 @@ class Multisafepay extends AbstractPaymentType
         die();
     }
 
+    protected function buildItemlist(array $items): string
+    {
+        $item_list = '';
+        foreach ($items as $item) :
+            $item_list .= $item->_('quantity') . " x " . CartHelper::getLogNameFromItem($item) . "\n";
+        endforeach;
+
+        return $item_list;
+    }
+
     public function getTransactionState(int $transactionId, Payment $payment): string
     {
         $client = new Client();
@@ -123,15 +133,5 @@ class Multisafepay extends AbstractPaymentType
             default:
                 return PaymentEnum::PENDING;
         endswitch;
-    }
-
-    protected function buildItemlist(array $items): string
-    {
-        $item_list = '';
-        foreach ($items as $item) :
-            $item_list .= $item->_('quantity') . " x " . CartHelper::getLogNameFromItem($item) . "\n";
-        endforeach;
-
-        return $item_list;
     }
 }

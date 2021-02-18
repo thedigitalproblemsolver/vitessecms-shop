@@ -23,7 +23,7 @@ class OrderController extends AbstractController implements RepositoriesInterfac
         if ($this->user->isLoggedIn()):
             $cart = Cart::getCart();
             $shopper = $this->repositories->shopper->getByUserid((string)$this->user->getId());
-            if($shopper === null):
+            if ($shopper === null):
                 die('Shopper is unknown');
             endif;
 
@@ -69,35 +69,35 @@ class OrderController extends AbstractController implements RepositoriesInterfac
             $order->setShopper($shopper);
             $order->setShiptoAddress($shiptoAddresses);
             $order->setItems($cart->getItems(true));
-            $order->setIpAddress( $this->request->getClientAddress());
+            $order->setIpAddress($this->request->getClientAddress());
             $order->setShippingType($shippingType);
             $order->setShippingAmount($shippingType->calculateOrderAmount($order));
-            $order->setShippingAmountDisplay( PriceUtil::formatDisplay(
-                (float) $order->_('shippingAmount'))
+            $order->setShippingAmountDisplay(PriceUtil::formatDisplay(
+                (float)$order->_('shippingAmount'))
             );
             $order->setShippingTax($shippingType->calculateOrderVat($order));
             $order->setShippingTaxDisplay(PriceUtil::formatDisplay(
-                (float) $order->_('shippingTax'))
+                (float)$order->_('shippingTax'))
             );
             $order->setPaymentType($paymentType);
             $order->setAffiliateId($this->cookies->get('affiliate-source'));
             $order->setCurrency($this->setting->get('SHOP_CURRENCY_BASE'));
             $order->setOrderMessage($this->session->get('orderMessage'));
             OrderHelper::calculateTotals($order);
-            if($this->session->has('discountId')) :
+            if ($this->session->has('discountId')) :
                 $discount = $this->repositories->discount->getById($this->session->get('discountId'));
-                if($discount !== null) :
+                if ($discount !== null) :
                     $order->setDiscount($discount);
                     if (DiscountEnum::TARGET_ORDER === $discount->getTarget()) :
                         $order->setTotalDiscount($discount->getAmount());
-                        $order->setTotalDiscountDisplay( PriceUtil::formatDisplay(
-                            (float) $order->_('totalDiscount')
+                        $order->setTotalDiscountDisplay(PriceUtil::formatDisplay(
+                            (float)$order->_('totalDiscount')
                         ));
                         $order->setTotal(DiscountHelper::calculateTotal(
-                            (float) $order->_('total'))
+                            (float)$order->_('total'))
                         );
                         $order->setTotalDisplay(PriceUtil::formatDisplay(
-                            (float) $order->_('total'))
+                            (float)$order->_('total'))
                         );
                     endif;
                 endif;
@@ -114,7 +114,7 @@ class OrderController extends AbstractController implements RepositoriesInterfac
             $this->log->write(
                 $order->getId(),
                 Order::class,
-                'Order '.$order->_('orderId').' created'
+                'Order ' . $order->_('orderId') . ' created'
             );
 
             $paymentType->doPayment($order, $paymentType);
@@ -127,7 +127,7 @@ class OrderController extends AbstractController implements RepositoriesInterfac
     public function viewOrderAction(): void
     {
         $displayError = true;
-        if(
+        if (
             $this->user->isLoggedIn()
             && $this->dispatcher->getParam(0)
         ) :
@@ -135,25 +135,26 @@ class OrderController extends AbstractController implements RepositoriesInterfac
                 $this->dispatcher->getParam(0),
                 $this->user->getId()
             );
-            if($order !== null) :
-                $this->view->setVar('content',$this->view->renderTemplate(
+            if ($order !== null) :
+                $this->view->setVar('content', $this->view->renderTemplate(
                     'order',
                     'partials/shop',
-                    [ 'orderItem' => $order]
+                    ['orderItem' => $order]
                 ));
                 $displayError = false;
                 $this->prepareView();
             endif;
         endif;
 
-        if($displayError) :
+        if ($displayError) :
             $this->flash->setError('SHOP_ORDER_NOT_DISPLAYED');
             $this->redirect($this->url->getBaseUri());
         endif;
     }
 
-    public function storeOrderMessageAction(): void {
-        if($this->request->isAjax()) {
+    public function storeOrderMessageAction(): void
+    {
+        if ($this->request->isAjax()) {
             $this->session->set('orderMessage', $this->request->get('orderMessage'));
         }
         $this->disableView();

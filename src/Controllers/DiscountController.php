@@ -34,7 +34,7 @@ class DiscountController extends AbstractController
                     $this->flash->setError('SHOP_DISCOUNT_CODE_UNKNOWN_OR_USED');
                 endif;
 
-                if($this->request->isGet() && $this->request->get('code')) :
+                if ($this->request->isGet() && $this->request->get('code')) :
                     $redirectUrl = $this->shop->checkout->getStep()->_('slug');
                 endif;
             else :

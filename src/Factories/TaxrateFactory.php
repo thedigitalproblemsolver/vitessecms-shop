@@ -6,7 +6,8 @@ use VitesseCms\Shop\Models\TaxRate;
 
 class TaxrateFactory
 {
-    public static function create(string $name, float $taxrate, bool $published = false): TaxRate {
+    public static function create(string $name, float $taxrate, bool $published = false): TaxRate
+    {
         return (new TaxRate())
             ->set('name', $name, true)
             ->set('taxrate', $taxrate)

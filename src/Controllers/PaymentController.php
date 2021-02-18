@@ -14,11 +14,11 @@ class PaymentController extends AbstractController
     {
         $doRedirect = true;
 
-        if($this->dispatcher->getParam(0) !== null ) :
+        if ($this->dispatcher->getParam(0) !== null) :
             Order::setFindPublished(false);
             /** @var Order $order */
             $order = Order::findById($this->dispatcher->getParam(0));
-            if($order) :
+            if ($order) :
                 $paymentType = $this->processPayment($order);
                 $doRedirect = $paymentType->isProcessRedirect();
             else :
@@ -26,52 +26,11 @@ class PaymentController extends AbstractController
             endif;
         endif;
 
-        if($doRedirect) :
+        if ($doRedirect) :
             $this->redirect($this->shop->checkout->getStep(5)->_('slug'));
         else :
             $this->disableView();
         endif;
-    }
-
-    public function redirectAction(): void
-    {
-        if($this->dispatcher->getParam(0) !== null ) :
-            Order::setFindPublished(false);
-            /** @var Order $order */
-            $order = Order::findById($this->dispatcher->getParam(0));
-            if($order) :
-                $this->processPayment($order);
-                $this->redirect($this->shop->checkout->getStep(5)->_('slug').'?v='.time());
-            else :
-                $this->flash->setError('SHOP_ORDER_NOT_FOUND');
-                $this->redirect('/');
-            endif;
-        endif;
-    }
-
-    public function cancelAction(): void
-    {
-        $hasErrors = true;
-
-        if($this->dispatcher->getParam(0) !== null ) :
-            Order::setFindPublished(false);
-            $order = Order::findById($this->dispatcher->getParam(0));
-            if($order) :
-                OrderState::setFindValue('short', 'X');
-                $order->set('orderState', OrderState::findFirst());
-                $order->set('published', false);
-                $order->save();
-                $hasErrors = false;
-
-                $this->flash->setSucces('SHOP_ORDER_CANCELLED');
-            endif;
-        endif;
-
-        if($hasErrors) :
-            $this->flash->setError('SHOP_ORDER_NOT_FOUND');
-        endif;
-
-        $this->redirect($this->shop->checkout->getStep()->_('slug'));
     }
 
     protected function processPayment(Order $order): Payment
@@ -83,7 +42,7 @@ class PaymentController extends AbstractController
         $paymentType->prepareOrder($order);
         $orderState = $paymentType->getTransactionState(
             $order->_('paymentType')['transactionId'],
-            (string) $order->_('orderState')['_id']
+            (string)$order->_('orderState')['_id']
         );
         OrderHelper::setOrderState($order, $orderState);
         $order->set('published', true);
@@ -99,7 +58,7 @@ class PaymentController extends AbstractController
         );
         $this->view->set('shopOrder', $shopOrder);
 
-        if($orderState->_('messageType')) :
+        if ($orderState->_('messageType')) :
             $messageType = $orderState->_('messageType');
             $this->flash->$messageType($orderState->_('messageText'));
         endif;
@@ -107,9 +66,50 @@ class PaymentController extends AbstractController
         $this->log->write(
             $order->getId(),
             Order::class,
-            'Order '.$order->_('orderId').' processed with orderstate '.$orderState->_('calling_name')
+            'Order ' . $order->_('orderId') . ' processed with orderstate ' . $orderState->_('calling_name')
         );
 
         return $paymentType;
+    }
+
+    public function redirectAction(): void
+    {
+        if ($this->dispatcher->getParam(0) !== null) :
+            Order::setFindPublished(false);
+            /** @var Order $order */
+            $order = Order::findById($this->dispatcher->getParam(0));
+            if ($order) :
+                $this->processPayment($order);
+                $this->redirect($this->shop->checkout->getStep(5)->_('slug') . '?v=' . time());
+            else :
+                $this->flash->setError('SHOP_ORDER_NOT_FOUND');
+                $this->redirect('/');
+            endif;
+        endif;
+    }
+
+    public function cancelAction(): void
+    {
+        $hasErrors = true;
+
+        if ($this->dispatcher->getParam(0) !== null) :
+            Order::setFindPublished(false);
+            $order = Order::findById($this->dispatcher->getParam(0));
+            if ($order) :
+                OrderState::setFindValue('short', 'X');
+                $order->set('orderState', OrderState::findFirst());
+                $order->set('published', false);
+                $order->save();
+                $hasErrors = false;
+
+                $this->flash->setSucces('SHOP_ORDER_CANCELLED');
+            endif;
+        endif;
+
+        if ($hasErrors) :
+            $this->flash->setError('SHOP_ORDER_NOT_FOUND');
+        endif;
+
+        $this->redirect($this->shop->checkout->getStep()->_('slug'));
     }
 }

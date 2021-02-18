@@ -22,14 +22,13 @@ abstract class AbstractShippingType extends AbstractCollection implements
     ShippingTypeInterface
 {
     /**
-     * @var Shipping
-     */
-    protected $shipping;
-
-    /**
      * @var string
      */
     public $barcode;
+    /**
+     * @var Shipping
+     */
+    protected $shipping;
 
     public function buildAdminForm(ShippingForm $form)
     {
@@ -41,19 +40,19 @@ abstract class AbstractShippingType extends AbstractCollection implements
             isset($order->_('orderState')['printShippingLabel'])
             && $order->_('orderState')['printShippingLabel'] === '1'
         ) :
-            $link = 'admin/shop/adminshipping/shippingLabel/'.$order->getId();
+            $link = 'admin/shop/adminshipping/shippingLabel/' . $order->getId();
 
             return Tag::linkTo([
-                    'action' => $link.'?packageType='.ShippingEnum::ENVELOPE,
-                    'text'   => '&nbsp;envelope label',
-                    'class'  => 'fa fa-envelope',
+                    'action' => $link . '?packageType=' . ShippingEnum::ENVELOPE,
+                    'text' => '&nbsp;envelope label',
+                    'class' => 'fa fa-envelope',
                     'target' => '_blank',
-                ]).
-                '<br />'.
+                ]) .
+                '<br />' .
                 Tag::linkTo([
-                        'action' => $link.'?packageType='.ShippingEnum::PACKAGE,
-                        'text'   => '&nbsp;package label',
-                        'class'  => 'fa fa-gift',
+                        'action' => $link . '?packageType=' . ShippingEnum::PACKAGE,
+                        'text' => '&nbsp;package label',
+                        'class' => 'fa fa-gift',
                         'target' => '_blank',
                     ]
                 );
@@ -129,6 +128,6 @@ abstract class AbstractShippingType extends AbstractCollection implements
 
     public function getBarcode(): string
     {
-        return $this->barcode??'';
+        return $this->barcode ?? '';
     }
 }

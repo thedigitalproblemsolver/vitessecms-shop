@@ -43,7 +43,7 @@ class AdminorderControllerListener
                 $barcodeForm->addText('Barcode', 'barcode');
                 $controller->addRenderParam('barcodeForm',
                     $barcodeForm->renderForm(
-                        'admin/shop/adminshipping/setBarcode/'.$order->getId(),
+                        'admin/shop/adminshipping/setBarcode/' . $order->getId(),
                         'barcodeForm',
                         true
                     )
@@ -57,19 +57,19 @@ class AdminorderControllerListener
         $return = '';
         if (PermissionUtils::check(
             $controller->user,
-            $controller->router->getModulePrefix().'shop',
+            $controller->router->getModulePrefix() . 'shop',
             'adminorder',
             'sendemail'
         )) :
             $return .= Tag::linkTo([
-                'action' => '/Admin/shop/adminorder/sendemail/'.$order->getId(),
-                'class'  => 'fa fa-envelope',
+                'action' => '/Admin/shop/adminorder/sendemail/' . $order->getId(),
+                'class' => 'fa fa-envelope',
             ]);
         endif;
 
         if (PermissionUtils::check(
             $controller->user,
-            $controller->router->getModulePrefix().'shop',
+            $controller->router->getModulePrefix() . 'shop',
             'adminorder',
             'print'
         )) :
@@ -80,7 +80,7 @@ class AdminorderControllerListener
 
         if (PermissionUtils::check(
             $controller->user,
-            $controller->router->getModulePrefix().'shop',
+            $controller->router->getModulePrefix() . 'shop',
             'adminorder',
             'changeOrderState'
         )) :
@@ -94,7 +94,7 @@ class AdminorderControllerListener
             $orderStateForm = new OrderOrderStateForm($tmpOrderState);
 
             $form = $orderStateForm->renderForm(
-                'shop/adminorder/changeOrderState/'.$order->getId(),
+                'shop/adminorder/changeOrderState/' . $order->getId(),
                 'changeOrderState'
             );
             $orderStateForm = $form;
@@ -107,7 +107,7 @@ class AdminorderControllerListener
             'orderAdminListItem',
             'admin/',
             [
-                'order'          => $order,
+                'order' => $order,
                 'orderStateForm' => $orderStateForm,
             ]
         ));
@@ -128,7 +128,7 @@ class AdminorderControllerListener
                 )
             );
 
-        if($form->setting !== null && $form->setting->has('SHOP_DATAGROUP_AFFILIATE')) :
+        if ($form->setting !== null && $form->setting->has('SHOP_DATAGROUP_AFFILIATE')) :
             $form->addDropdown(
                 'Affiliate property',
                 'filter[affiliateId]',

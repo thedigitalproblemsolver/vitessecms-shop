@@ -35,56 +35,6 @@ class OrderHelper
         return $order;
     }
 
-    public static function setOrderState(Order $order, OrderState $orderState): void
-    {
-        $order->set('orderState', $orderState);
-
-        if (\is_array($order->_('shopper'))) :
-            $email = $order->_('shopper')['user']['email'];
-        else :
-            $email = $order->_('shopper')->_('email');
-        endif;
-
-        if (!empty($orderState->_('addToNewsletters'))) :
-            $newsletters = $orderState->_('addToNewsletters');
-            (new Component())->content->addEventInput('orderId', (string)$order->getId());
-            foreach ($newsletters as $newsletterId) :
-                $newsletter = Newsletter::findById($newsletterId);
-                if ($newsletter) :
-                    NewsletterHelper::addMemberByEmail($newsletter, $email);
-                endif;
-            endforeach;
-        endif;
-
-        if (!empty($orderState->_('unsubscribeFromNewsletters'))) :
-            $newsletters = $orderState->_('unsubscribeFromNewsletters');
-            foreach ($newsletters as $newsletterId) :
-                $newsletter = Newsletter::findById($newsletterId);
-                if ($newsletter) :
-                    NewsletterHelper::unsubscribeMemberByEmail($newsletter, $email);
-                endif;
-            endforeach;
-        endif;
-
-        if (!empty($orderState->_('removeFromNewsletters'))) :
-            $newsletters = $orderState->_('removeFromNewsletters');
-            foreach ($newsletters as $newsletterId) :
-                $newsletter = Newsletter::findById($newsletterId);
-                if ($newsletter) :
-                    NewsletterHelper::removeMemberByEmail($newsletter, $email);
-                endif;
-            endforeach;
-        endif;
-
-        if ($orderState->_('clearCart')) :
-            $cart = new Cart();
-            $cart->clear();
-            $cart->save();
-        endif;
-
-        OrderHelper::parseStockByOrderState($order);
-    }
-
     public static function parseStockByOrderState(Order $order): void
     {
         if ($order->_('orderState')->_('stockAction')) :
@@ -141,6 +91,56 @@ class OrderHelper
                 endif;
             endforeach;
         endif;
+    }
+
+    public static function setOrderState(Order $order, OrderState $orderState): void
+    {
+        $order->set('orderState', $orderState);
+
+        if (\is_array($order->_('shopper'))) :
+            $email = $order->_('shopper')['user']['email'];
+        else :
+            $email = $order->_('shopper')->_('email');
+        endif;
+
+        if (!empty($orderState->_('addToNewsletters'))) :
+            $newsletters = $orderState->_('addToNewsletters');
+            (new Component())->content->addEventInput('orderId', (string)$order->getId());
+            foreach ($newsletters as $newsletterId) :
+                $newsletter = Newsletter::findById($newsletterId);
+                if ($newsletter) :
+                    NewsletterHelper::addMemberByEmail($newsletter, $email);
+                endif;
+            endforeach;
+        endif;
+
+        if (!empty($orderState->_('unsubscribeFromNewsletters'))) :
+            $newsletters = $orderState->_('unsubscribeFromNewsletters');
+            foreach ($newsletters as $newsletterId) :
+                $newsletter = Newsletter::findById($newsletterId);
+                if ($newsletter) :
+                    NewsletterHelper::unsubscribeMemberByEmail($newsletter, $email);
+                endif;
+            endforeach;
+        endif;
+
+        if (!empty($orderState->_('removeFromNewsletters'))) :
+            $newsletters = $orderState->_('removeFromNewsletters');
+            foreach ($newsletters as $newsletterId) :
+                $newsletter = Newsletter::findById($newsletterId);
+                if ($newsletter) :
+                    NewsletterHelper::removeMemberByEmail($newsletter, $email);
+                endif;
+            endforeach;
+        endif;
+
+        if ($orderState->_('clearCart')) :
+            $cart = new Cart();
+            $cart->clear();
+            $cart->save();
+        endif;
+
+        OrderHelper::parseStockByOrderState($order);
     }
 
     public static function calculateTotals(Order $order): void
@@ -221,6 +221,11 @@ class OrderHelper
         );
     }
 
+    public static function getNewOrdernumber(): int
+    {
+        return self::getLatestOrdernumber() + 1;
+    }
+
     public static function getLatestOrdernumber(): int
     {
         Order::setFindPublished(false);
@@ -232,10 +237,5 @@ class OrderHelper
         endif;
 
         return random_int(1000, 1500);
-    }
-
-    public static function getNewOrdernumber(): int
-    {
-        return self::getLatestOrdernumber() + 1;
     }
 }

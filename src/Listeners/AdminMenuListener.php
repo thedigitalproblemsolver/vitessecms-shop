@@ -21,7 +21,7 @@ class AdminMenuListener
                 /** @var Datagroup $contentGroup */
                 foreach ($webshopProductGroups->getDatagroups() as $webshopProductGroup) :
                     $children->addChild($webshopProductGroup->_('name'),
-                        'admin/content/adminitem/adminList/?filter[datagroup]='.$webshopProductGroup->getId());
+                        'admin/content/adminitem/adminList/?filter[datagroup]=' . $webshopProductGroup->getId());
                 endforeach;
                 $children->addLine();
             endif;
@@ -29,10 +29,10 @@ class AdminMenuListener
             $children->addChild('Orders', 'admin/shop/adminorder/adminList');
             $children->addChild('OrderStates', 'admin/shop/adminorderstate/adminList');
 
-            if($webshopContentGroups !== null) :
+            if ($webshopContentGroups !== null) :
                 $children->addLine();
                 foreach ($webshopContentGroups->getDatagroups() as $webshopContentGroup) :
-                    $children->addChild($webshopContentGroup->_('name'), 'admin/content/adminitem/adminList/?filter[datagroup]='.$webshopContentGroup->getId());
+                    $children->addChild($webshopContentGroup->_('name'), 'admin/content/adminitem/adminList/?filter[datagroup]=' . $webshopContentGroup->getId());
                 endforeach;
             endif;
 
@@ -44,8 +44,8 @@ class AdminMenuListener
             $children->addChild('Tax rates', 'admin/shop/admintaxrate/adminList');
 
             $children->addLine();
-            $children->addChild('Settings', 'admin/setting/adminsetting/adminList?filter[name.'.
-                Di::getDefault()->get('configuration')->getLanguageShort().
+            $children->addChild('Settings', 'admin/setting/adminsetting/adminList?filter[name.' .
+                Di::getDefault()->get('configuration')->getLanguageShort() .
                 ']=shop');
             $children->addChild('EAN management', 'admin/shop/adminean/adminList');
             $children->addChild('Stock check', 'admin/shop/adminstock/check');

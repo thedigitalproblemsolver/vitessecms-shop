@@ -123,6 +123,13 @@ class Order extends AbstractCollection
         return (float)$this->_('total');
     }
 
+    public function setTotal(float $total): Order
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
     public function getShippingType(): AbstractShippingType
     {
         if (is_array($this->shippingType)):
@@ -130,6 +137,13 @@ class Order extends AbstractCollection
         endif;
 
         return $this->shippingType;
+    }
+
+    public function setShippingType(AbstractShippingType $shippingType): Order
+    {
+        $this->shippingType = $shippingType;
+
+        return $this;
     }
 
     public function getAffiliateId(): ?string
@@ -141,23 +155,16 @@ class Order extends AbstractCollection
         return $this->affiliateId;
     }
 
-    public function setOrderState(OrderState $orderState): Order
-    {
-        $this->orderState = $orderState;
-
-        return $this;
-    }
-
-    public function setShippingType(AbstractShippingType $shippingType): Order
-    {
-        $this->shippingType = $shippingType;
-
-        return $this;
-    }
-
     public function setAffiliateId($affiliateId): Order
     {
         $this->affiliateId = $affiliateId;
+
+        return $this;
+    }
+
+    public function setOrderState(OrderState $orderState): Order
+    {
+        $this->orderState = $orderState;
 
         return $this;
     }
@@ -190,16 +197,16 @@ class Order extends AbstractCollection
         return $this;
     }
 
+    public function getShiptoAddress(): array
+    {
+        return $this->shiptoAddress ?? [];
+    }
+
     public function setShiptoAddress(ShiptoAddress $shiptoAddress): Order
     {
         $this->shiptoAddress = $shiptoAddress;
 
         return $this;
-    }
-
-    public function getShiptoAddress(): array
-    {
-        return $this->shiptoAddress??[];
     }
 
     public function setItems(array $items): Order
@@ -279,13 +286,6 @@ class Order extends AbstractCollection
         return $this;
     }
 
-    public function setTotal(float $total): Order
-    {
-        $this->total = $total;
-
-        return $this;
-    }
-
     public function setTotalDisplay(string $totalDisplay): Order
     {
         $this->totalDisplay = $totalDisplay;
@@ -295,6 +295,6 @@ class Order extends AbstractCollection
 
     public function getProducts(): array
     {
-        return $this->items['products']??[];
+        return $this->items['products'] ?? [];
     }
 }

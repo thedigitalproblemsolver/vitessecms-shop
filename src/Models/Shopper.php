@@ -18,6 +18,33 @@ class Shopper extends User
      */
     public $companyName;
 
+    public static function createNew(array $data, User $user = null): Shopper
+    {
+        if ($user === null) :
+            $user = (new User())->createLogin($data['email'], $data['password']);
+        endif;
+        $user->addPersonalInformation($data)->save();
+
+        $shopper = new Shopper();
+        $shopper->set('userId', (string)$user->getId());
+        $shopper->set('user', $user);
+        $shopper->addShopperInformation($data);
+        $shopper->set('published', true);
+        $shopper->save();
+
+        return $shopper;
+    }
+
+    public function addShopperInformation(array $data): void
+    {
+        if ($this->di->setting->has('SHOP_DATAGROUP_SHOPPERINFORMATION')) :
+            $datagroup = Datagroup::findById($this->di->setting->get('SHOP_DATAGROUP_SHOPPERINFORMATION'));
+            if ($datagroup) :
+                $this->bindByDatagroup($datagroup, $data);
+            endif;
+        endif;
+    }
+
     public function afterFetch()
     {
         parent::afterFetch();
@@ -31,15 +58,7 @@ class Shopper extends User
         endif;
     }
 
-    public function addShopperInformation(array $data): void
-    {
-        if ($this->di->setting->has('SHOP_DATAGROUP_SHOPPERINFORMATION')) :
-            $datagroup = Datagroup::findById($this->di->setting->get('SHOP_DATAGROUP_SHOPPERINFORMATION'));
-            if ($datagroup) :
-                $this->bindByDatagroup($datagroup, $data);
-            endif;
-        endif;
-    }
+    //TODO move to factory
 
     public function _(string $key, string $languageShort = null)
     {
@@ -62,26 +81,8 @@ class Shopper extends User
         return parent::_($key);
     }
 
-    //TODO move to factory
-    public static function createNew(array $data, User $user = null): Shopper
-    {
-        if ($user === null) :
-            $user = (new User())->createLogin($data['email'], $data['password']);
-        endif;
-        $user->addPersonalInformation($data)->save();
-
-        $shopper = new Shopper();
-        $shopper->set('userId', (string)$user->getId());
-        $shopper->set('user', $user);
-        $shopper->addShopperInformation($data);
-        $shopper->set('published', true);
-        $shopper->save();
-
-        return $shopper;
-    }
-
     public function getCompanyName(): string
     {
-        return $this->companyName??'';
+        return $this->companyName ?? '';
     }
 }

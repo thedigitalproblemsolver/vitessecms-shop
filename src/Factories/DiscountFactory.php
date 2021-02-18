@@ -7,6 +7,26 @@ use VitesseCms\Shop\Models\Discount;
 
 class DiscountFactory
 {
+    public static function createRandom(
+        string $name,
+        string $target,
+        ?int $amount = null,
+        string $prefix = '',
+        ?DateTime $tillDate = null,
+        ?DateTime $fromDate = null
+    ): Discount
+    {
+        $code = null;
+        $count = 1;
+        while ($count !== 0) :
+            $code = $prefix . substr(uniqid('', true), 2, 8);
+            Discount::setFindValue('code', $code);
+            $count = Discount::count();
+        endwhile;
+
+        return self::create($name, $target, $code, $amount, $fromDate, $tillDate);
+    }
+
     public static function create(
         string $name,
         string $target,
@@ -18,11 +38,11 @@ class DiscountFactory
     {
         $till = $from = null;
 
-        if($fromDate !== null) {
+        if ($fromDate !== null) {
             /** @var DateTime $fromDate */
             $from = $fromDate->format('Y-m-d');
         }
-        if($tillDate !== null) {
+        if ($tillDate !== null) {
             /** @var DateTime $tillDate */
             $till = $tillDate->format('Y-m-d');
         }
@@ -33,26 +53,6 @@ class DiscountFactory
             ->set('code', $code)
             ->set('fromDate', $from)
             ->set('tillDate', $till)
-            ->set('amount', $amount)
-        ;
-    }
-
-    public static function createRandom(
-        string $name,
-        string $target,
-        ?int $amount = null,
-        string $prefix = '',
-        ?DateTime $tillDate = null,
-        ?DateTime $fromDate = null
-    ): Discount {
-        $code = null;
-        $count = 1;
-        while ($count !== 0) :
-            $code = $prefix.substr(uniqid('',true),2,8);
-            Discount::setFindValue('code', $code);
-            $count = Discount::count();
-        endwhile;
-
-        return self::create($name, $target, $code, $amount, $fromDate, $tillDate);
+            ->set('amount', $amount);
     }
 }

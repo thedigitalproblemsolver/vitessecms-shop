@@ -12,7 +12,7 @@ class ShopperRepository
         /** @var Shopper $shopper */
         $shopper = Shopper::findFirst();
 
-        if($shopper instanceof Shopper):
+        if ($shopper instanceof Shopper):
             return $shopper;
         endif;
 

@@ -23,7 +23,6 @@ class Order extends AbstractDiscountType
                             'percentage' => 'Percentage'
                         ])
                     )
-            )
-        ;
+            );
     }
 }

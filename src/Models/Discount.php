@@ -29,7 +29,7 @@ class Discount extends AbstractCollection implements DiscountInterface
 
     public function getAmount(): ?float
     {
-        if($this->amount !== null) :
+        if ($this->amount !== null) :
             return (float)$this->amount;
         endif;
 
