@@ -2,18 +2,18 @@
 
 namespace VitesseCms\Shop\Helpers;
 
+use Phalcon\Mvc\User\Component;
 use VitesseCms\Communication\Helpers\CommunicationHelper;
 use VitesseCms\Communication\Helpers\NewsletterHelper;
 use VitesseCms\Communication\Models\Newsletter;
 use VitesseCms\Content\Models\Item;
-use VitesseCms\Log\Factories\LogFactory;
 use VitesseCms\Core\Services\ViewService;
+use VitesseCms\Log\Factories\LogFactory;
 use VitesseCms\Sef\Utils\UtmUtil;
 use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Models\Cart;
 use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\OrderState;
-use Phalcon\Mvc\User\Component;
 
 class OrderHelper
 {

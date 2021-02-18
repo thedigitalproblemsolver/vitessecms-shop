@@ -2,9 +2,9 @@
 
 namespace VitesseCms\Shop\Models;
 
+use MongoDB\BSON\ObjectID;
 use VitesseCms\Core\Models\Datagroup;
 use VitesseCms\User\Models\User;
-use MongoDB\BSON\ObjectID;
 
 class Shopper extends User
 {

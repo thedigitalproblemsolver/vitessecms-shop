@@ -2,8 +2,8 @@
 
 namespace VitesseCms\Shop\Repositories;
 
-use VitesseCms\Shop\Models\Order;
 use MongoDB\BSON\ObjectId;
+use VitesseCms\Shop\Models\Order;
 
 class OrderRepository
 {

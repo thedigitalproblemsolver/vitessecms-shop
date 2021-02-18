@@ -2,8 +2,8 @@
 
 namespace VitesseCms\Shop\Controllers;
 
-use VitesseCms\Content\Models\Item;
 use VitesseCms\Admin\AbstractAdminController;
+use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Helpers\ItemHelper;
 use VitesseCms\Database\Models\FindValue;
 use VitesseCms\Database\Models\FindValueIterator;

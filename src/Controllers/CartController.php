@@ -2,13 +2,13 @@
 
 namespace VitesseCms\Shop\Controllers;
 
+use MongoDB\BSON\ObjectID;
 use VitesseCms\Block\Helpers\BlockHelper;
-use VitesseCms\Core\AbstractController;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Content\Models\Item;
+use VitesseCms\Core\AbstractController;
 use VitesseCms\Language\Helpers\LanguageHelper;
 use VitesseCms\Shop\Helpers\CartHelper;
-use MongoDB\BSON\ObjectID;
 
 class CartController extends AbstractController
 {

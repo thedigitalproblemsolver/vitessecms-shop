@@ -2,6 +2,10 @@
 
 namespace VitesseCms\Shop\Helpers;
 
+use MongoDB\BSON\ObjectID;
+use Phalcon\Di;
+use Phalcon\Http\Response\Cookies;
+use Phalcon\Session\Adapter\Files as Session;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Database\AbstractCollection;
@@ -12,10 +16,6 @@ use VitesseCms\Shop\Models\Cart;
 use VitesseCms\Shop\Models\Discount;
 use VitesseCms\Shop\Models\Shipping;
 use VitesseCms\Shop\Utils\PriceUtil;
-use MongoDB\BSON\ObjectID;
-use Phalcon\Di;
-use Phalcon\Http\Response\Cookies;
-use Phalcon\Session\Adapter\Files as Session;
 
 class CartHelper
 {

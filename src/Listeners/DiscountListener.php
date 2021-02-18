@@ -2,13 +2,13 @@
 
 namespace VitesseCms\Shop\Listeners;
 
+use Phalcon\Events\Event;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractInjectable;
 use VitesseCms\Shop\Enum\DiscountEnum;
 use VitesseCms\Shop\Helpers\DiscountHelper;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Discount;
-use Phalcon\Events\Event;
 
 class DiscountListener extends AbstractInjectable
 {

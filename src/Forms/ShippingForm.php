@@ -8,7 +8,6 @@ use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Helpers\ShippingHelper;
 use VitesseCms\Shop\Models\Shipping;
-use Phalcon\Di;
 
 class ShippingForm extends AbstractForm
 {

@@ -2,6 +2,8 @@
 
 namespace VitesseCms\Shop\PaymentTypes;
 
+use MultiSafepayAPI\Client;
+use Phalcon\Di;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\AbstractPaymentType;
@@ -10,8 +12,6 @@ use VitesseCms\Shop\Helpers\CartHelper;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\Payment;
-use MultiSafepayAPI\Client;
-use Phalcon\Di;
 
 class Multisafepay extends AbstractPaymentType
 {

@@ -5,9 +5,6 @@ namespace VitesseCms\Shop\Controllers;
 use VitesseCms\Admin\AbstractAdminController;
 use VitesseCms\Shop\Forms\ShippingForm;
 use VitesseCms\Shop\Interfaces\AdminRepositoriesInterface;
-use VitesseCms\Shop\Interfaces\AdminRepositoryInterface;
-use VitesseCms\Shop\Interfaces\ShippingTypeInterface;
-use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\Shipping;
 
 class AdminshippingController extends AbstractAdminController implements AdminRepositoriesInterface

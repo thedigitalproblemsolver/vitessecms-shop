@@ -4,12 +4,7 @@ namespace VitesseCms\Shop\Listeners;
 
 use Phalcon\Events\Event;
 use VitesseCms\Admin\Forms\AdminlistFormInterface;
-use VitesseCms\Admin\Utils\AdminUtil;
 use VitesseCms\Shop\Controllers\AdmindiscountController;
-use VitesseCms\Shop\Controllers\AdminorderController;
-use VitesseCms\Shop\Controllers\AdminorderstateController;
-use VitesseCms\Shop\Enum\OrderStateEnum;
-use VitesseCms\Shop\Models\OrderState;
 
 class AdmindiscountControllerListener
 {

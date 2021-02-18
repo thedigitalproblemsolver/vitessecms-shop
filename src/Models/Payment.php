@@ -2,9 +2,9 @@
 
 namespace VitesseCms\Shop\Models;
 
-use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
+use VitesseCms\Database\AbstractCollection;
 
 class Payment extends AbstractCollection
 {

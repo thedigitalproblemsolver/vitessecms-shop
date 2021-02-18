@@ -2,13 +2,13 @@
 
 namespace VitesseCms\Shop\Forms;
 
+use Phalcon\Tag;
 use VitesseCms\Core\Helpers\ItemHelper;
 use VitesseCms\Form\AbstractFormWithRepository;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Interfaces\FormWithRepositoryInterface;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Models\Ean;
-use Phalcon\Tag;
 use VitesseCms\Shop\Repositories\RepositoryCollection;
 
 class EanForm extends AbstractFormWithRepository

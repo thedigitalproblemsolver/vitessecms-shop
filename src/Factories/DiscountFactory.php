@@ -2,8 +2,8 @@
 
 namespace VitesseCms\Shop\Factories;
 
+use DateTime;
 use VitesseCms\Shop\Models\Discount;
-use \DateTime;
 
 class DiscountFactory
 {

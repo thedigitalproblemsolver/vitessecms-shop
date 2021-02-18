@@ -3,8 +3,6 @@
 namespace VitesseCms\Shop\Models;
 
 use VitesseCms\Database\AbstractCollection;
-use VitesseCms\Core\Utils\DirectoryUtil;
-use VitesseCms\Core\Utils\FileUtil;
 use VitesseCms\Shop\Interfaces\DiscountInterface;
 
 class Discount extends AbstractCollection implements DiscountInterface

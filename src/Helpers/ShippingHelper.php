@@ -2,9 +2,9 @@
 
 namespace VitesseCms\Shop\Helpers;
 
+use Phalcon\Di;
 use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
-use Phalcon\Di;
 
 class ShippingHelper
 {

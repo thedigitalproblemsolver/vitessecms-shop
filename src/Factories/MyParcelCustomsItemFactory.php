@@ -2,9 +2,9 @@
 
 namespace VitesseCms\Shop\Factories;
 
+use MyParcelNL\Sdk\src\Model\MyParcelCustomsItem;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Order;
-use MyParcelNL\Sdk\src\Model\MyParcelCustomsItem;
 
 class MyParcelCustomsItemFactory
 {

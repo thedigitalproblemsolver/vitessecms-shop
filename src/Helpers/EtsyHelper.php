@@ -2,11 +2,11 @@
 
 namespace VitesseCms\Shop\Helpers;
 
+use Phalcon\Di;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractInjectable;
 use VitesseCms\Database\Utils\MongoUtil;
 use VitesseCms\Spreadshirt\Models\Design;
-use Phalcon\Di;
 
 class EtsyHelper extends AbstractInjectable
 {

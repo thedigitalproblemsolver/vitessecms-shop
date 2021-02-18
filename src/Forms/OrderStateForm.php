@@ -2,7 +2,6 @@
 
 namespace VitesseCms\Shop\Forms;
 
-use Phalcon\Mvc\View\Engine\Twig\TokenParsers\Assets;
 use VitesseCms\Communication\Models\Newsletter;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;

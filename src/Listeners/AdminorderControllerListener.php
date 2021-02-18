@@ -2,16 +2,14 @@
 
 namespace VitesseCms\Shop\Listeners;
 
-use VitesseCms\Admin\AbstractAdminController;
+use Phalcon\Events\Event;
+use Phalcon\Tag;
 use VitesseCms\Admin\Forms\AdminlistFormInterface;
 use VitesseCms\Admin\Utils\AdminUtil;
-use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Factories\ObjectFactory;
-use VitesseCms\Core\Interfaces\BaseObjectInterface;
 use VitesseCms\Database\Models\FindValue;
 use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Form\Helpers\ElementHelper;
-use VitesseCms\Form\Interfaces\AbstractFormInterface;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Controllers\AdminorderController;
 use VitesseCms\Shop\Enum\OrderStateEnum;
@@ -19,8 +17,6 @@ use VitesseCms\Shop\Forms\OrderOrderStateForm;
 use VitesseCms\Shop\Forms\ShippingBarcodeForm;
 use VitesseCms\Shop\Models\Order;
 use VitesseCms\User\Utils\PermissionUtils;
-use Phalcon\Events\Event;
-use Phalcon\Tag;
 
 class AdminorderControllerListener
 {

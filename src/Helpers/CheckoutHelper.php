@@ -2,12 +2,12 @@
 
 namespace VitesseCms\Shop\Helpers;
 
+use Phalcon\Di;
 use VitesseCms\Content\Models\Item;
-use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Core\AbstractInjectable;
+use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Database\Utils\MongoUtil;
 use VitesseCms\User\Models\User;
-use Phalcon\Di;
 
 class CheckoutHelper extends AbstractInjectable
 {
