@@ -2,6 +2,7 @@
 
 namespace VitesseCms\Shop;
 
+use Phalcon\DiInterface;
 use VitesseCms\Communication\Services\MailchimpService;
 use VitesseCms\Content\Repositories\ItemRepository;
 use VitesseCms\Core\AbstractModule;
@@ -14,7 +15,6 @@ use VitesseCms\Shop\Repositories\PaymentRepository;
 use VitesseCms\Shop\Repositories\RepositoryCollection;
 use VitesseCms\Shop\Repositories\ShippingTypeRepository;
 use VitesseCms\Shop\Repositories\ShopperRepository;
-use Phalcon\DiInterface;
 
 class Module extends AbstractModule
 {
