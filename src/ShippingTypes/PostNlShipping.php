@@ -6,6 +6,7 @@ use DivideBV\Postnl\ComplexTypes\Address;
 use DivideBV\Postnl\ComplexTypes\ArrayOfAddress;
 use DivideBV\Postnl\ComplexTypes\Shipment;
 use DivideBV\Postnl\Postnl;
+use SplFileObject;
 use VitesseCms\Core\Utils\DebugUtil;
 use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
@@ -139,7 +140,7 @@ class PostNlShipping extends AbstractShippingType
 
             $result = $client->generateLabel($shipment);
             $label = $result->getLabels()[0];
-            $file = new \SplFileObject($pdfDir . $pdfFile, 'w');
+            $file = new SplFileObject($pdfDir . $pdfFile, 'w');
             $file->fwrite($label->getContent());
         endif;
 

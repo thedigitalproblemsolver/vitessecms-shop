@@ -7,6 +7,7 @@ use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Models\OrderState;
+use function is_object;
 
 class OrderOrderStateForm extends AbstractForm
 {
@@ -26,7 +27,7 @@ class OrderOrderStateForm extends AbstractForm
                     $orderStates, [$item->_('orderStateId')]
                 ))
             );
-        elseif (\is_object($currentOrderState) && (bool)$currentOrderState->_('canSwitchToSameLevel')) :
+        elseif (is_object($currentOrderState) && (bool)$currentOrderState->_('canSwitchToSameLevel')) :
             OrderState::setFindValue('parentId', $currentOrderState->_('parentId'));
             $orderStates = OrderState::findAll();
             $this->addDropdown(

@@ -5,6 +5,8 @@ namespace VitesseCms\Shop\Models;
 use MongoDB\BSON\ObjectID;
 use VitesseCms\Core\Models\Datagroup;
 use VitesseCms\User\Models\User;
+use function is_array;
+use function is_object;
 
 class Shopper extends User
 {
@@ -62,19 +64,19 @@ class Shopper extends User
 
     public function _(string $key, string $languageShort = null)
     {
-        if (\is_object($this->user) && $this->user->_($key)) :
+        if (is_object($this->user) && $this->user->_($key)) :
             return $this->user->_($key);
         endif;
 
-        if (\is_object($this->user) && $this->user->_(strtolower($key))) :
+        if (is_object($this->user) && $this->user->_(strtolower($key))) :
             return $this->user->_(strtolower($key));
         endif;
 
-        if (\is_array($this->user) && isset($this->user[$key])) :
+        if (is_array($this->user) && isset($this->user[$key])) :
             return $this->user[$key];
         endif;
 
-        if (\is_array($this->user) && isset($this->user[strtolower($key)])) :
+        if (is_array($this->user) && isset($this->user[strtolower($key)])) :
             return $this->user[strtolower($key)];
         endif;
 

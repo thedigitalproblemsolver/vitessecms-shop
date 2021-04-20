@@ -2,9 +2,10 @@
 
 namespace VitesseCms\Shop\Models;
 
+use ArrayIterator;
 use VitesseCms\Shop\AbstractShippingType;
 
-class ShippingIterator extends \ArrayIterator
+class ShippingIterator extends ArrayIterator
 {
     public function __construct(array $shippings)
     {

@@ -5,6 +5,7 @@ namespace VitesseCms\Shop\Controllers;
 use VitesseCms\Admin\AbstractAdminController;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Factories\ObjectFactory;
+use function is_array;
 
 class AdminstockController extends AbstractAdminController
 {
@@ -32,7 +33,7 @@ class AdminstockController extends AbstractAdminController
             if ($item->_('gender')) :
                 $gender = Item::findById($item->_('gender'));
             endif;
-            if (\is_array($item->_('variations'))) :
+            if (is_array($item->_('variations'))) :
                 foreach ($item->_('variations') as $variation) :
                     if (
                         $variation['stockMinimal'] > 0

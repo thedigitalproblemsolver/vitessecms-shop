@@ -19,6 +19,7 @@ use VitesseCms\Shop\Helpers\CartHelper;
 use VitesseCms\Shop\Helpers\DiscountHelper;
 use VitesseCms\Shop\Helpers\ProductHelper;
 use VitesseCms\Shop\Utils\PriceUtil;
+use function is_object;
 
 class Cart extends AbstractCollection
 {
@@ -73,7 +74,7 @@ class Cart extends AbstractCollection
 
     public function onConstruct()
     {
-        if (!\is_object($this->products)) :
+        if (!is_object($this->products)) :
             $this->products = ObjectFactory::create();
         endif;
     }

@@ -9,6 +9,8 @@ use VitesseCms\Shop\Enum\DiscountEnum;
 use VitesseCms\Shop\Helpers\DiscountHelper;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Discount;
+use function count;
+use function is_array;
 
 class DiscountListener extends AbstractInjectable
 {
@@ -19,7 +21,7 @@ class DiscountListener extends AbstractInjectable
         $item->set('price_discountSale', false);
         $item->set('price_discountSaleDisplay', false);
 
-        if (\is_array($item->_('discount'))) :
+        if (is_array($item->_('discount'))) :
             $codes = [null, ''];
             /** @var Discount $discount */
             $discount = DiscountHelper::getFromSession(DiscountEnum::TARGET_PRODUCT);
@@ -43,7 +45,7 @@ class DiscountListener extends AbstractInjectable
                             break;
                         case DiscountEnum::TARGET_FREE_SHIPPING:
                             $discountCountries = [];
-                            if (\is_array($discount->_('countries'))) :
+                            if (is_array($discount->_('countries'))) :
                                 foreach ($discount->_('countries') as $countryId) :
                                     $country = Country::findById($countryId);
                                     if ($country) :
@@ -52,7 +54,7 @@ class DiscountListener extends AbstractInjectable
                                 endforeach;
                             endif;
                             $item->set('price_discount_freeShipping_countries', $discountCountries);
-                            if (\count($discountCountries)) :
+                            if (count($discountCountries)) :
                                 $item->set('price_discount_freeShipping', true);
                             endif;
                             break;

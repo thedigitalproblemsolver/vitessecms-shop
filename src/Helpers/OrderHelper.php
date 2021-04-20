@@ -14,6 +14,7 @@ use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Models\Cart;
 use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\OrderState;
+use function is_array;
 
 class OrderHelper
 {
@@ -97,7 +98,7 @@ class OrderHelper
     {
         $order->set('orderState', $orderState);
 
-        if (\is_array($order->_('shopper'))) :
+        if (is_array($order->_('shopper'))) :
             $email = $order->_('shopper')['user']['email'];
         else :
             $email = $order->_('shopper')->_('email');

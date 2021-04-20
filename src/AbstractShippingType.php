@@ -17,6 +17,8 @@ use VitesseCms\User\Models\User;
 use MongoDB\BSON\ObjectId;
 use Phalcon\Di;
 use Phalcon\Tag;
+use function in_array;
+use function is_array;
 
 abstract class AbstractShippingType extends AbstractCollection implements
     ShippingTypeInterface
@@ -71,9 +73,9 @@ abstract class AbstractShippingType extends AbstractCollection implements
         /** @var User $user */
         $user = Di::getDefault()->get('user');
         $shipToAddress = CheckoutHelper::getShiptoAddress($user);
-        if (\is_array($items['products'])) :
+        if (is_array($items['products'])) :
             foreach ($items['products'] as $product) :
-                if (\is_array($product->_('discount'))) :
+                if (is_array($product->_('discount'))) :
                     $ids = [];
                     foreach ($product->_('discount') as $discountId) :
                         if (MongoUtil::isObjectId($discountId)) :
@@ -89,7 +91,7 @@ abstract class AbstractShippingType extends AbstractCollection implements
                     ) :
                         $discounts = Discount::findAll();
                         foreach ($discounts as $discount):
-                            if (\in_array($shipToAddress->_('country'), $discount->_('countries'), true)) :
+                            if (in_array($shipToAddress->_('country'), $discount->_('countries'), true)) :
                                 return true;
                             endif;
                         endforeach;
