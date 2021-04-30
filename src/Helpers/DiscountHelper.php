@@ -2,6 +2,7 @@
 
 namespace VitesseCms\Shop\Helpers;
 
+use DateTime;
 use VitesseCms\Core\AbstractInjectable;
 use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
@@ -152,7 +153,7 @@ class DiscountHelper extends AbstractInjectable
         $isValid = true;
         if (
             !empty($discount->_('fromDate'))
-            && date_create_from_format('Y-m-d', $discount->_('fromDate')) > new \DateTime()
+            && date_create_from_format('Y-m-d', $discount->_('fromDate')) > new DateTime()
         ) :
             $isValid = false;
         endif;
@@ -160,7 +161,7 @@ class DiscountHelper extends AbstractInjectable
         if (
             $isValid
             && !empty($discount->_('tillDate'))
-            && date_create_from_format('Y-m-d', $discount->_('tillDate')) < new \DateTime()
+            && date_create_from_format('Y-m-d', $discount->_('tillDate')) < new DateTime()
         ) :
             $isValid = false;
         endif;

@@ -3,18 +3,20 @@
 namespace VitesseCms\Shop\Helpers;
 
 use Phalcon\Di;
+use Phalcon\Mvc\CollectionInterface;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractInjectable;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Database\Utils\MongoUtil;
 use VitesseCms\User\Models\User;
+use function is_object;
 
 class CheckoutHelper extends AbstractInjectable
 {
     /**
      * @param User $user
      *
-     * @return array|bool|Item|User|null|\Phalcon\Mvc\CollectionInterface
+     * @return array|bool|Item|User|null|CollectionInterface
      * @deprecated should use service
      */
     public static function getShiptoAddress(User $user)
@@ -45,7 +47,7 @@ class CheckoutHelper extends AbstractInjectable
 
     public function isCurrentItemCheckout(): bool
     {
-        if (\is_object($this->view->getVar('currentItem'))) :
+        if (is_object($this->view->getVar('currentItem'))) :
             return $this->view->getVar('currentItem')->_('datagroup') === $this->setting->get('SHOP_DATAGROUP_CHECKOUT');
         endif;
 

@@ -7,6 +7,7 @@ use VitesseCms\Core\Models\Datagroup;
 use VitesseCms\Form\Forms\BaseForm;
 use VitesseCms\Shop\Models\Shopper;
 use VitesseCms\User\Models\User;
+use function is_object;
 
 class CheckoutController extends AbstractController
 {
@@ -27,7 +28,7 @@ class CheckoutController extends AbstractController
             User::setFindValue('email', $post['email']);
             User::setFindPublished(false);
             $user = User::findFirst();
-            if (\is_object($user)) :
+            if (is_object($user)) :
                 $this->flash->setError('USER_EXISTS');
             else :
                 $shopper = Shopper::createNew($post);

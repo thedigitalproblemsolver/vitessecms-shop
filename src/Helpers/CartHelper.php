@@ -16,6 +16,8 @@ use VitesseCms\Shop\Models\Cart;
 use VitesseCms\Shop\Models\Discount;
 use VitesseCms\Shop\Models\Shipping;
 use VitesseCms\Shop\Utils\PriceUtil;
+use function count;
+use function is_array;
 
 class CartHelper
 {
@@ -23,13 +25,13 @@ class CartHelper
     {
         if (
             $chooseVariation
-            && \is_array($item->_('variations'))
-            && \count($item->_('variations')) > 0
+            && is_array($item->_('variations'))
+            && count($item->_('variations')) > 0
 
         ) :
             foreach ($item->_('variations') as $variation) :
                 if ($variation['sku'] === $chooseVariation) :
-                    if (\is_array($variation['image'])) :
+                    if (is_array($variation['image'])) :
                         return $variation['image'][0];
                     endif;
                     return $variation['image'];
@@ -88,7 +90,7 @@ class CartHelper
     public static function getShipping()
     {
         $shippings = Shipping::findAll();
-        if (\count($shippings) === 1) :
+        if (count($shippings) === 1) :
             /** @var Shipping $shipping */
             return $shippings[0];
         else :

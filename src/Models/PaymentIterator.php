@@ -2,7 +2,9 @@
 
 namespace VitesseCms\Shop\Models;
 
-class PaymentIterator extends \ArrayIterator
+use ArrayIterator;
+
+class PaymentIterator extends ArrayIterator
 {
     public function __construct(array $payments)
     {

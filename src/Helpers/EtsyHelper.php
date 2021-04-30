@@ -2,7 +2,10 @@
 
 namespace VitesseCms\Shop\Helpers;
 
+use OAuth;
+use oauth_client_class;
 use Phalcon\Di;
+use stdClass;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractInjectable;
 use VitesseCms\Database\Utils\MongoUtil;
@@ -11,7 +14,7 @@ use VitesseCms\Spreadshirt\Models\Design;
 class EtsyHelper extends AbstractInjectable
 {
     /**
-     * @var \OAuth
+     * @var OAuth
      */
     protected $oauth;
 
@@ -26,7 +29,7 @@ class EtsyHelper extends AbstractInjectable
     protected $baseUrl;
 
     /**
-     * @var \oauth_client_class
+     * @var oauth_client_class
      */
     protected $oauthClient;
 
@@ -37,7 +40,7 @@ class EtsyHelper extends AbstractInjectable
         require_once __DIR__ . '/../../../vendor/hatframework/oauth-api/httpclient/http.php';
         require_once __DIR__ . '/../../../vendor/hatframework/oauth-api/oauth-api/oauth_client.php';
 
-        $this->oauthClient = new \oauth_client_class();
+        $this->oauthClient = new oauth_client_class();
         $this->oauthClient->debug = true;
         $this->oauthClient->debug_http = true;
         $this->oauthClient->server = 'Etsy';
@@ -213,7 +216,7 @@ class EtsyHelper extends AbstractInjectable
 
         /*unserialize('O:8:"stdClass":5:{s:10:"product_id";i:2519322786;s:3:"sku";s:0:"";s:15:"property_values";a:2:{i:0;O:8:"stdClass":6:{s:11:"property_id";i:200;s:13:"property_name";s:13:"Primary color";s:8:"scale_id";N;s:10:"scale_name";N;s:9:"value_ids";a:1:{i:0;i:1;}s:6:"values";a:1:{i:0;s:5:"Black";}}i:1;O:8:"stdClass":6:{s:11:"property_id";i:62809790395;s:13:"property_name";s:4:"Size";s:8:"scale_id";i:42;s:10:"scale_name";s:11:"Letter size";s:9:"value_ids";a:1:{i:0;i:2019;}s:6:"values";a:1:{i:0;s:1:"L";}}}s:9:"offerings";a:1:{i:0;O:8:"stdClass":5:{s:11:"offering_id";i:2376563313;s:5:"price";O:8:"stdClass":6:{s:6:"amount";i:2000;s:7:"divisor";i:100;s:13:"currency_code";s:3:"EUR";s:24:"currency_formatted_short";s:8:"€20.00";s:23:"currency_formatted_long";s:12:"€20.00 EUR";s:22:"currency_formatted_raw";s:5:"20.00";}s:8:"quantity";i:2;s:10:"is_enabled";i:1;s:10:"is_deleted";i:0;}}s:10:"is_deleted";i:0;}');*/
 
-        $inventoryItem = unserialize('O:8:"stdClass":5:{s:10:"product_id";i:2519322786;s:3:"sku";s:0:"";s:15:"property_values";a:2:{i:0;O:8:"stdClass":6:{s:11:"property_id";i:200;s:13:"property_name";s:13:"Primary color";s:8:"scale_id";N;s:10:"scale_name";N;s:9:"value_ids";a:1:{i:0;i:1;}s:6:"values";a:1:{i:0;s:5:"Black";}}i:1;O:8:"stdClass":6:{s:11:"property_id";i:62809790395;s:13:"property_name";s:4:"Size";s:8:"scale_id";i:42;s:10:"scale_name";s:11:"Letter size";s:9:"value_ids";a:1:{i:0;i:2019;}s:6:"values";a:1:{i:0;s:1:"L";}}}s:9:"offerings";a:1:{i:0;O:8:"stdClass":5:{s:11:"offering_id";i:2376563313;s:5:"price";O:8:"stdClass":6:{s:6:"amount";i:2000;s:7:"divisor";i:100;s:13:"currency_code";s:3:"EUR";s:24:"currency_formatted_short";s:8:"€20.00";s:23:"currency_formatted_long";s:12:"€20.00 EUR";s:22:"currency_formatted_raw";s:5:"20.00";}s:8:"quantity";i:2;s:10:"is_enabled";i:1;s:10:"is_deleted";i:0;}}s:10:"is_deleted";i:0;}', [\stdClass::class]);
+        $inventoryItem = unserialize('O:8:"stdClass":5:{s:10:"product_id";i:2519322786;s:3:"sku";s:0:"";s:15:"property_values";a:2:{i:0;O:8:"stdClass":6:{s:11:"property_id";i:200;s:13:"property_name";s:13:"Primary color";s:8:"scale_id";N;s:10:"scale_name";N;s:9:"value_ids";a:1:{i:0;i:1;}s:6:"values";a:1:{i:0;s:5:"Black";}}i:1;O:8:"stdClass":6:{s:11:"property_id";i:62809790395;s:13:"property_name";s:4:"Size";s:8:"scale_id";i:42;s:10:"scale_name";s:11:"Letter size";s:9:"value_ids";a:1:{i:0;i:2019;}s:6:"values";a:1:{i:0;s:1:"L";}}}s:9:"offerings";a:1:{i:0;O:8:"stdClass":5:{s:11:"offering_id";i:2376563313;s:5:"price";O:8:"stdClass":6:{s:6:"amount";i:2000;s:7:"divisor";i:100;s:13:"currency_code";s:3:"EUR";s:24:"currency_formatted_short";s:8:"€20.00";s:23:"currency_formatted_long";s:12:"€20.00 EUR";s:22:"currency_formatted_raw";s:5:"20.00";}s:8:"quantity";i:2;s:10:"is_enabled";i:1;s:10:"is_deleted";i:0;}}s:10:"is_deleted";i:0;}', [stdClass::class]);
 
         unset(
             $inventoryItem->product_id,

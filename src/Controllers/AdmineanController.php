@@ -11,6 +11,8 @@ use VitesseCms\Shop\Factories\EanFactory;
 use VitesseCms\Shop\Forms\EanForm;
 use VitesseCms\Shop\Interfaces\RepositoriesInterface;
 use VitesseCms\Shop\Models\Ean;
+use function is_array;
+use function strlen;
 
 class AdmineanController extends AbstractAdminController implements RepositoriesInterface
 {
@@ -26,7 +28,7 @@ class AdmineanController extends AbstractAdminController implements Repositories
     {
         $result = ['items' => []];
 
-        if ($this->request->isAjax() && \strlen($this->request->get('search')) > 1) :
+        if ($this->request->isAjax() && strlen($this->request->get('search')) > 1) :
             $items = $this->repositories->item->findAll(
                 new FindValueIterator([
                     new FindValue(
@@ -70,7 +72,7 @@ class AdmineanController extends AbstractAdminController implements Repositories
                 )->save();
             endif;
 
-            if (\is_array($item->_('variations'))) :
+            if (is_array($item->_('variations'))) :
                 foreach ($item->_('variations') as $variation) :
                     if (!empty($variation['ean']) && !empty($variation['sku'])) :
                         Ean::setFindValue('name', $variation['ean']);
