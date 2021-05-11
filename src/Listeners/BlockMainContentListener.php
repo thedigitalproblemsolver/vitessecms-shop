@@ -3,11 +3,13 @@
 namespace VitesseCms\Shop\Listeners;
 
 use Phalcon\Events\Event;
+use Phalcon\Http\Request;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Block\Models\BlockMainContent;
 use VitesseCms\Content\Models\Item;
+use VitesseCms\Core\Factories\PaginatonFactory;
 use VitesseCms\Core\Helpers\ItemHelper;
-use VitesseCms\Datagroup\Models\Datagroup;
+use VitesseCms\Core\Services\UrlService;
 
 class BlockMainContentListener
 {
@@ -22,14 +24,21 @@ class BlockMainContentListener
             Item::setFindValue('parentId', (string)$blockMainContent->getDi()->view->getCurrentItem()->getId());
             Item::addFindOrder('name', 1);
             Item::setFindLimit(9999);
-            $items = Item::findAll();
+            $pagination = PaginatonFactory::createFromArray(
+                Item::findAll(),
+                new Request(),
+                new UrlService(new Request()),
+                'page',
+                 $block->getInt('overviewItemLimit')
+            );
+
             $designMapper = [];
-            foreach ($items as $key => $item) :
+            foreach ($pagination->items as $key => $item) :
                 if (isset($item->outOfStock) && $item->_('outOfStock')) :
-                    unset($items[$key]);
+                    unset($pagination->items[$key]);
                 else :
                     ItemHelper::parseBeforeMainContent($item);
-                    $items[$key] = $item;
+                    $pagination->items[$key] = $item;
                 endif;
 
                 if (
@@ -43,8 +52,8 @@ class BlockMainContentListener
                             $items[$designMapper[$item->_('design')]]->designItems[] = $item;
                         endif;
                     else :
-                        $items[$designMapper[$item->_('design')]]->designItems[] = $item;
-                        unset($items[$key]);
+                        $pagination->items[$designMapper[$item->_('design')]]->designItems[] = $item;
+                        unset($pagination->items[$key]);
                     endif;
                 endif;
             endforeach;
@@ -52,16 +61,20 @@ class BlockMainContentListener
             if (substr_count($blockMainContent->getTemplate(), 'shop_clothing_design_overview')) :
                 foreach ($designMapper as $designId => $itemKey) :
                     if (
-                        isset($items[$itemKey]->designItems)
-                        && count($items[$itemKey]->designItems) === 1
+                        isset($pagination->items[$itemKey]->designItems)
+                        && count($pagination->items[$itemKey]->designItems) === 1
                     ) :
-                        unset($items[$itemKey]->designItems);
+                        unset($pagination->items[$itemKey]->designItems);
                     else :
-                        $items[$itemKey]->hasDesignItems = true;
+                        $pagination->items[$itemKey]->hasDesignItems = true;
                     endif;
                 endforeach;
             endif;
-            $block->set('items', array_values($items));
+            $block->set('items', array_values($pagination->items));
+
+            if ($pagination->total_pages > 1) :
+                $block->set('pagination', $pagination);
+            endif;
         endif;
     }
 }
