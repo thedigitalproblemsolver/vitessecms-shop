@@ -20,7 +20,7 @@
   "require": {
     "vitessecms/form": "~0.0.10",
     "vitessecms/communication": "~0.0.15",
-    "vitessecms/media": "~0.0.7",
+    "vitessecms/media": "~0.0.8",
     "vitessecms/user": "~0.0.7",
     "dividebv/postnl": "^1.1",
     "myparcelnl/sdk": "^1.3",

@@ -3,7 +3,7 @@
 namespace VitesseCms\Shop\Models;
 
 use MongoDB\BSON\ObjectID;
-use VitesseCms\Core\Models\Datagroup;
+use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\User\Models\User;
 use function is_array;
 use function is_object;
