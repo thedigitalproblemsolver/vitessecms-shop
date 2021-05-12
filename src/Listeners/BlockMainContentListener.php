@@ -5,7 +5,7 @@ namespace VitesseCms\Shop\Listeners;
 use Phalcon\Events\Event;
 use Phalcon\Http\Request;
 use VitesseCms\Block\Models\Block;
-use VitesseCms\Block\Models\BlockMainContent;
+use VitesseCms\Content\Blocks\MainContent;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Factories\PaginatonFactory;
 use VitesseCms\Core\Helpers\ItemHelper;
@@ -13,15 +13,15 @@ use VitesseCms\Core\Services\UrlService;
 
 class BlockMainContentListener
 {
-    public function parse(Event $event, BlockMainContent $blockMainContent, Block $block): void
+    public function parse(Event $event, MainContent $mainContent, Block $block): void
     {
-        $this->handleOverviewTemplates($blockMainContent, $block);
+        $this->handleOverviewTemplates($mainContent, $block);
     }
 
-    protected function handleOverviewTemplates(BlockMainContent $blockMainContent, Block $block): void
+    protected function handleOverviewTemplates(MainContent $mainContent, Block $block): void
     {
-        if (substr_count($blockMainContent->getTemplate(), 'overview')) :
-            Item::setFindValue('parentId', (string)$blockMainContent->getDi()->view->getCurrentItem()->getId());
+        if (substr_count($mainContent->getTemplate(), 'overview')) :
+            Item::setFindValue('parentId', (string)$mainContent->getDi()->view->getCurrentItem()->getId());
             Item::addFindOrder('name', 1);
             Item::setFindLimit(9999);
             $pagination = PaginatonFactory::createFromArray(
@@ -42,7 +42,7 @@ class BlockMainContentListener
                 endif;
 
                 if (
-                    substr_count($blockMainContent->getTemplate(), 'shop_clothing_design_overview')
+                    substr_count($mainContent->getTemplate(), 'shop_clothing_design_overview')
                     && !empty($item->_('design'))
                 ) :
                     if (!isset($designMapper[$item->_('design')])) :
@@ -58,7 +58,7 @@ class BlockMainContentListener
                 endif;
             endforeach;
 
-            if (substr_count($blockMainContent->getTemplate(), 'shop_clothing_design_overview')) :
+            if (substr_count($mainContent->getTemplate(), 'shop_clothing_design_overview')) :
                 foreach ($designMapper as $designId => $itemKey) :
                     if (
                         isset($pagination->items[$itemKey]->designItems)

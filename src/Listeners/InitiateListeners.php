@@ -3,13 +3,13 @@
 namespace VitesseCms\Shop\Listeners;
 
 use Phalcon\Events\Manager;
-use VitesseCms\Block\Models\BlockMainContent;
+use VitesseCms\Content\Blocks\MainContent;
 
 class InitiateListeners
 {
     public static function setListeners(Manager $eventsManager): void
     {
         $eventsManager->attach('adminMenu', new AdminMenuListener());
-        $eventsManager->attach(BlockMainContent::class, new BlockMainContentListener());
+        $eventsManager->attach(MainContent::class, new BlockMainContentListener());
     }
 }
