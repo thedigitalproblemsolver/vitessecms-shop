@@ -28,8 +28,10 @@
     "michele-angioni/phalcon-repositories": "^0.5.0",
     "vitessecms/core": "~0.0.8",
     "vitessecms/datafield": "~0.0.10",
+    "vitessecms/datagroup": "~0.0.8",
     "vitessecms/log": "~0.0.5",
     "vitessecms/content": "~0.0.19",
-    "vitessecms/block": "~0.0.23"
+    "vitessecms/block": "~0.0.23",
+    "vitessecms/database": "~0.0.5"
   }
 }
