@@ -15,7 +15,7 @@ use VitesseCms\Shop\Models\Discount;
 use VitesseCms\Shop\Utils\PriceUtil;
 use Phalcon\Di;
 
-class Price extends AbstractField
+class ShopPrice extends AbstractField
 {
     public static function beforeMaincontent(Item $item, Datafield $datafield): void
     {
