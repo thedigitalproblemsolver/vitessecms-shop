@@ -10,7 +10,7 @@ use VitesseCms\Datafield\AbstractField;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
 
-class FieldAmazonBrowseNode extends AbstractField
+class AmazonBrowseNode extends AbstractField
 {
     public function buildItemFormElement(
         AbstractForm $form,
