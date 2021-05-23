@@ -3,7 +3,7 @@
 namespace VitesseCms\Shop\Fields;
 
 use VitesseCms\Database\AbstractCollection;
-use VitesseCms\Datafield\Enums\AmazonEnum;
+use VitesseCms\Shop\Enums\AmazonEnum;
 use VitesseCms\Datafield\Models\Datafield;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Datafield\AbstractField;

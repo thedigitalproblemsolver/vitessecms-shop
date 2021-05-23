@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Datafield\Enums;
+namespace VitesseCms\Shop\Enums;
 
 use VitesseCms\Core\AbstractEnum;
 
