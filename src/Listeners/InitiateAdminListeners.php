@@ -9,6 +9,8 @@ use VitesseCms\Shop\Controllers\AdmindiscountController;
 use VitesseCms\Shop\Controllers\AdmineanController;
 use VitesseCms\Shop\Controllers\AdminorderController;
 use VitesseCms\Shop\Controllers\AdminorderstateController;
+use VitesseCms\Shop\Fields\ShopSizeAndColor;
+use VitesseCms\Shop\Listeners\Fields\SizeAndColorListener;
 
 class InitiateAdminListeners
 {
@@ -21,5 +23,6 @@ class InitiateAdminListeners
         $eventsManager->attach(AdmindiscountController::class, new AdmindiscountControllerListener());
         $eventsManager->attach(AdmineanController::class, new AdmineanControllerListener());
         $eventsManager->attach(AffiliateInitialize::class, new BlockAffiliateInitializeListener());
+        $eventsManager->attach(ShopSizeAndColor::class, new SizeAndColorListener());
     }
 }
