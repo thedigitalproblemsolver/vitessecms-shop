@@ -19,7 +19,7 @@
   },
   "require": {
     "vitessecms/form": "~0.1.1",
-    "vitessecms/communication": "~0.1.3",
+    "vitessecms/communication": "~0.2.0",
     "vitessecms/media": "~0.2.0",
     "vitessecms/user": "~0.2.0",
     "dividebv/postnl": "^1.1",
