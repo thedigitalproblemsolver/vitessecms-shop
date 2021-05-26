@@ -11,5 +11,7 @@ class InitiateListeners
     {
         $eventsManager->attach('adminMenu', new AdminMenuListener());
         $eventsManager->attach(MainContent::class, new BlockMainContentListener());
+        $eventsManager->attach('discount', new DiscountListener());
+        $eventsManager->attach('user', new DiscountListener());
     }
 }
