@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Shop\Listeners;
+namespace VitesseCms\Shop\Listeners\Blocks;
 
 use Phalcon\Events\Event;
 use Phalcon\Http\Request;
@@ -11,7 +11,7 @@ use VitesseCms\Core\Factories\PaginatonFactory;
 use VitesseCms\Core\Helpers\ItemHelper;
 use VitesseCms\Core\Services\UrlService;
 
-class BlockMainContentListener
+class MainContentListener
 {
     public function parse(Event $event, MainContent $mainContent, Block $block): void
     {
