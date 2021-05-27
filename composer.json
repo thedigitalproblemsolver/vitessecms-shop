@@ -31,7 +31,7 @@
     "vitessecms/datagroup": "~0.2.7",
     "vitessecms/log": "~0.2.3",
     "vitessecms/content": "~0.2.10",
-    "vitessecms/block": "~0.2.8",
+    "vitessecms/block": "~0.2.10",
     "vitessecms/database": "~0.2.2"
   }
 }
