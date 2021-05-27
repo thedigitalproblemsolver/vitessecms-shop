@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Shop\Listeners;
+namespace VitesseCms\Shop\Listeners\Controllers;
 
 use Phalcon\Events\Event;
 use VitesseCms\Admin\Forms\AdminlistFormInterface;
@@ -8,11 +8,7 @@ use VitesseCms\Shop\Controllers\AdmineanController;
 
 class AdmineanControllerListener
 {
-    public function adminListFilter(
-        Event $event,
-        AdmineanController $controller,
-        AdminlistFormInterface $form
-    ): string
+    public function adminListFilter(Event $event, AdmineanController $controller, AdminlistFormInterface $form): string
     {
         $form->addText('%CORE_NAME%', 'filter[name]');
         $form->addPublishedField($form);

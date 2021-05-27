@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Shop\Listeners;
+namespace VitesseCms\Shop\Listeners\Controllers;
 
 use Phalcon\Events\Event;
 use Phalcon\Tag;
