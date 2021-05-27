@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Shop\Listeners;
+namespace VitesseCms\Shop\Listeners\Blocks;
 
 use DateTime;
 use MongoDB\BSON\ObjectId;
@@ -13,7 +13,7 @@ use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Blocks\AffiliateInitialize;
 
-class BlockAffiliateInitializeListener
+class AffiliateInitializeListener
 {
     public function buildBlockForm(Event $event, BlockForm $form): void
     {

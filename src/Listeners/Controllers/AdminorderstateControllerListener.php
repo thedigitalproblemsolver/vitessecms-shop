@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Shop\Listeners;
+namespace VitesseCms\Shop\Listeners\Controllers;
 
 use Phalcon\Events\Event;
 use VitesseCms\Admin\Forms\AdminlistFormInterface;
@@ -10,11 +10,7 @@ use VitesseCms\Shop\Models\OrderState;
 
 class AdminorderstateControllerListener
 {
-    public function adminListItem(
-        Event $event,
-        AdminorderstateController $controller,
-        OrderState $orderState
-    ): void
+    public function adminListItem(Event $event, AdminorderstateController $controller, OrderState $orderState): void
     {
         switch ($orderState->getStockAction()) :
             case OrderStateEnum::STOCK_ACTION_INCREASE:
