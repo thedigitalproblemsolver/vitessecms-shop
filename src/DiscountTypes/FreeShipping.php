@@ -5,7 +5,6 @@ namespace VitesseCms\Shop\DiscountTypes;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
-use VitesseCms\Media\Enums\AssetsEnum;
 use VitesseCms\Shop\AbstractDiscountType;
 use VitesseCms\Shop\Models\Country;
 
@@ -21,7 +20,7 @@ class FreeShipping extends AbstractDiscountType
                 ->setMultilang(true)
                 ->setMultiple(true)
                 ->setOptions(ElementHelper::arrayToSelectOptions(['all' => 'All']) + ElementHelper::arrayToSelectOptions(Country::findAll()))
-                ->setInputClass(AssetsEnum::SELECT2)
+                ->setInputClass('select2')
         );
     }
 }
