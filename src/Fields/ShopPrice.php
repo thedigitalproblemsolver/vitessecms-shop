@@ -9,7 +9,6 @@ use VitesseCms\Datafield\AbstractField;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
-use VitesseCms\Media\Enums\AssetsEnum;
 use VitesseCms\Shop\Enum\DiscountEnum;
 use VitesseCms\Shop\Models\Discount;
 use VitesseCms\Shop\Utils\PriceUtil;
@@ -62,7 +61,7 @@ class ShopPrice extends AbstractField
         $form->addDropdown(
             'Discount',
             'discount',
-            (new Attributes())->setInputClass(AssetsEnum::SELECT2)
+            (new Attributes())->setInputClass('select2')
                 ->setMultiple()
                 ->setOptions(ElementHelper::arrayToSelectOptions(Discount::findAll()))
         );

@@ -6,7 +6,6 @@ use VitesseCms\Communication\Models\Newsletter;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
-use VitesseCms\Media\Enums\AssetsEnum;
 use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Models\OrderState;
 
@@ -50,21 +49,21 @@ class OrderStateForm extends AbstractForm
             'addToNewsletters',
             (new Attributes())->setMultilang()
                 ->setMultiple()
-                ->setInputClass(AssetsEnum::SELECT2)
+                ->setInputClass('select2')
                 ->setOptions(ElementHelper::arrayToSelectOptions($newsletters)))
             ->addDropdown(
                 'Unsubscribe from newsletter<br /><small>never end again</small>',
                 'unsubscribeFromNewsletters',
                 (new Attributes())->setMultilang()
                     ->setMultiple()
-                    ->setInputClass(AssetsEnum::SELECT2)
+                    ->setInputClass('select2')
                     ->setOptions(ElementHelper::arrayToSelectOptions($newsletters)))
             ->addDropdown(
                 'Remove from newsletters<br /><small>Can be send again</small>',
                 'removeFromNewsletters',
                 (new Attributes())->setMultilang()
                     ->setMultiple()
-                    ->setInputClass(AssetsEnum::SELECT2)
+                    ->setInputClass('select2')
                     ->setOptions(ElementHelper::arrayToSelectOptions($newsletters)))
             ->addToggle('%ADMIN_ORDERSTATE_CLEAR_THE_CART%', 'clearCart')
             ->addToggle('%ADMIN_ORDERSTATE_PRINT_SHIPPING_LABEL%', 'printShippingLabel')

@@ -9,7 +9,6 @@ use VitesseCms\Datafield\Factories\FieldSizeAndColorFactory;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Interfaces\AbstractFormInterface;
 use VitesseCms\Form\Models\Attributes;
-use VitesseCms\Media\Enums\AssetsEnum;
 use Phalcon\Tag;
 use VitesseCms\Shop\Enums\SizeAndColorEnum;
 
@@ -23,8 +22,8 @@ class ShopSizeAndColor extends AbstractField
     )
     {
         if ($data !== null) {
-            $form->assets->load(AssetsEnum::COLORPICKER);
-            $form->assets->load(AssetsEnum::FILEMANAGER);
+            $form->assets->loadBootstrapColorPicker();
+            $form->assets->loadFileManager();
             $fieldName = $datafield->getCallingName();
 
             $dataVariations = $data->_($fieldName);
@@ -104,7 +103,7 @@ class ShopSizeAndColor extends AbstractField
             (new Attributes())
                 ->setMultiple()
                 ->setNoEmptyText()
-                ->setInputClass(AssetsEnum::SELECT2)
+                ->setInputClass('select2')
                 ->setOptions($options)
         );
     }
