@@ -16,7 +16,7 @@ class InitiateListeners implements InitiateListenersInterface
             $di->eventsManager->attach('adminMenu', new AdminMenuListener());
         endif;
         $di->eventsManager->attach(MainContent::class, new MainContentListener());
-        $di->eventsManager->attach('discount', new DiscountListener());
-        $di->eventsManager->attach('user', new DiscountListener());
+        $di->eventsManager->attach('discount', new DiscountListener($di->shop));
+        $di->eventsManager->attach('user', new DiscountListener($di->shop));
     }
 }

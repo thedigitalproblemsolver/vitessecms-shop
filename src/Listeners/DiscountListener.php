@@ -9,11 +9,20 @@ use VitesseCms\Shop\Enum\DiscountEnum;
 use VitesseCms\Shop\Helpers\DiscountHelper;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Discount;
-use function count;
-use function is_array;
+use VitesseCms\Shop\Services\ShopService;
 
 class DiscountListener extends AbstractInjectable
 {
+    /**
+     * @var ShopService
+     */
+    private $shop;
+
+    public function __construct(ShopService $shop)
+    {
+        $this->shop = $shop;
+    }
+
     public function prepareItem(Event $event, Item $item): void
     {
         $item->set('price_discount', false);
