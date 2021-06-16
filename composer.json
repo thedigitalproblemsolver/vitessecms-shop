@@ -27,7 +27,7 @@
     "multisafepay/api": "^2.0",
     "michele-angioni/phalcon-repositories": "^0.5.0",
     "vitessecms/core": "~0.2.10",
-    "vitessecms/datafield": "~0.2.11",
+    "vitessecms/datafield": "~0.2.12",
     "vitessecms/datagroup": "~0.2.9",
     "vitessecms/log": "~0.2.3",
     "vitessecms/content": "~0.2.11",
