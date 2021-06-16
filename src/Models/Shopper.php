@@ -44,12 +44,7 @@ class Shopper extends User
             /** @var Datagroup $datagroup */
             $datagroup = Datagroup::findById($this->di->setting->get(SettingsEnum::SHOP_DATAGROUP_SHOPPERINFORMATION));
             if ($datagroup) :
-                ShopperFactory::bindByDatagroup(
-                    $datagroup,
-                    $data,
-                    $this,
-                    new DatafieldRepository()
-                );
+                ShopperFactory::bindByDatagroup($datagroup, $data, $this, new DatafieldRepository());
             endif;
         endif;
     }
