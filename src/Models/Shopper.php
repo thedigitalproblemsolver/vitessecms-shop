@@ -3,10 +3,11 @@
 namespace VitesseCms\Shop\Models;
 
 use MongoDB\BSON\ObjectID;
+use VitesseCms\Datafield\Repositories\DatafieldRepository;
 use VitesseCms\Datagroup\Models\Datagroup;
+use VitesseCms\Shop\Enum\SettingsEnum;
+use VitesseCms\Shop\Factories\ShopperFactory;
 use VitesseCms\User\Models\User;
-use function is_array;
-use function is_object;
 
 class Shopper extends User
 {
@@ -39,10 +40,16 @@ class Shopper extends User
 
     public function addShopperInformation(array $data): void
     {
-        if ($this->di->setting->has('SHOP_DATAGROUP_SHOPPERINFORMATION')) :
-            $datagroup = Datagroup::findById($this->di->setting->get('SHOP_DATAGROUP_SHOPPERINFORMATION'));
+        if ($this->di->setting->has(SettingsEnum::SHOP_DATAGROUP_SHOPPERINFORMATION)) :
+            /** @var Datagroup $datagroup */
+            $datagroup = Datagroup::findById($this->di->setting->get(SettingsEnum::SHOP_DATAGROUP_SHOPPERINFORMATION));
             if ($datagroup) :
-                $this->bindByDatagroup($datagroup, $data);
+                ShopperFactory::bindByDatagroup(
+                    $datagroup,
+                    $data,
+                    $this,
+                    new DatafieldRepository()
+                );
             endif;
         endif;
     }
