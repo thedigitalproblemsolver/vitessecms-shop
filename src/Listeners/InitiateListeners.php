@@ -7,6 +7,9 @@ use VitesseCms\Core\Interfaces\InitiateListenersInterface;
 use VitesseCms\Core\Interfaces\InjectableInterface;
 use VitesseCms\Shop\Listeners\Admin\AdminMenuListener;
 use VitesseCms\Shop\Listeners\Blocks\MainContentListener;
+use VitesseCms\Shop\Listeners\ContentTags\TagDiscountListener;
+use VitesseCms\Shop\Listeners\ContentTags\TagOrderSendDateListener;
+use VitesseCms\Shop\Listeners\ContentTags\TagShopTrackAndTraceListener;
 
 class InitiateListeners implements InitiateListenersInterface
 {
@@ -18,5 +21,8 @@ class InitiateListeners implements InitiateListenersInterface
         $di->eventsManager->attach(MainContent::class, new MainContentListener());
         $di->eventsManager->attach('discount', new DiscountListener($di->shop));
         $di->eventsManager->attach('user', new DiscountListener($di->shop));
+        $di->eventsManager->attach('contentTag', new TagDiscountListener());
+        $di->eventsManager->attach('contentTag', new TagOrderSendDateListener());
+        $di->eventsManager->attach('contentTag', new TagShopTrackAndTraceListener());
     }
 }
