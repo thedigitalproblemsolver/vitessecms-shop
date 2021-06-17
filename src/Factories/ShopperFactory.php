@@ -2,23 +2,13 @@
 
 namespace VitesseCms\Shop\Factories;
 
-use VitesseCms\Core\AbstractFactory;
-use VitesseCms\Core\Interfaces\BaseObjectInterface;
-use VitesseCms\Core\Interfaces\FactoryInterface;
 use VitesseCms\Datafield\Repositories\DatafieldRepository;
 use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\Shop\Models\Shopper;
 use VitesseCms\User\Models\User;
 
-class ShopperFactory extends AbstractFactory implements FactoryInterface
+class ShopperFactory
 {
-    public static function create(BaseObjectInterface $bindData = null): BaseObjectInterface
-    {
-        $shopper = parent::createCollection(Shopper::class);
-
-        return $shopper;
-    }
-
     public static function createFromUser(User $user, array $data = []): Shopper
     {
         $shopper = new Shopper();

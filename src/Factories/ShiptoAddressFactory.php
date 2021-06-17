@@ -3,30 +3,18 @@
 namespace VitesseCms\Shop\Factories;
 
 use VitesseCms\Content\Models\Item;
-use VitesseCms\Core\AbstractFactory;
 use VitesseCms\Core\Interfaces\BaseObjectInterface;
-use VitesseCms\Core\Interfaces\FactoryInterface;
 use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\Datafield\Repositories\DatafieldRepository;
 use VitesseCms\Setting\Services\SettingService;
 use VitesseCms\Shop\Models\ShiptoAddress;
 use VitesseCms\User\Models\User;
 
-class ShiptoAddressFactory extends AbstractFactory implements FactoryInterface
+class ShiptoAddressFactory
 {
-    /**
-     * @deprecated is nodig voor CBS import functie
-     */
-    public static function create(BaseObjectInterface $bindData = null): BaseObjectInterface
-    {
-        $shiptoAddress = parent::createCollection(ShiptoAddress::class);
-
-        return $shiptoAddress;
-    }
-
     public static function createFromDatagroup(SettingService $setting): BaseObjectInterface
     {
-        $shiptoAddress = parent::createCollection(Item::class);
+        $shiptoAddress = new Item();
         $shiptoAddress->set('datagroup', $setting->get('SHOP_DATAGROUP_SHOPPERSHIPTO'));
 
         return $shiptoAddress;
