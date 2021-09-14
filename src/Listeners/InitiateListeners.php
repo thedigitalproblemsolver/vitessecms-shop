@@ -15,14 +15,16 @@ class InitiateListeners implements InitiateListenersInterface
 {
     public static function setListeners(InjectableInterface $di): void
     {
-        if($di->user->hasAdminAccess()):
-            $di->eventsManager->attach('adminMenu', new AdminMenuListener());
+        if($di->configuration->isEcommerce()):
+            if($di->user->hasAdminAccess()):
+                $di->eventsManager->attach('adminMenu', new AdminMenuListener());
+            endif;
+            $di->eventsManager->attach(MainContent::class, new MainContentListener());
+            $di->eventsManager->attach('discount', new DiscountListener($di->shop));
+            $di->eventsManager->attach('user', new DiscountListener($di->shop));
+            $di->eventsManager->attach('contentTag', new TagDiscountListener());
+            $di->eventsManager->attach('contentTag', new TagOrderSendDateListener());
+            $di->eventsManager->attach('contentTag', new TagShopTrackAndTraceListener());
         endif;
-        $di->eventsManager->attach(MainContent::class, new MainContentListener());
-        $di->eventsManager->attach('discount', new DiscountListener($di->shop));
-        $di->eventsManager->attach('user', new DiscountListener($di->shop));
-        $di->eventsManager->attach('contentTag', new TagDiscountListener());
-        $di->eventsManager->attach('contentTag', new TagOrderSendDateListener());
-        $di->eventsManager->attach('contentTag', new TagShopTrackAndTraceListener());
     }
 }

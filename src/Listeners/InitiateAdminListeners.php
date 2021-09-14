@@ -24,13 +24,15 @@ class InitiateAdminListeners implements InitiateListenersInterface
 {
     public static function setListeners(InjectableInterface $di): void
     {
-        $di->eventsManager->attach('adminMenu', new AdminMenuListener());
-        $di->eventsManager->attach(AdminorderController::class, new AdminorderControllerListener());
-        $di->eventsManager->attach(AdminorderstateController::class, new AdminorderstateControllerListener());
-        $di->eventsManager->attach(AdmincountryController::class, new AdmincountryControllerListener());
-        $di->eventsManager->attach(AdmindiscountController::class, new AdmindiscountControllerListener());
-        $di->eventsManager->attach(AdmineanController::class, new AdmineanControllerListener());
-        $di->eventsManager->attach(AffiliateInitialize::class, new AffiliateInitializeListener());
-        $di->eventsManager->attach(ShopSizeAndColor::class, new SizeAndColorListener());
+        if($di->configuration->isEcommerce()):
+            $di->eventsManager->attach('adminMenu', new AdminMenuListener());
+            $di->eventsManager->attach(AdminorderController::class, new AdminorderControllerListener());
+            $di->eventsManager->attach(AdminorderstateController::class, new AdminorderstateControllerListener());
+            $di->eventsManager->attach(AdmincountryController::class, new AdmincountryControllerListener());
+            $di->eventsManager->attach(AdmindiscountController::class, new AdmindiscountControllerListener());
+            $di->eventsManager->attach(AdmineanController::class, new AdmineanControllerListener());
+            $di->eventsManager->attach(AffiliateInitialize::class, new AffiliateInitializeListener());
+            $di->eventsManager->attach(ShopSizeAndColor::class, new SizeAndColorListener());
+        endif;
     }
 }
