@@ -11,6 +11,8 @@ use VitesseCms\Database\Models\FindValue;
 use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
+use VitesseCms\Mustache\DTO\RenderTemplateDTO;
+use VitesseCms\Mustache\Enum\ViewEnum;
 use VitesseCms\Shop\Controllers\AdminorderController;
 use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Forms\OrderOrderStateForm;
@@ -102,15 +104,16 @@ class AdminorderControllerListener
             $orderStateForm = $order->_('orderState')['name'][$controller->configuration->getLanguageShort()];
         endif;
 
-        $order->setAdminListExtra($controller->view->renderModuleTemplate(
-            'shop',
+        $adminListExtra = $controller->eventsManager->fire(ViewEnum::RENDER_TEMPLATE_EVENT, new RenderTemplateDTO(
             'orderAdminListItem',
-            'admin/',
+            $controller->router->getModuleName() . '/src/Resources/views/admin/list/',
             [
                 'order' => $order,
                 'orderStateForm' => $orderStateForm,
             ]
         ));
+        
+        $order->setAdminListExtra($adminListExtra);
     }
 
     public function adminListFilter(
