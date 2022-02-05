@@ -3,7 +3,7 @@
 namespace VitesseCms\Shop\Controllers;
 
 use MongoDB\BSON\ObjectID;
-use VitesseCms\Block\Helpers\BlockHelper;
+use VitesseCms\Block\Enum\BlockEnum;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractController;
@@ -17,11 +17,7 @@ class CartController extends AbstractController
         if ($this->request->get('embedded', 'int', 0)) :
             $block = Block::findById($this->setting->get('SHOP_BLOCK_CARTLARGE'));
             /** @var Block $block */
-            $this->view->setVar('content', BlockHelper::render(
-                $block,
-                $this->view,
-                $this->cache
-            ));
+            $this->view->setVar('content', $this->di->eventsManager->fire(BlockEnum::BLOCK_LISTENER . ':renderBlock', $block));
 
             $this->prepareView();
         else :
