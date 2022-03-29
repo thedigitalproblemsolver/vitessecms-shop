@@ -21,7 +21,7 @@
     "vitessecms/form": "~0.2.8",
     "vitessecms/communication": "~0.2.12",
     "vitessecms/media": "~0.2.11",
-    "vitessecms/user": "~0.2.9",
+    "vitessecms/user": "~0.2.10",
     "dividebv/postnl": "^1.1",
     "myparcelnl/sdk": "^1.3",
     "multisafepay/api": "^2.0",
