@@ -28,6 +28,7 @@ class InitiateListeners implements InitiateListenersInterface
             $di->eventsManager->attach('contentTag', new TagDiscountListener());
             $di->eventsManager->attach('contentTag', new TagOrderSendDateListener());
             $di->eventsManager->attach('contentTag', new TagShopTrackAndTraceListener());
+            $di->eventsManager->attach(ShopPrice::class, new PriceListener());
         endif;
     }
 }
