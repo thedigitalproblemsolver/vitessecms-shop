@@ -2,7 +2,7 @@
 
 namespace VitesseCms\Shop;
 
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use VitesseCms\Communication\Services\MailchimpService;
 use VitesseCms\Content\Repositories\ItemRepository;
 use VitesseCms\Core\AbstractModule;

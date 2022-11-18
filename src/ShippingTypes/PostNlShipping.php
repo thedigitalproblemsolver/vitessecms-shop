@@ -15,7 +15,7 @@ use VitesseCms\Shop\AbstractShippingType;
 use VitesseCms\Shop\Forms\ShippingForm;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Order;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 
 class PostNlShipping extends AbstractShippingType
 {

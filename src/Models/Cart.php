@@ -3,7 +3,7 @@
 namespace VitesseCms\Shop\Models;
 
 use MongoDB\BSON\ObjectID;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Http\Response\Cookies;
 use Phalcon\Session\Adapter\Files as Session;
 use stdClass;
