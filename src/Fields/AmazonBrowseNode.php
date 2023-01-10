@@ -3,21 +3,22 @@
 namespace VitesseCms\Shop\Fields;
 
 use VitesseCms\Database\AbstractCollection;
-use VitesseCms\Shop\Enums\AmazonEnum;
+use VitesseCms\Datafield\AbstractField;
 use VitesseCms\Datafield\Models\Datafield;
 use VitesseCms\Form\AbstractForm;
-use VitesseCms\Datafield\AbstractField;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
+use VitesseCms\Shop\Enum\AmazonEnum;
 
 class AmazonBrowseNode extends AbstractField
 {
     public function buildItemFormElement(
-        AbstractForm $form,
-        Datafield $datafield,
-        Attributes $attributes,
+        AbstractForm       $form,
+        Datafield          $datafield,
+        Attributes         $attributes,
         AbstractCollection $data = null
-    ) {
+    )
+    {
         $attributes = new Attributes();
         if ($data !== null) {
             $attributes->setOptions(ElementHelper::arrayToSelectOptions(
