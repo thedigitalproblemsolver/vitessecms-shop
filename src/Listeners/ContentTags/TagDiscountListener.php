@@ -2,7 +2,9 @@
 
 namespace VitesseCms\Shop\Listeners\ContentTags;
 
+use DateTime;
 use VitesseCms\Communication\Models\NewsletterQueue;
+use VitesseCms\Content\DTO\TagListenerDTO;
 use VitesseCms\Content\Helpers\EventVehicleHelper;
 use VitesseCms\Content\Listeners\ContentTags\AbstractTagListener;
 use VitesseCms\Core\Interfaces\BaseObjectInterface;
@@ -11,7 +13,6 @@ use VitesseCms\Database\Utils\MongoUtil;
 use VitesseCms\Shop\Enum\DiscountEnum;
 use VitesseCms\Shop\Factories\DiscountFactory;
 use VitesseCms\Shop\Models\Discount;
-use DateTime;
 
 class TagDiscountListener extends AbstractTagListener
 {
@@ -20,8 +21,9 @@ class TagDiscountListener extends AbstractTagListener
         $this->name = 'DISCOUNT';
     }
 
-    protected function parse(EventVehicleHelper $contentVehicle, string $tagString): void
+    protected function parse(EventVehicleHelper $contentVehicle, TagListenerDTO $tagListenerDTO): void
     {
+        $tagString = $tagListenerDTO->getTagString();
         $tagOptions = explode(';', $tagString);
         $replace = '';
         if (isset($tagOptions[1]) && MongoUtil::isObjectId($tagOptions[1])) :
