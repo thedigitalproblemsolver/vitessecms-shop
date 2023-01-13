@@ -15,7 +15,7 @@ use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\Shipping;
 use VitesseCms\User\Models\User;
 use MongoDB\BSON\ObjectId;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Tag;
 use function in_array;
 use function is_array;

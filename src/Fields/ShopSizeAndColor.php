@@ -2,22 +2,22 @@
 
 namespace VitesseCms\Shop\Fields;
 
-use VitesseCms\Datafield\Models\Datafield;
+use Phalcon\Tag;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Datafield\AbstractField;
 use VitesseCms\Datafield\Factories\FieldSizeAndColorFactory;
+use VitesseCms\Datafield\Models\Datafield;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Interfaces\AbstractFormInterface;
 use VitesseCms\Form\Models\Attributes;
-use Phalcon\Tag;
-use VitesseCms\Shop\Enums\SizeAndColorEnum;
+use VitesseCms\Shop\Enum\SizeAndColorEnum;
 
 class ShopSizeAndColor extends AbstractField
 {
     public function buildItemFormElement(
-        AbstractForm $form,
-        Datafield $datafield,
-        Attributes $attributes,
+        AbstractForm       $form,
+        Datafield          $datafield,
+        Attributes         $attributes,
         AbstractCollection $data = null
     )
     {
@@ -84,8 +84,8 @@ class ShopSizeAndColor extends AbstractField
 
     public function renderFilter(
         AbstractFormInterface $filter,
-        Datafield $datafield,
-        AbstractCollection $data = null
+        Datafield             $datafield,
+        AbstractCollection    $data = null
     ): void
     {
         $options = [];

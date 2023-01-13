@@ -12,7 +12,7 @@ use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Enum\DiscountEnum;
 use VitesseCms\Shop\Models\Discount;
 use VitesseCms\Shop\Utils\PriceUtil;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 
 class ShopPrice extends AbstractField
 {
@@ -37,9 +37,9 @@ class ShopPrice extends AbstractField
 
     //TODO move to listener
     public function buildItemFormElement(
-        AbstractForm $form,
-        Datafield $datafield,
-        Attributes $attributes,
+        AbstractForm       $form,
+        Datafield          $datafield,
+        Attributes         $attributes,
         AbstractCollection $data = null
     )
     {

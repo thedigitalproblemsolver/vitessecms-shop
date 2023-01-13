@@ -6,7 +6,7 @@ use Phalcon\Events\Event;
 use Phalcon\Http\Request;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Datafield\Models\Datafield;
-use VitesseCms\Shop\Enums\SizeAndColorEnum;
+use VitesseCms\Shop\Enum\SizeAndColorEnum;
 
 class SizeAndColorListener
 {

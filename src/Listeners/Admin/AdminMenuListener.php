@@ -2,7 +2,7 @@
 
 namespace VitesseCms\Shop\Listeners\Admin;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Events\Event;
 use VitesseCms\Admin\Models\AdminMenu;
 use VitesseCms\Admin\Models\AdminMenuNavBarChildren;

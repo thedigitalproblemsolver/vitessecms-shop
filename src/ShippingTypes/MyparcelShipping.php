@@ -14,7 +14,7 @@ use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Order;
 use MyParcelNL\Sdk\src\Helper\MyParcelCollection;
 use MyParcelNL\Sdk\src\Model\Repository\MyParcelConsignmentRepository;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use SplFileObject;
 
 class MyparcelShipping extends AbstractShippingType
