@@ -3,7 +3,7 @@
 namespace VitesseCms\Shop\Helpers;
 
 use MongoDB\BSON\ObjectID;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Http\Response\Cookies;
 use Phalcon\Session\Adapter\Files as Session;
 use VitesseCms\Block\Models\Block;
@@ -58,35 +58,6 @@ class CartHelper
         return implode(' ', $return);
     }
 
-    public function setBlockBasics(Block $block, Cart $cart): void
-    {
-        $cartItems = $cart->getItems(true);
-        $shipping = self::getShipping();
-
-        $block->set('cart', $cartItems);
-        $block->set('shippingName', $shipping->_('name'));
-        $block->set('shippingSubTotal', number_format($shipping->calculateCartAmount($cartItems), 2));
-        $block->set('shippingTax', number_format($shipping->calculateCartVat($cartItems), 2));
-        $block->set('shippingTotal', number_format($shipping->calculateCartTotal($cartItems), 2));
-        $block->set('shippingTotalDisplay', PriceUtil::formatDisplay($block->_('shippingTotal')));
-        $block->set('vatDisplay', PriceUtil::formatDisplay(self::calculateVat($cartItems, $shipping)));
-        $block->set('totalDisplay', PriceUtil::formatDisplay(self::calculateTotal($cartItems, $shipping)));
-        /** @var Discount $discount */
-        $discount = DiscountHelper::getFromSession();
-        if ($discount) :
-            $block->set('discount', $discount);
-            if (DiscountEnum::TARGET_ORDER === $discount->_('target')) :
-                $block->set('totalDiscount', $discount->_('amount'));
-                $block->set('totalDiscountDisplay', PriceUtil::formatDisplay($block->_('totalDiscount')));
-            endif;
-        endif;
-        $block->set(
-            'basketLegend',
-            '<i class="fa fa-trash"></i> = %SHOP_REMOVE%&nbsp;&nbsp;&nbsp;<i class="fa fa-refresh"></i> = %SHOP_UPDATE_QUANTITY%'
-        );
-        $block->set('checkoutBar', false);
-    }
-
     public static function getShipping()
     {
         $shippings = Shipping::findAll();
@@ -117,6 +88,35 @@ class CartHelper
         $total = DiscountHelper::calculateTotal($total);
 
         return $total;
+    }
+
+    public function setBlockBasics(Block $block, Cart $cart): void
+    {
+        $cartItems = $cart->getItems(true);
+        $shipping = self::getShipping();
+
+        $block->set('cart', $cartItems);
+        $block->set('shippingName', $shipping->_('name'));
+        $block->set('shippingSubTotal', number_format($shipping->calculateCartAmount($cartItems), 2));
+        $block->set('shippingTax', number_format($shipping->calculateCartVat($cartItems), 2));
+        $block->set('shippingTotal', number_format($shipping->calculateCartTotal($cartItems), 2));
+        $block->set('shippingTotalDisplay', PriceUtil::formatDisplay($block->_('shippingTotal')));
+        $block->set('vatDisplay', PriceUtil::formatDisplay(self::calculateVat($cartItems, $shipping)));
+        $block->set('totalDisplay', PriceUtil::formatDisplay(self::calculateTotal($cartItems, $shipping)));
+        /** @var Discount $discount */
+        $discount = DiscountHelper::getFromSession();
+        if ($discount) :
+            $block->set('discount', $discount);
+            if (DiscountEnum::TARGET_ORDER === $discount->_('target')) :
+                $block->set('totalDiscount', $discount->_('amount'));
+                $block->set('totalDiscountDisplay', PriceUtil::formatDisplay($block->_('totalDiscount')));
+            endif;
+        endif;
+        $block->set(
+            'basketLegend',
+            '<i class="fa fa-trash"></i> = %SHOP_REMOVE%&nbsp;&nbsp;&nbsp;<i class="fa fa-refresh"></i> = %SHOP_UPDATE_QUANTITY%'
+        );
+        $block->set('checkoutBar', false);
     }
 
     public function getCartFromSession(): Cart

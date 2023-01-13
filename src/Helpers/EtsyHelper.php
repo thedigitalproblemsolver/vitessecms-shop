@@ -4,7 +4,7 @@ namespace VitesseCms\Shop\Helpers;
 
 use OAuth;
 use oauth_client_class;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use stdClass;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractInjectable;
@@ -116,6 +116,48 @@ class EtsyHelper extends AbstractInjectable
         return $this->fetch('listings', $params);
     }
 
+    public function addImageToListing(string $imagePath, int $listingId)
+    {
+        return $this->fetch('listings/' . $listingId . '/images', ['@image' => '@' . $imagePath . ';type=image/jpeg']);
+    }
+
+    public function getListing(int $listingId)
+    {
+        return $this->fetch('listings/' . $listingId, [], OAUTH_HTTP_METHOD_GET);
+    }
+
+    public function getInventory(int $listingId)
+    {
+        return $this->fetch('listings/' . $listingId . '/inventory', [], OAUTH_HTTP_METHOD_GET);
+    }
+
+    public function updateInventoryFromItem(Item $item)
+    {
+        $products = [];
+        if (!empty($item->_('variations'))) :
+            foreach ((array)$item->_('variations') as $variation) :
+                $products[] = $this->inventoryItemFactory(
+                    1,
+                    (int)$this->getSizeId($variation['size']),
+                    (int)$variation['stock'],
+                    19.95
+                );
+            endforeach;
+
+            return $this->fetch('listings/' . $item->_('etsyId') . '/inventory',
+                [
+                    'products' => json_encode($products),
+                    'quantity_on_property' => '200,62809790395',
+                    /*'sku_on_property' => '',
+                    'price_on_property' => '',*/
+                ],
+                'PUT'
+            );
+        endif;
+
+        return null;
+    }
+
     protected function builDescription(Item $item): string
     {
         $description = strip_tags($item->_('introtext'));
@@ -160,52 +202,10 @@ class EtsyHelper extends AbstractInjectable
         return $response;
     }
 
-    public function addImageToListing(string $imagePath, int $listingId)
-    {
-        return $this->fetch('listings/' . $listingId . '/images', ['@image' => '@' . $imagePath . ';type=image/jpeg']);
-    }
-
-    public function getListing(int $listingId)
-    {
-        return $this->fetch('listings/' . $listingId, [], OAUTH_HTTP_METHOD_GET);
-    }
-
-    public function getInventory(int $listingId)
-    {
-        return $this->fetch('listings/' . $listingId . '/inventory', [], OAUTH_HTTP_METHOD_GET);
-    }
-
-    public function updateInventoryFromItem(Item $item)
-    {
-        $products = [];
-        if (!empty($item->_('variations'))) :
-            foreach ((array)$item->_('variations') as $variation) :
-                $products[] = $this->inventoryItemFactory(
-                    1,
-                    (int)$this->getSizeId($variation['size']),
-                    (int)$variation['stock'],
-                    19.95
-                );
-            endforeach;
-
-            return $this->fetch('listings/' . $item->_('etsyId') . '/inventory',
-                [
-                    'products' => json_encode($products),
-                    'quantity_on_property' => '200,62809790395',
-                    /*'sku_on_property' => '',
-                    'price_on_property' => '',*/
-                ],
-                'PUT'
-            );
-        endif;
-
-        return null;
-    }
-
     protected function inventoryItemFactory(
-        int $colorId,
-        int $sizeId,
-        int $quantity,
+        int   $colorId,
+        int   $sizeId,
+        int   $quantity,
         float $price
     )
     {

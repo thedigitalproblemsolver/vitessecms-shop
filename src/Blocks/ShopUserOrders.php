@@ -2,11 +2,11 @@
 
 namespace VitesseCms\Shop\Blocks;
 
+use MongoDB\BSON\ObjectID;
 use VitesseCms\Block\AbstractBlockModel;
 use VitesseCms\Block\Models\Block;
-use VitesseCms\Core\Factories\PaginatonFactory;
+use VitesseCms\Core\Factories\PaginationFactory;
 use VitesseCms\Shop\Models\Order;
-use MongoDB\BSON\ObjectID;
 
 class ShopUserOrders extends AbstractBlockModel
 {
@@ -29,7 +29,7 @@ class ShopUserOrders extends AbstractBlockModel
             );
             Order::addFindOrder('orderId', -1);
             $orders = Order::findAll();
-            $pagination = PaginatonFactory::createFromArray($orders, $this->di->request, $this->di->url);
+            $pagination = PaginationFactory::createFromArray($orders, $this->di->request, $this->di->url);
 
             $orderList = $this->view->renderTemplate(
                 'affiliate_orderlist',

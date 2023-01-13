@@ -7,7 +7,7 @@ use Phalcon\Http\Request;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Content\Blocks\MainContent;
 use VitesseCms\Content\Models\Item;
-use VitesseCms\Core\Factories\PaginatonFactory;
+use VitesseCms\Core\Factories\PaginationFactory;
 use VitesseCms\Core\Helpers\ItemHelper;
 use VitesseCms\Core\Services\UrlService;
 
@@ -24,12 +24,12 @@ class MainContentListener
             Item::setFindValue('parentId', (string)$mainContent->getDi()->view->getCurrentItem()->getId());
             Item::addFindOrder('name', 1);
             Item::setFindLimit(9999);
-            $pagination = PaginatonFactory::createFromArray(
+            $pagination = PaginationFactory::createFromArray(
                 Item::findAll(),
                 new Request(),
                 new UrlService(new Request()),
                 'page',
-                 $block->getInt('overviewItemLimit')
+                $block->getInt('overviewItemLimit')
             );
 
             $designMapper = [];

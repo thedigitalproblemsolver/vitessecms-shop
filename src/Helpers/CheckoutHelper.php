@@ -2,7 +2,7 @@
 
 namespace VitesseCms\Shop\Helpers;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Mvc\CollectionInterface;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractInjectable;
