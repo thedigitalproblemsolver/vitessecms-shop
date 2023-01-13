@@ -35,7 +35,7 @@
     "vitessecms/log": "~0.3.0",
     "vitessecms/content": "~0.3.0",
     "vitessecms/block": "~0.3.0",
-    "vitessecms/database": "~0.3.0",
+    "vitessecms/database": "~0.3.1",
     "vitessecms/mustache": "~0.3.0",
     "ext-mongodb": "*"
   }
