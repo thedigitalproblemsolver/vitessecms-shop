@@ -3,6 +3,7 @@
 namespace VitesseCms\Shop\Listeners\ContentTags;
 
 use DateTime;
+use VitesseCms\Content\DTO\TagListenerDTO;
 use VitesseCms\Content\Helpers\EventVehicleHelper;
 use VitesseCms\Content\Listeners\ContentTags\AbstractTagListener;
 use VitesseCms\Shop\Models\Country;
@@ -15,7 +16,7 @@ class TagOrderSendDateListener extends AbstractTagListener
         $this->name = 'ORDER_SENDDATE';
     }
 
-    protected function parse(EventVehicleHelper $eventVehicle, string $tagString): void
+    protected function parse(EventVehicleHelper $eventVehicle, TagListenerDTO $tagListenerDTO): void
     {
         $replace = '';
         if (!empty($eventVehicle->_('orderId'))) :
