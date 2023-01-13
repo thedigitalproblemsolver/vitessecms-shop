@@ -2,6 +2,7 @@
 
 namespace VitesseCms\Shop\Listeners\ContentTags;
 
+use VitesseCms\Content\DTO\TagListenerDTO;
 use VitesseCms\Content\Helpers\EventVehicleHelper;
 use VitesseCms\Content\Listeners\ContentTags\AbstractTagListener;
 use VitesseCms\Shop\Models\Order;
@@ -14,7 +15,7 @@ class TagShopTrackAndTraceListener extends AbstractTagListener
         $this->name = 'TRACKANDTRACE';
     }
 
-    protected function parse(EventVehicleHelper $eventVehicle, string $tagString): void
+    protected function parse(EventVehicleHelper $eventVehicle, TagListenerDTO $tagListenerDTO): void
     {
         if (!empty($eventVehicle->_('orderId'))) :
             $order = Order::findById($eventVehicle->_('orderId'));
