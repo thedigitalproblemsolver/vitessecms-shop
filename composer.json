@@ -22,21 +22,21 @@
     }
   },
   "require": {
-    "vitessecms/form": "~0.2.10",
+    "vitessecms/form": "~0.3.0",
     "vitessecms/communication": "~0.2.12",
-    "vitessecms/media": "~0.2.12",
+    "vitessecms/media": "~0.3.0",
     "vitessecms/user": "~0.2.10",
     "dividebv/postnl": "^1.1",
     "myparcelnl/sdk": "^1.3",
     "multisafepay/api": "^2.0",
     "vitessecms/core": "~0.2.24",
-    "vitessecms/datafield": "~0.2.13",
-    "vitessecms/datagroup": "~0.2.11",
-    "vitessecms/log": "~0.2.6",
-    "vitessecms/content": "~0.2.21",
-    "vitessecms/block": "~0.2.20",
-    "vitessecms/database": "~0.2.6",
-    "vitessecms/mustache": "~0.2.9",
+    "vitessecms/datafield": "~0.3.0",
+    "vitessecms/datagroup": "~0.3.0",
+    "vitessecms/log": "~0.3.0",
+    "vitessecms/content": "~0.3.0",
+    "vitessecms/block": "~0.3.0",
+    "vitessecms/database": "~0.3.0",
+    "vitessecms/mustache": "~0.3.0",
     "ext-mongodb": "*"
   }
 }
