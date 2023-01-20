@@ -21,7 +21,7 @@ class MainContentListener
     protected function handleOverviewTemplates(MainContent $mainContent, Block $block): void
     {
         if (substr_count($mainContent->getTemplate(), 'overview')) :
-            Item::setFindValue('parentId', (string)$mainContent->getDi()->view->getCurrentItem()->getId());
+            Item::setFindValue('parentId', (string)$mainContent->getDi()->get('view')->getCurrentItem()->getId());
             Item::addFindOrder('name', 1);
             Item::setFindLimit(9999);
             $pagination = PaginationFactory::createFromArray(
@@ -33,12 +33,12 @@ class MainContentListener
             );
 
             $designMapper = [];
-            foreach ($pagination->items as $key => $item) :
+            foreach ($pagination->getItems() as $key => $item) :
                 if (isset($item->outOfStock) && $item->_('outOfStock')) :
-                    unset($pagination->items[$key]);
+                    unset($pagination->getItems()[$key]);
                 else :
                     ItemHelper::parseBeforeMainContent($item);
-                    $pagination->items[$key] = $item;
+                    $pagination->getItems()[$key] = $item;
                 endif;
 
                 if (
@@ -52,8 +52,8 @@ class MainContentListener
                             $items[$designMapper[$item->_('design')]]->designItems[] = $item;
                         endif;
                     else :
-                        $pagination->items[$designMapper[$item->_('design')]]->designItems[] = $item;
-                        unset($pagination->items[$key]);
+                        $pagination->getItems()[$designMapper[$item->_('design')]]->designItems[] = $item;
+                        unset($pagination->getItems()[$key]);
                     endif;
                 endif;
             endforeach;
@@ -61,18 +61,18 @@ class MainContentListener
             if (substr_count($mainContent->getTemplate(), 'shop_clothing_design_overview')) :
                 foreach ($designMapper as $designId => $itemKey) :
                     if (
-                        isset($pagination->items[$itemKey]->designItems)
-                        && count($pagination->items[$itemKey]->designItems) === 1
+                        isset($pagination->getItems()[$itemKey]->designItems)
+                        && count($pagination->getItems()[$itemKey]->designItems) === 1
                     ) :
-                        unset($pagination->items[$itemKey]->designItems);
+                        unset($pagination->getItems()[$itemKey]->designItems);
                     else :
-                        $pagination->items[$itemKey]->hasDesignItems = true;
+                        $pagination->getItems()[$itemKey]->hasDesignItems = true;
                     endif;
                 endforeach;
             endif;
-            $block->set('items', array_values($pagination->items));
+            $block->set('items', array_values($pagination->getItems()));
 
-            if ($pagination->total_pages > 1) :
+            if ($pagination->getTotalPages() > 1) :
                 $block->set('pagination', $pagination);
             endif;
         endif;
