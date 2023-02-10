@@ -17,7 +17,7 @@ class CartController extends AbstractController
         if ($this->request->get('embedded', 'int', 0)) :
             $block = Block::findById($this->setting->get('SHOP_BLOCK_CARTLARGE'));
             /** @var Block $block */
-            $this->view->setVar('content', $this->di->eventsManager->fire(BlockEnum::BLOCK_LISTENER . ':renderBlock', $block));
+            $this->view->setVar('content', $this->di->eventsManager->fire(BlockEnum::LISTENER_RENDER_BLOCK->value, $block));
 
             $this->prepareView();
         else :
