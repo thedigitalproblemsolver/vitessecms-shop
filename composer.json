@@ -24,7 +24,7 @@
   "require": {
     "vitessecms/form": "~0.4.3",
     "vitessecms/communication": "~0.4.0",
-    "vitessecms/media": "~0.4.1",
+    "vitessecms/media": "~0.4.2",
     "vitessecms/user": "~0.4.1",
     "dividebv/postnl": "^2.0",
     "myparcelnl/sdk": "^1.3",
@@ -33,8 +33,8 @@
     "vitessecms/datafield": "~0.3.2",
     "vitessecms/datagroup": "~0.4.0",
     "vitessecms/log": "~0.3.1",
-    "vitessecms/content": "~0.4.3",
-    "vitessecms/block": "~0.4.1",
+    "vitessecms/content": "~0.4.4",
+    "vitessecms/block": "~0.4.2",
     "vitessecms/database": "~0.3.4",
     "vitessecms/mustache": "~0.4.3",
     "ext-mongodb": "*"
