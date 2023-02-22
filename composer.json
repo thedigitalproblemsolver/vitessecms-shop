@@ -33,7 +33,7 @@
     "vitessecms/datafield": "~0.3.2",
     "vitessecms/datagroup": "~0.4.0",
     "vitessecms/log": "~0.3.1",
-    "vitessecms/content": "~0.4.2",
+    "vitessecms/content": "~0.4.3",
     "vitessecms/block": "~0.4.1",
     "vitessecms/database": "~0.3.4",
     "vitessecms/mustache": "~0.4.3",
