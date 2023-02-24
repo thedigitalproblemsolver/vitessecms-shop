@@ -36,7 +36,7 @@
     "vitessecms/content": "~0.4.4",
     "vitessecms/block": "~0.4.3",
     "vitessecms/database": "~0.3.4",
-    "vitessecms/mustache": "~0.4.4",
+    "vitessecms/mustache": "~0.4.5",
     "ext-mongodb": "*"
   }
 }
