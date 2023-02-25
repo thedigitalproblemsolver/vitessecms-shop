@@ -29,7 +29,7 @@
     "dividebv/postnl": "^2.0",
     "myparcelnl/sdk": "^1.3",
     "multisafepay/api": "^2.0",
-    "vitessecms/core": "~0.4.4",
+    "vitessecms/core": "~0.4.7",
     "vitessecms/datafield": "~0.3.3",
     "vitessecms/datagroup": "~0.4.1",
     "vitessecms/log": "~0.3.2",
