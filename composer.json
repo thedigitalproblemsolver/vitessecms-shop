@@ -23,7 +23,7 @@
   },
   "require": {
     "vitessecms/form": "~0.4.3",
-    "vitessecms/communication": "~0.4.1",
+    "vitessecms/communication": "~0.4.3",
     "vitessecms/media": "~0.4.4",
     "vitessecms/user": "~0.4.1",
     "dividebv/postnl": "^2.0",
@@ -33,7 +33,7 @@
     "vitessecms/datafield": "~0.3.3",
     "vitessecms/datagroup": "~0.4.1",
     "vitessecms/log": "~0.3.2",
-    "vitessecms/content": "~0.4.4",
+    "vitessecms/content": "~0.4.5",
     "vitessecms/block": "~0.4.4",
     "vitessecms/database": "~0.3.4",
     "vitessecms/mustache": "~0.4.7",
