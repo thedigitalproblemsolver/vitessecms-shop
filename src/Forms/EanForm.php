@@ -9,28 +9,21 @@ use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Interfaces\FormWithRepositoryInterface;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Models\Ean;
-use VitesseCms\Shop\Repositories\RepositoryCollection;
 
 class EanForm extends AbstractFormWithRepository
 {
     /**
      * @var Ean
      */
-    protected $_entity;
-
-    /**
-     * @var RepositoryCollection
-     */
-
-    protected $repositories;
+    protected $entity;
 
     public function buildForm(): FormWithRepositoryInterface
     {
         $html = '';
         $options = ['' => '%ADMIN_TYPE_TO_SEARCH%'];
 
-        if ($this->_entity->getParentItem() !== null) :
-            $selectedItem = $this->repositories->item->getById($this->_entity->getParentItem(), false);
+        if ($this->entity->getParentItem() !== null) :
+            $selectedItem = $this->repositories->item->getById($this->entity->getParentItem(), false);
             $itemPath = ItemHelper::getPathFromRoot($selectedItem);
             $options[(string)$selectedItem->getId()] = implode(' - ', $itemPath);
 
