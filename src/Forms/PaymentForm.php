@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
@@ -25,7 +26,7 @@ class PaymentForm extends AbstractForm
                 'type',
                 (new Attributes())
                     ->setRequired(true)
-                    ->setOptions(ElementHelper::arrayToSelectOptions((new Payment)->getTypes()))
+                    ->setOptions(ElementHelper::arrayToSelectOptions((new Payment())->getTypes()))
             );
         else :
             $object = $item->getTypeClass();
