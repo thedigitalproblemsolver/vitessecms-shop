@@ -31,11 +31,15 @@ class ShopUserOrders extends AbstractBlockModel
             );
             Order::addFindOrder('orderId', -1);
             $orders = Order::findAll();
-            $pagination = PaginationFactory::createFromArray($orders, $this->di->request, $this->di->url);
+            $pagination = PaginationFactory::createFromArray(
+                $orders,
+                $this->getDi()->get('request'),
+                $this->getDi()->get('url')
+            );
 
             $orderList = $this->view->renderTemplate(
                 'affiliate_orderlist',
-                $this->di->configuration->getRootDir() . 'Template/core/Views/partials/shop',
+                $this->getDi()->get('configuration')->getRootDir() . 'Template/core/Views/partials/shop',
                 [
                     'orderlistOrders' => $pagination->items,
                     'pagination' => $pagination
