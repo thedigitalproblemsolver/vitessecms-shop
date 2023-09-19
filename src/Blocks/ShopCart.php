@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Blocks;
 
@@ -19,8 +21,8 @@ class ShopCart extends AbstractBlockModel
     {
         parent::parse($block);
 
-        $cart = $this->di->shop->cart->getCartFromSession();
-        Item::setFindValue('datagroup', $this->di->setting->get('SHOP_DATAGROUP_CHECKOUT'));
+        $cart = $this->getDi()->get('shop')->cart->getCartFromSession();
+        Item::setFindValue('datagroup', $this->getDi()->get('setting')->get('SHOP_DATAGROUP_CHECKOUT'));
         $checkoutPage = Item::findFirst();
 
         $template = explode('/', $this->_('template'));

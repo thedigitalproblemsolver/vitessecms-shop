@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Blocks;
 
@@ -21,11 +23,11 @@ class ShopUserOrders extends AbstractBlockModel
     {
         parent::parse($block);
 
-        if ($this->di->user->isLoggedIn()) :
+        if ($this->getDi()->get('user')->isLoggedIn()) :
             Order::setFindPublished(false);
             Order::setFindValue(
                 'shopper.user._id',
-                new ObjectID((string)$this->di->user->getId())
+                new ObjectID((string)$this->getDi()->get('user')->getId())
             );
             Order::addFindOrder('orderId', -1);
             $orders = Order::findAll();
