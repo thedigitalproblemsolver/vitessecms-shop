@@ -23,7 +23,6 @@ class UserListener
         private readonly OrderRepository $orderRepository
     ) {
         //overige
-        //delete form submissions
         //delete newsletter stuff
         //
     }
@@ -40,7 +39,7 @@ class UserListener
     private function deleteOrders(string $userId): void
     {
         $this->performDeletion(
-            $this->orderRepository->findAll(new FindValueIterator([new FindValue('shopper.userId', $userId)])),
+            $this->orderRepository->findAll(new FindValueIterator([new FindValue('shopper.userId', $userId)]), false),
             'Order',
             'Orders'
         );
@@ -68,7 +67,7 @@ class UserListener
     private function deleteShopper(string $userId): void
     {
         $this->performDeletion(
-            $this->shopperRepository->findAll(new FindValueIterator([new FindValue('userId', $userId)])),
+            $this->shopperRepository->findAll(new FindValueIterator([new FindValue('userId', $userId)]), false),
             'Shopper',
             'Shoppers'
         );
@@ -77,7 +76,7 @@ class UserListener
     private function deleteShipToAddress(string $userId): void
     {
         $this->performDeletion(
-            $this->shipToAddressRepository->findAll(new FindValueIterator([new FindValue('userId', $userId)])),
+            $this->shipToAddressRepository->findAll(new FindValueIterator([new FindValue('userId', $userId)]), false),
             'ShipTo Address',
             'ShipTo Addresses'
         );
