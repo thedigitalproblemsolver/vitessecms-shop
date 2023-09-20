@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Listeners;
 
@@ -19,12 +21,17 @@ use VitesseCms\Shop\Listeners\Controllers\AdmineanControllerListener;
 use VitesseCms\Shop\Listeners\Controllers\AdminorderControllerListener;
 use VitesseCms\Shop\Listeners\Controllers\AdminorderstateControllerListener;
 use VitesseCms\Shop\Listeners\Fields\SizeAndColorListener;
+use VitesseCms\Shop\Listeners\Models\UserListener;
+use VitesseCms\Shop\Repositories\OrderRepository;
+use VitesseCms\Shop\Repositories\ShipToAddressRepository;
+use VitesseCms\Shop\Repositories\ShopperRepository;
+use VitesseCms\User\Models\User;
 
 class InitiateAdminListeners implements InitiateListenersInterface
 {
     public static function setListeners(InjectableInterface $di): void
     {
-        if($di->configuration->isEcommerce()):
+        if ($di->configuration->isEcommerce()):
             $di->eventsManager->attach('adminMenu', new AdminMenuListener());
             $di->eventsManager->attach(AdminorderController::class, new AdminorderControllerListener());
             $di->eventsManager->attach(AdminorderstateController::class, new AdminorderstateControllerListener());
@@ -33,6 +40,15 @@ class InitiateAdminListeners implements InitiateListenersInterface
             $di->eventsManager->attach(AdmineanController::class, new AdmineanControllerListener());
             $di->eventsManager->attach(AffiliateInitialize::class, new AffiliateInitializeListener());
             $di->eventsManager->attach(ShopSizeAndColor::class, new SizeAndColorListener());
+            $di->eventsManager->attach(
+                User::class,
+                new UserListener(
+                    $di->log,
+                    new ShopperRepository(),
+                    new ShipToAddressRepository(),
+                    new OrderRepository()
+                )
+            );
         endif;
     }
 }

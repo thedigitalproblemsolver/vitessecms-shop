@@ -1,9 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Repositories;
 
 use MongoDB\BSON\ObjectId;
+use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Shop\Models\Order;
+use VitesseCms\Shop\Models\OrderIterator;
 
 class OrderRepository
 {
@@ -32,5 +36,29 @@ class OrderRepository
         endif;
 
         return null;
+    }
+
+    public function findAll(?FindValueIterator $findValues = null, bool $hideUnpublished = true): OrderIterator
+    {
+        Order::setFindPublished($hideUnpublished);
+        Order::addFindOrder('name');
+        $this->parseFindValues($findValues);
+
+        return new OrderIterator(Order::findAll());
+    }
+
+    protected function parseFindValues(?FindValueIterator $findValues = null): void
+    {
+        if ($findValues !== null) :
+            while ($findValues->valid()) :
+                $findValue = $findValues->current();
+                Order::setFindValue(
+                    $findValue->getKey(),
+                    $findValue->getValue(),
+                    $findValue->getType()
+                );
+                $findValues->next();
+            endwhile;
+        endif;
     }
 }
