@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
@@ -9,7 +11,7 @@ use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Helpers\ShippingHelper;
 use VitesseCms\Shop\Models\Shipping;
 
-class ShippingForm extends AbstractForm
+final class ShippingForm extends AbstractForm
 {
     public function initialize(Shipping $item = null)
     {
@@ -19,21 +21,23 @@ class ShippingForm extends AbstractForm
 
         $this->addText('%CORE_NAME%', 'name', (new Attributes())->setRequired()->setMultilang());
 
-        if (!$item->_('type')) :
+        if (!class_exists($item->type)) :
             $this->addDropdown(
                 '%ADMIN_TYPE%',
                 'type',
                 (new Attributes())->setRequired()
-                    ->setOptions(ElementHelper::arrayToSelectOptions(ShippingHelper::getTypes(
-                        $this->configuration->getRootDir(),
-                        $this->configuration->getAccount()
+                    ->setOptions(
+                        ElementHelper::arrayToSelectOptions(
+                            ShippingHelper::getTypes(
+                                $this->configuration->getVendorNameDir(),
+                                $this->configuration->getAccountDir()
+                            )
+                        )
                     )
-                    )
-                    ));
+            );
         else :
-            $object = ShippingHelper::getClass($item->_('type'));
             /** @var AbstractCollection $item */
-            $item = new $object();
+            $item = new $item->type();
             $item->buildAdminForm($this);
         endif;
 

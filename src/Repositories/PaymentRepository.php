@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Repositories;
 
@@ -7,7 +9,7 @@ use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Shop\Models\Payment;
 use VitesseCms\Shop\Models\PaymentIterator;
 
-class PaymentRepository extends AbstractCollectionRepository
+final class PaymentRepository
 {
     public function getById(string $id, bool $hideUnpublished = true): ?Payment
     {
@@ -22,10 +24,7 @@ class PaymentRepository extends AbstractCollectionRepository
         return null;
     }
 
-    public function findAll(
-        ?FindValueIterator $findValues = null,
-        bool $hideUnpublished = true
-    ): PaymentIterator
+    public function findAll(?FindValueIterator $findValues = null, bool $hideUnpublished = true): PaymentIterator
     {
         Payment::setFindPublished($hideUnpublished);
 

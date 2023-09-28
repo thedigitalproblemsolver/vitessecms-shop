@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -59,7 +60,7 @@ class PaymentController extends AbstractController
         $this->view->set('shopOrder', $shopOrder);
 
         if ($orderState->_('messageType')) :
-            $messageType = $orderState->_('messageType');
+            $messageType = 'set' . ucfirst($orderState->_('messageType'));
             $this->flash->$messageType($orderState->_('messageText'));
         endif;
 

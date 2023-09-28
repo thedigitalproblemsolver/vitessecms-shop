@@ -1,65 +1,77 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
 use VitesseCms\Shop\AbstractShippingType;
-use VitesseCms\Shop\Helpers\ShippingHelper;
 
-class Shipping extends AbstractShippingType
+final class Shipping extends AbstractShippingType
 {
-    /**
-     * @var AbstractShippingType
-     */
-    protected $engine;
+    public ?string $type = null;
+    public $engine;
 
-    public function afterFetch()
+    public function calculateOrderTotal(Order $order): float
     {
-        parent::afterFetch();
+        $this->setEngine();
 
-        if ($this->_('type')) :
-            $object = ShippingHelper::getClass($this->_('type'));
-            $this->engine = new $object();
-            $this->engine->set('shipping', $this);
+        return $this->engine->calculateOrderAmount($order) + $this->engine->calculateOrderVat($order);
+    }
+
+    public function setEngine(): void
+    {
+        if ($this->type && class_exists($this->type)) :
+            $this->engine = new $this->type();
+            //$this->engine->set('shipping', $this);
         endif;
     }
 
     public function calculateOrderAmount(Order $order): float
     {
+        $this->setEngine();
+
         return $this->engine->calculateOrderAmount($order);
     }
 
     public function calculateOrderVat(Order $order): float
     {
+        $this->setEngine();
+
         return $this->engine->calculateOrderVat($order);
     }
 
-    public function calculateOrderTotal(Order $order): float
+    public function calculateCartTotal(array $items): float
     {
-        return $this->engine->calculateOrderAmount($order) + $this->engine->calculateOrderVat($order);
+        $this->setEngine();
+
+        return $this->engine->calculateCartAmount($items) + $this->engine->calculateCartVat($items);
     }
 
     public function calculateCartAmount(array $items): float
     {
+        $this->setEngine();
+
         return $this->engine->calculateCartAmount($items);
     }
 
     public function calculateCartVat(array $items): float
     {
-        return $this->engine->calculateCartVat($items);
-    }
+        $this->setEngine();
 
-    public function calculateCartTotal(array $items): float
-    {
-        return $this->engine->calculateCartAmount($items) + $this->engine->calculateCartVat($items);
+        return $this->engine->calculateCartVat($items);
     }
 
     public function getLabelLink(Order $order): string
     {
+        $this->setEngine();
+
         return $this->engine->getLabelLink($order);
     }
 
     public function getLabel(Order $order, ?string $packageType): ?string
     {
+        $this->setEngine();
+
         return $this->engine->getLabel($order, $packageType);
     }
 
@@ -70,6 +82,8 @@ class Shipping extends AbstractShippingType
 
     public function getTrackAndTraceLink(Order $order): string
     {
+        $this->setEngine();
+
         return $this->engine->getTrackAndTraceLink($order);
     }
 }

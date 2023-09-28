@@ -1,38 +1,28 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
 use MongoDB\BSON\ObjectID;
 use Phalcon\Di\Di;
 use Phalcon\Http\Response\Cookies;
-use Phalcon\Session\Adapter\Files as Session;
 use stdClass;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\Factories\ObjectFactory;
 use VitesseCms\Core\Helpers\ItemHelper;
-use VitesseCms\Core\Interfaces\BaseObjectInterface;
 use VitesseCms\Core\Utils\CookieUtil;
 use VitesseCms\Core\Utils\SessionUtil;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Database\Utils\MongoUtil;
 use VitesseCms\Shop\Helpers\CartHelper;
 use VitesseCms\Shop\Helpers\DiscountHelper;
-use VitesseCms\Shop\Helpers\ProductHelper;
 use VitesseCms\Shop\Utils\PriceUtil;
-use function is_object;
 
-class Cart extends AbstractCollection
+final class Cart extends AbstractCollection
 {
-
-    /**
-     * @var BaseObjectInterface
-     */
-    public $products;
-
-    /**
-     * @var Int
-     */
-    public $productsTotal;
+    public $products = null;
+    public int $productsTotal;
 
     /**
      * @deprecated should be used as a service
@@ -146,11 +136,25 @@ class Cart extends AbstractCollection
         return $quantity;
     }
 
+    public function _(string $key, string $languageShort = null)
+    {
+        $return = parent::_($key);
+        if (!$return) :
+            if (isset($this->products->$key)) :
+                $return = $this->products->$key;
+            endif;
+        endif;
+
+        return $return;
+    }
+
     public function calculateTotalProducts(): void
     {
         $total = 0;
         foreach ($this->products as $cartItemId => $product) :
-            $total += $product['quantity'];
+            if (is_array($product)) {
+                $total += $this->products->$cartItemId['quantity'];
+            }
         endforeach;
         $this->productsTotal = $total;
     }
@@ -190,18 +194,6 @@ class Cart extends AbstractCollection
         endif;
 
         return '%SHOP_CART_EMPTY%';
-    }
-
-    public function _(string $key, string $languageShort = null)
-    {
-        $return = parent::_($key);
-        if (!$return) :
-            if (isset($this->products->$key)) :
-                $return = $this->products->$key;
-            endif;
-        endif;
-
-        return $return;
     }
 
     public function getItems(bool $parseBeforeMainContent = false): array

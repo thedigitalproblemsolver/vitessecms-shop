@@ -8,7 +8,7 @@ use VitesseCms\Block\AbstractBlockModel;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Content\Models\Item;
 
-class ShopCart extends AbstractBlockModel
+final class ShopCart extends AbstractBlockModel
 {
     public function initialize()
     {
@@ -38,16 +38,16 @@ class ShopCart extends AbstractBlockModel
                 if (!$cart->hasProducts()) :
                     $block->set('EmptyCartPage', Item::findById($this->di->setting->get('SHOP_PAGE_EMPTYCART')));
                 else :
-                    Item::setFindValue('datagroup', $this->di->setting->get('SHOP_DATAGROUP_PACKING'));
+                    Item::setFindValue('datagroup', $this->getDi()->get('setting')->get('SHOP_DATAGROUP_PACKING'));
                     $block->set('packingItems', Item::findAll());
                     if ($block->_('packingItems')) :
                         $block->set('packingTeaser', '%SHOP_PACKING_TEASER%');
                     endif;
 
-                    $this->di->shop->cart->setBlockBasics($block, $cart);
+                    $this->getDi()->get('shop')->cart->setBlockBasics($block, $cart);
 
-                    if (!$this->di->request->get('embedded', 'int', 0)) :
-                        $block->set('checkoutLink', $this->di->shop->checkout->getNextStep()->_('slug'));
+                    if (!$this->getDi()->get('request')->get('embedded', 'int', 0)) :
+                        $block->set('checkoutLink', $this->getDi()->get('shop')->checkout->getNextStep()->_('slug'));
                         $block->set('checkoutBar', true);
                     endif;
                 endif;

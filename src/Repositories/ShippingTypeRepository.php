@@ -1,14 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Repositories;
 
-use MicheleAngioni\PhalconRepositories\AbstractCollectionRepository;
 use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Shop\AbstractShippingType;
 use VitesseCms\Shop\Models\Shipping;
 use VitesseCms\Shop\Models\ShippingIterator;
 
-class ShippingTypeRepository extends AbstractCollectionRepository
+final class ShippingTypeRepository
 {
     public function getById(string $id, bool $hideUnpublished = true): ?AbstractShippingType
     {
@@ -23,10 +24,7 @@ class ShippingTypeRepository extends AbstractCollectionRepository
         return null;
     }
 
-    public function findAll(
-        ?FindValueIterator $findValues = null,
-        bool $hideUnpublished = true
-    ): ShippingIterator
+    public function findAll(?FindValueIterator $findValues = null, bool $hideUnpublished = true): ShippingIterator
     {
         Shipping::setFindPublished($hideUnpublished);
 
