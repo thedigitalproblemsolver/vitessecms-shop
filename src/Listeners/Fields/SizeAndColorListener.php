@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Listeners\Fields;
 
@@ -8,7 +10,7 @@ use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Datafield\Models\Datafield;
 use VitesseCms\Shop\Enum\SizeAndColorEnum;
 
-class SizeAndColorListener
+final class SizeAndColorListener
 {
     public function beforeItemSave(Event $event, AbstractCollection $item, Datafield $datafield): void
     {
@@ -34,9 +36,9 @@ class SizeAndColorListener
         $inStock = 0;
         $firstImage = $item->_('image');
         $firstImageSet = false;
-        if (is_array($item->_($datafield->getCallingName()))) :
-            foreach ($item->_($datafield->getCallingName()) as $variation) :
-                if ((int)$variation['stock'] > 0) :
+        if (is_array($item->_($datafield->getCallingName()))) {
+            foreach ($item->_($datafield->getCallingName()) as $variation) {
+                if ($variation['stock'] > 0) {
                     if (!isset($colors[$variation['color']])) :
                         $colors[$variation['color']] = ['sku' => []];
                     endif;
@@ -45,16 +47,16 @@ class SizeAndColorListener
                         $sizes[$variation['size']] = ['sku' => []];
                     endif;
                     $sizes[$variation['size']]['sku'][] = $variation['sku'];
-                    $colors[strtolower($variation['color'])]['sku'][] = $variation['sku'];
-                    $colors[strtolower($variation['color'])]['image'] = $variation['image'];
+                    $colors[$variation['color']]['sku'][] = $variation['sku'];
+                    $colors[$variation['color']]['image'] = $variation['image'];
 
                     $inStock += (int)$variation['stock'];
                     if (!$firstImageSet && !empty($variation['image'][0])) :
                         $firstImage = $variation['image'][0];
                         $firstImageSet = true;
                     endif;
-                endif;
-            endforeach;
+                }
+            }
 
             $aColors = [];
             foreach ($colors as $s => $sku) :
@@ -90,6 +92,6 @@ class SizeAndColorListener
             endif;
 
             $item->set('firstImage', $firstImage);
-        endif;
+        }
     }
 }
