@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
@@ -6,7 +8,7 @@ use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Shop\AbstractShippingType;
 use VitesseCms\Shop\Factories\ShippingTypeFactory;
 
-class Order extends AbstractCollection
+final class Order extends AbstractCollection
 {
     /**
      * @var OrderState
@@ -112,6 +114,11 @@ class Order extends AbstractCollection
      * @var string
      */
     public $totalDisplay;
+
+    public function getNameField(string $languageShort = null): string
+    {
+        return (string)$this->orderId;
+    }
 
     public function getNumber(): int
     {

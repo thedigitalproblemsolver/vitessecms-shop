@@ -1,11 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Shop\Models\Order;
 
-class OrderForm extends AbstractForm
+/**
+ * @deprecated is this form stillbeing used?
+ */
+final class OrderForm extends AbstractForm
 {
     public function initialize(Order $item = null)
     {
@@ -14,7 +19,6 @@ class OrderForm extends AbstractForm
             ->addText('tax', 'tax')
             ->addText('total', 'total')
             ->addText('shippingAmount', 'shippingAmount')
-            ->addText('shippingTax', 'shippingTax')
-            ->addText('orderState', 'orderState');
+            ->addText('shippingTax', 'shippingTax');
     }
 }

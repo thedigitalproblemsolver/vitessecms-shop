@@ -1,23 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
 use VitesseCms\Admin\AbstractAdminController;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Form\AbstractForm;
-use VitesseCms\Shop\Forms\OrderForm;
 use VitesseCms\Shop\Helpers\OrderHelper;
 use VitesseCms\Shop\Interfaces\RepositoriesInterface;
 use VitesseCms\Shop\Models\Order;
 
-class AdminorderController extends AbstractAdminController implements RepositoriesInterface
+final class AdminorderController extends AbstractAdminController implements RepositoriesInterface
 {
     public function onConstruct()
     {
         parent::onConstruct();
 
         $this->class = Order::class;
-        $this->classForm = OrderForm::class;
         $this->listOrder = 'orderId';
         $this->listOrderDirection = -1;
     }
@@ -27,8 +27,7 @@ class AdminorderController extends AbstractAdminController implements Repositori
         string $template = 'adminEditForm',
         string $templatePath = 'core/src/Resources/views/',
         AbstractForm $form = null
-    ): void
-    {
+    ): void {
         parent::editAction(
             $itemId,
             'orderEdit',
