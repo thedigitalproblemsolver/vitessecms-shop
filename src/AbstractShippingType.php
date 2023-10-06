@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VitesseCms\Shop;
@@ -22,14 +23,8 @@ use VitesseCms\User\Models\User;
 abstract class AbstractShippingType extends AbstractCollection implements
     ShippingTypeInterface
 {
-    /**
-     * @var string
-     */
-    public $barcode;
-    /**
-     * @var Shipping
-     */
-    protected $shipping;
+    public ?string $barcode;
+    protected ?Shipping $shipping;
 
     public function buildAdminForm(ShippingForm $form)
     {

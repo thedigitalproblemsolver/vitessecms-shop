@@ -21,8 +21,9 @@ final class Shipping extends AbstractShippingType
     public function setEngine(): void
     {
         if ($this->type && class_exists($this->type)) :
+            $shipping = clone $this;
             $this->engine = new $this->type();
-            //$this->engine->set('shipping', $this);
+            $this->engine->set('shipping', $shipping);
         endif;
     }
 

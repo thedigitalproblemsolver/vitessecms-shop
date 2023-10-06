@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Listeners;
 
 use VitesseCms\Content\Blocks\MainContent;
 use VitesseCms\Core\Interfaces\InitiateListenersInterface;
 use VitesseCms\Core\Interfaces\InjectableInterface;
+use VitesseCms\Shop\Enum\CountryEnum;
 use VitesseCms\Shop\Fields\ShopPrice;
 use VitesseCms\Shop\Listeners\Admin\AdminMenuListener;
 use VitesseCms\Shop\Listeners\Blocks\MainContentListener;
@@ -12,13 +15,15 @@ use VitesseCms\Shop\Listeners\ContentTags\TagDiscountListener;
 use VitesseCms\Shop\Listeners\ContentTags\TagOrderSendDateListener;
 use VitesseCms\Shop\Listeners\ContentTags\TagShopTrackAndTraceListener;
 use VitesseCms\Shop\Listeners\Fields\PriceListener;
+use VitesseCms\Shop\Listeners\Models\CountryListener;
+use VitesseCms\Shop\Repositories\CountryRepository;
 
-class InitiateListeners implements InitiateListenersInterface
+final class InitiateListeners implements InitiateListenersInterface
 {
     public static function setListeners(InjectableInterface $di): void
     {
-        if($di->configuration->isEcommerce()):
-            if($di->user->hasAdminAccess()):
+        if ($di->configuration->isEcommerce()):
+            if ($di->user->hasAdminAccess()):
                 $di->eventsManager->attach('adminMenu', new AdminMenuListener());
                 $di->eventsManager->attach(ShopPrice::class, new PriceListener());
             endif;
@@ -29,6 +34,7 @@ class InitiateListeners implements InitiateListenersInterface
             $di->eventsManager->attach('contentTag', new TagOrderSendDateListener());
             $di->eventsManager->attach('contentTag', new TagShopTrackAndTraceListener());
             $di->eventsManager->attach(ShopPrice::class, new PriceListener());
+            $di->eventsManager->attach(CountryEnum::LISTENER->value, new CountryListener(new CountryRepository()));
         endif;
     }
 }

@@ -1,14 +1,23 @@
 <?php
+
 declare(strict_types=1);
 
 namespace VitesseCms\Shop\Repositories;
 
-class CountryRepository extends AbstractCollectionRepository
-{
-    protected $model;
+use VitesseCms\Shop\Models\Country;
 
-    public function __construct()
+final class CountryRepository
+{
+    public function getById(string $id, bool $hideUnpublished = true): ?Country
     {
-        $this->model = new Country();
+        Country::setFindPublished($hideUnpublished);
+
+        /** @var Country $country */
+        $country = Country::findById($id);
+        if (is_object($country)):
+            return $country;
+        endif;
+
+        return null;
     }
 }
