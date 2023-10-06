@@ -1,11 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Listeners\Controllers;
 
 use Phalcon\Events\Event;
 use Phalcon\Tag;
 use VitesseCms\Admin\Forms\AdminlistFormInterface;
-use VitesseCms\Admin\Utils\AdminUtil;
 use VitesseCms\Core\Factories\ObjectFactory;
 use VitesseCms\Database\Models\FindValue;
 use VitesseCms\Database\Models\FindValueIterator;
@@ -18,42 +19,47 @@ use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Forms\OrderOrderStateForm;
 use VitesseCms\Shop\Forms\ShippingBarcodeForm;
 use VitesseCms\Shop\Models\Order;
+use VitesseCms\Shop\Repositories\ShippingTypeRepository;
 use VitesseCms\User\Utils\PermissionUtils;
 
-class AdminorderControllerListener
+final class AdminorderControllerListener
 {
-    public function beforeEdit(Event $event, AdminorderController $controller, Order $order): void
+    public function __construct(private readonly ShippingTypeRepository $shippingTypeRepository)
     {
-        if (AdminUtil::isAdminPage()) :
-            $shippingType = $controller->repositories->shippingType->getById((string)$order->getShippingType()->getId());
-            if ($shippingType) :
-                $controller->addRenderParam('shippingLabelLink', $shippingType->getLabelLink($order));
-            endif;
-
-            if (!empty($order->getAffiliateId())) :
-                $controller->addRenderParam(
-                    'affiliateName',
-                    $controller->repositories->item->getById($order->getAffiliateId(), false)
-                );
-            endif;
-
-            if (
-                $controller->user->getPermissionRole() === 'superadmin'
-                && empty($order->getShippingType()->getBarcode())
-            ) :
-                $barcodeForm = new ShippingBarcodeForm();
-                $barcodeForm->addText('Barcode', 'barcode');
-                $controller->addRenderParam('barcodeForm',
-                    $barcodeForm->renderForm(
-                        'admin/shop/adminshipping/setBarcode/' . $order->getId(),
-                        'barcodeForm',
-                        true
-                    )
-                );
-            endif;
-        endif;
     }
 
+    public function beforeEditModel(Event $event, AdminorderController $adminorderController, Order $order): void
+    {
+        $shippingType = $this->shippingTypeRepository->getById((string)$order->getShippingType()->getId());
+        if ($shippingType) {
+            $adminorderController->addFormParams('shippingLabelLink', $shippingType->getLabelLink($order));
+        }
+
+        if (!empty($order->getAffiliateId())) {
+            $adminorderController->addFormParams(
+                'affiliateName',
+                $adminorderController->repositories->item->getById($order->getAffiliateId(), false)
+            );
+        }
+
+        if (
+            $adminorderController->user->getPermissionRole() === 'superadmin'
+            && empty($order->getShippingType()->getBarcode())
+        ) {
+            $barcodeForm = new ShippingBarcodeForm();
+            $barcodeForm->addText('Barcode', 'barcode');
+            $adminorderController->addFormParams(
+                'barcodeForm',
+                $barcodeForm->renderForm(
+                    'admin/shop/adminshipping/setBarcode/' . $order->getId(),
+                    'barcodeForm',
+                    true
+                )
+            );
+        }
+    }
+
+    //TODO nog te implementeren
     public function adminListItem(Event $event, AdminorderController $controller, Order $order): void
     {
         $return = '';
@@ -104,15 +110,18 @@ class AdminorderControllerListener
             $orderStateForm = $order->_('orderState')['name'][$controller->configuration->getLanguageShort()];
         endif;
 
-        $adminListExtra = $controller->eventsManager->fire(ViewEnum::RENDER_TEMPLATE_EVENT, new RenderTemplateDTO(
-            'orderAdminListItem',
-            $controller->router->getModuleName() . '/src/Resources/views/admin/list/',
-            [
-                'order' => $order,
-                'orderStateForm' => $orderStateForm,
-            ]
-        ));
-        
+        $adminListExtra = $controller->eventsManager->fire(
+            ViewEnum::RENDER_TEMPLATE_EVENT,
+            new RenderTemplateDTO(
+                'orderAdminListItem',
+                $controller->router->getModuleName() . '/src/Resources/views/admin/list/',
+                [
+                    'order' => $order,
+                    'orderStateForm' => $orderStateForm,
+                ]
+            )
+        );
+
         $order->setAdminListExtra($adminListExtra);
     }
 
@@ -120,8 +129,7 @@ class AdminorderControllerListener
         Event $event,
         AdminorderController $controller,
         AdminlistFormInterface $form
-    ): string
-    {
+    ): void {
         $form->addNumber('%SHOP_ORDERID%', 'filter[orderId]')
             ->addDropdown(
                 'Order state',
@@ -135,19 +143,16 @@ class AdminorderControllerListener
             $form->addDropdown(
                 'Affiliate property',
                 'filter[affiliateId]',
-                (new Attributes())->setOptions(ElementHelper::modelIteratorToOptions(
-                    $controller->repositories->item->findAll(
-                        new FindValueIterator(
-                            [new FindValue('datagroup', $form->setting->get('SHOP_DATAGROUP_AFFILIATE'))]
+                (new Attributes())->setOptions(
+                    ElementHelper::modelIteratorToOptions(
+                        $controller->repositories->item->findAll(
+                            new FindValueIterator(
+                                [new FindValue('datagroup', $form->setting->get('SHOP_DATAGROUP_AFFILIATE'))]
+                            )
                         )
                     )
-                ))
+                )
             );
         endif;
-
-        return $form->renderForm(
-            $controller->getLink() . '/' . $controller->router->getActionName(),
-            'adminFilter'
-        );
     }
 }

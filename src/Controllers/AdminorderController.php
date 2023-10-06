@@ -4,40 +4,35 @@ declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
-use VitesseCms\Admin\AbstractAdminController;
+use ArrayIterator;
+use stdClass;
+use VitesseCms\Admin\Interfaces\AdminModelEditableInterface;
+use VitesseCms\Admin\Interfaces\AdminModelFormInterface;
+use VitesseCms\Admin\Interfaces\AdminModelListInterface;
+use VitesseCms\Admin\Traits\TraitAdminModelEditable;
+use VitesseCms\Admin\Traits\TraitAdminModelList;
+use VitesseCms\Core\AbstractControllerAdmin;
 use VitesseCms\Database\AbstractCollection;
-use VitesseCms\Form\AbstractForm;
+use VitesseCms\Database\Models\FindValueIterator;
+use VitesseCms\Shop\Enum\OrderEnum;
+use VitesseCms\Shop\Forms\OrderForm;
 use VitesseCms\Shop\Helpers\OrderHelper;
-use VitesseCms\Shop\Interfaces\RepositoriesInterface;
-use VitesseCms\Shop\Models\Order;
+use VitesseCms\Shop\Repositories\OrderRepository;
 
-final class AdminorderController extends AbstractAdminController implements RepositoriesInterface
+final class AdminorderController extends AbstractControllerAdmin implements
+    AdminModelListInterface,
+    AdminModelEditableInterface
 {
+    use TraitAdminModelList;
+    use TraitAdminModelEditable;
+
+    private readonly OrderRepository $orderRepository;
+
     public function onConstruct()
     {
         parent::onConstruct();
 
-        $this->class = Order::class;
-        $this->listOrder = 'orderId';
-        $this->listOrderDirection = -1;
-    }
-
-    public function editAction(
-        string $itemId = null,
-        string $template = 'adminEditForm',
-        string $templatePath = 'core/src/Resources/views/',
-        AbstractForm $form = null
-    ): void {
-        parent::editAction(
-            $itemId,
-            'orderEdit',
-            'shop/src/Resources/views/admin/'
-        );
-    }
-
-    public function saveAction(?string $itemId = null, AbstractCollection $item = null, AbstractForm $form = null): void
-    {
-        die('Order saving not allowed.');
+        $this->orderRepository = $this->eventsManager->fire(OrderEnum::GET_REPOSITORY->value, new stdClass());
     }
 
     public function changeOrderStateAction(): void
@@ -68,5 +63,28 @@ final class AdminorderController extends AbstractAdminController implements Repo
         endif;
 
         $this->redirect();
+    }
+
+    public function getModelList(?FindValueIterator $findValueIterator): ArrayIterator
+    {
+        return $this->orderRepository->findAll(
+            $findValueIterator,
+            false
+        );
+    }
+
+    public function getModel(string $id): ?AbstractCollection
+    {
+        return $this->orderRepository->getById($id);
+    }
+
+    public function getModelForm(): AdminModelFormInterface
+    {
+        return new OrderForm();
+    }
+
+    protected function getTemplate(): string
+    {
+        return 'adminOrderForm';
     }
 }

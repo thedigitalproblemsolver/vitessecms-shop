@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace VitesseCms\Shop\Repositories;
 
 use MongoDB\BSON\ObjectId;
+use VitesseCms\Database\Models\FindOrder;
+use VitesseCms\Database\Models\FindOrderIterator;
 use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\OrderIterator;
@@ -38,11 +40,19 @@ class OrderRepository
         return null;
     }
 
-    public function findAll(?FindValueIterator $findValues = null, bool $hideUnpublished = true): OrderIterator
-    {
+    public function findAll(
+        ?FindValueIterator $findValues = null,
+        bool $hideUnpublished = true,
+        ?int $limit = null,
+        ?FindOrderIterator $findOrders = null
+    ): OrderIterator {
         Order::setFindPublished($hideUnpublished);
-        Order::addFindOrder('name');
+        if ($findOrders === null):
+            $findOrders = new FindOrderIterator([new FindOrder('orderId', -1)]);
+        endif;
+
         $this->parseFindValues($findValues);
+        $this->parseFindOrders($findOrders);
 
         return new OrderIterator(Order::findAll());
     }
@@ -58,6 +68,20 @@ class OrderRepository
                     $findValue->getType()
                 );
                 $findValues->next();
+            endwhile;
+        endif;
+    }
+
+    protected function parseFindOrders(?FindOrderIterator $findOrders = null): void
+    {
+        if ($findOrders !== null) :
+            while ($findOrders->valid()) :
+                $findOrder = $findOrders->current();
+                Order::addFindOrder(
+                    $findOrder->getKey(),
+                    $findOrder->getOrder()
+                );
+                $findOrders->next();
             endwhile;
         endif;
     }
