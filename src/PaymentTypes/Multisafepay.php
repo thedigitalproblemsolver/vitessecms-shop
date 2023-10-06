@@ -22,8 +22,8 @@ class Multisafepay extends AbstractPaymentType
 
     public function buildAdminForm(AbstractForm $form): void
     {
-        $form->addText('Account ID', 'accountId', (new Attributes())->setRequired(true))
-            ->addText('API-key', 'apiKey', (new Attributes())->setRequired(true));
+        $form->addText('Account ID', 'accountId', (new Attributes())->setRequired())
+            ->addText('API-key', 'apiKey', (new Attributes())->setRequired());
     }
 
     public function prepareOrder(Order $order): void
