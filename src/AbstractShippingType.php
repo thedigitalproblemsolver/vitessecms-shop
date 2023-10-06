@@ -1,7 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace VitesseCms\Shop;
 
+use MongoDB\BSON\ObjectId;
+use Phalcon\Di\Di;
+use Phalcon\Tag;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Database\Utils\MongoUtil;
 use VitesseCms\Shop\Enum\DiscountEnum;
@@ -14,11 +18,6 @@ use VitesseCms\Shop\Models\Discount;
 use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\Shipping;
 use VitesseCms\User\Models\User;
-use MongoDB\BSON\ObjectId;
-use Phalcon\Di\Di;
-use Phalcon\Tag;
-use function in_array;
-use function is_array;
 
 abstract class AbstractShippingType extends AbstractCollection implements
     ShippingTypeInterface

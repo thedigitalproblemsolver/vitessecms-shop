@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
@@ -9,17 +11,11 @@ use VitesseCms\Shop\Enum\SettingsEnum;
 use VitesseCms\Shop\Factories\ShopperFactory;
 use VitesseCms\User\Models\User;
 
-class Shopper extends User
+final class Shopper extends User
 {
-    /**
-     * @var User
-     */
-    public $user;
-
-    /**
-     * @var string
-     */
-    public $companyName;
+    public null|User|array $user = null;
+    public string $companyName;
+    public string $userId;
 
     public static function createNew(array $data, User $user = null): Shopper
     {
@@ -40,9 +36,11 @@ class Shopper extends User
 
     public function addShopperInformation(array $data): void
     {
-        if ($this->di->setting->has(SettingsEnum::SHOP_DATAGROUP_SHOPPERINFORMATION)) :
+        if ($this->getDI()->get('setting')->has(SettingsEnum::SHOP_DATAGROUP_SHOPPERINFORMATION)) :
             /** @var Datagroup $datagroup */
-            $datagroup = Datagroup::findById($this->di->setting->get(SettingsEnum::SHOP_DATAGROUP_SHOPPERINFORMATION));
+            $datagroup = Datagroup::findById(
+                $this->getDI()->get('setting')->getString(SettingsEnum::SHOP_DATAGROUP_SHOPPERINFORMATION)
+            );
             if ($datagroup) :
                 ShopperFactory::bindByDatagroup($datagroup, $data, $this, new DatafieldRepository());
             endif;
@@ -53,12 +51,12 @@ class Shopper extends User
     {
         parent::afterFetch();
         if (
-            !$this->_('user')
+            $this->user !== null
             && $this->_('userId')
         ) :
             User::reset();
             User::setFindValue('_id', new ObjectID($this->_('userId')));
-            $this->set('user', User::findFirst());
+            $this->user = User::findFirst();
         endif;
     }
 

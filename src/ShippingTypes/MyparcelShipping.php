@@ -1,7 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\ShippingTypes;
 
+use MyParcelNL\Sdk\src\Helper\MyParcelCollection;
+use MyParcelNL\Sdk\src\Model\Repository\MyParcelConsignmentRepository;
+use Phalcon\Di\Di;
+use SplFileObject;
 use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
 use VitesseCms\Form\Models\Attributes;
@@ -12,10 +18,6 @@ use VitesseCms\Shop\Factories\MyParcelCustomsItemFactory;
 use VitesseCms\Shop\Forms\ShippingForm;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Order;
-use MyParcelNL\Sdk\src\Helper\MyParcelCollection;
-use MyParcelNL\Sdk\src\Model\Repository\MyParcelConsignmentRepository;
-use Phalcon\Di\Di;
-use SplFileObject;
 
 class MyparcelShipping extends AbstractShippingType
 {

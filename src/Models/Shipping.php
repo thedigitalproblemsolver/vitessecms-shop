@@ -9,7 +9,7 @@ use VitesseCms\Shop\AbstractShippingType;
 final class Shipping extends AbstractShippingType
 {
     public ?string $type = null;
-    public $engine;
+    protected $engine;
 
     public function calculateOrderTotal(Order $order): float
     {

@@ -36,7 +36,10 @@ final class ShopCart extends AbstractBlockModel
                 break;
             case 'large':
                 if (!$cart->hasProducts()) :
-                    $block->set('EmptyCartPage', Item::findById($this->di->setting->get('SHOP_PAGE_EMPTYCART')));
+                    $block->set(
+                        'EmptyCartPage',
+                        Item::findById($this->getDi()->get('setting')->get('SHOP_PAGE_EMPTYCART'))
+                    );
                 else :
                     Item::setFindValue('datagroup', $this->getDi()->get('setting')->get('SHOP_DATAGROUP_PACKING'));
                     $block->set('packingItems', Item::findAll());

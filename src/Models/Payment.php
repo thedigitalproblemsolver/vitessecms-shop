@@ -8,12 +8,9 @@ use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
 use VitesseCms\Database\AbstractCollection;
 
-class Payment extends AbstractCollection
+final class Payment extends AbstractCollection
 {
-    /**
-     * @var string
-     */
-    public $type;
+    public string $type;
 
     public function getTypes(): array
     {

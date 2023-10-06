@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\PaymentTypes;
 
@@ -52,11 +54,15 @@ class Multisafepay extends AbstractPaymentType
             "order_id" => $order->_('orderId'),
             "currency" => 'EUR',
             "amount" => round($order->_('total'), 2) * 100,
-            "description" => 'Your order ' . $order->getId() . ' at ' . $this->setting->get('website_default_name'),
+            "description" => 'Your order ' . $order->getId() . ' at ' . Di::getDefault()->get('setting')->get(
+                    'website_default_name'
+                ),
             "items" => $this->buildItemlist($cart['products']),
             "payment_options" => [
-                "notification_url" => Di::getDefault()->get('url')->getBaseUri() . "shop/payment/process/" . $order->getId(),
-                "redirect_url" => Di::getDefault()->get('url')->getBaseUri() . "shop/payment/redirect/" . $order->getId(),
+                "notification_url" => Di::getDefault()->get('url')->getBaseUri(
+                    ) . "shop/payment/process/" . $order->getId(),
+                "redirect_url" => Di::getDefault()->get('url')->getBaseUri() . "shop/payment/redirect/" . $order->getId(
+                    ),
                 "cancel_url" => Di::getDefault()->get('url')->getBaseUri() . "shop/payment/cancel/" . $order->getId(),
                 "close_window" => "false",
             ],
@@ -77,7 +83,7 @@ class Multisafepay extends AbstractPaymentType
                 "email" => $shipToAddress->_('email'),
             ],
             "google_analytics" => [
-                "account" => $this->setting->get('google_analytics_trackingId'),
+                "account" => Di::getDefault()->get('setting')->get('google_analytics_trackingId'),
             ],
         ];
         $client->orders->post($record);
@@ -90,6 +96,16 @@ class Multisafepay extends AbstractPaymentType
 
         header("Location: " . $client->orders->getPaymentLink());
         die();
+    }
+
+    protected function buildItemlist(array $items): string
+    {
+        $item_list = '';
+        foreach ($items as $item) :
+            $item_list .= $item->_('quantity') . " x " . CartHelper::getLogNameFromItem($item) . "\n";
+        endforeach;
+
+        return $item_list;
     }
 
     public function getTransactionState(int $transactionId, Payment $payment): string
@@ -123,15 +139,5 @@ class Multisafepay extends AbstractPaymentType
             default:
                 return PaymentEnum::PENDING;
         endswitch;
-    }
-
-    protected function buildItemlist(array $items): string
-    {
-        $item_list = '';
-        foreach ($items as $item) :
-            $item_list .= $item->_('quantity') . " x " . CartHelper::getLogNameFromItem($item) . "\n";
-        endforeach;
-
-        return $item_list;
     }
 }

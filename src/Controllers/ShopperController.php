@@ -1,9 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
 use MongoDB\BSON\ObjectID;
-use Phalcon\Mvc\Collection\Exception;
 use VitesseCms\Communication\Helpers\CommunicationHelper;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractController;
@@ -13,7 +14,7 @@ use VitesseCms\Shop\Factories\ShiptoAddressFactory;
 use VitesseCms\Shop\Models\Shopper;
 use VitesseCms\User\Models\User;
 
-class ShopperController extends AbstractController
+final class ShopperController extends AbstractController
 {
     public function editAction(): void
     {
@@ -29,7 +30,7 @@ class ShopperController extends AbstractController
         $form = new BaseForm();
         $datagroup = $this->getEditForm();
         $datagroup->buildItemForm($form, $shopper);
-        $form->_('submit', 'save');
+        $form->addSubmitButton('save');
 
         $this->view->setVar('content', $form->renderForm('shop/shopper/save/'));
         $this->prepareView();
@@ -75,7 +76,6 @@ class ShopperController extends AbstractController
             $user->addPersonalInformation($post);
             $user->save();
             $shopper->set('user', $user);
-
             $shopper->addShopperInformation($post);
             $shopper->save();
 
@@ -100,7 +100,7 @@ class ShopperController extends AbstractController
         /** @var Datagroup $datagroup */
         $datagroup = Datagroup::findById($datagroupId);
         $datagroup->buildItemForm($form, $shiptoAddress);
-        $form->_('submit', 'save');
+        $form->addSubmitButton('save');
 
         $this->view->setVar('content', $form->renderForm('shop/shopper/saveShipTo/'));
         $this->prepareView();

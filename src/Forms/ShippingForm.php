@@ -15,13 +15,13 @@ final class ShippingForm extends AbstractForm
 {
     public function initialize(Shipping $item = null)
     {
-        if ($item === null) :
+        if ($item === null) {
             $item = new Shipping();
-        endif;
+        }
 
         $this->addText('%CORE_NAME%', 'name', (new Attributes())->setRequired()->setMultilang());
 
-        if (!class_exists($item->type)) :
+        if ($item->type === null || !class_exists($item->type)) {
             $this->addDropdown(
                 '%ADMIN_TYPE%',
                 'type',
@@ -35,11 +35,11 @@ final class ShippingForm extends AbstractForm
                         )
                     )
             );
-        else :
+        } elseif ($item->type !== null) {
             /** @var AbstractCollection $item */
             $item = new $item->type();
             $item->buildAdminForm($this);
-        endif;
+        }
 
         $this->addSubmitButton('%CORE_SAVE%');
     }

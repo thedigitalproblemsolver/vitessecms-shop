@@ -22,7 +22,7 @@ use VitesseCms\Shop\Utils\PriceUtil;
 final class Cart extends AbstractCollection
 {
     public $products = null;
-    public int $productsTotal;
+    public int $productsTotal = 0;
 
     /**
      * @deprecated should be used as a service

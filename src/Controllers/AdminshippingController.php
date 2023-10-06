@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -7,7 +9,7 @@ use VitesseCms\Shop\Forms\ShippingForm;
 use VitesseCms\Shop\Interfaces\AdminRepositoriesInterface;
 use VitesseCms\Shop\Models\Shipping;
 
-class AdminshippingController extends AbstractAdminController implements AdminRepositoriesInterface
+final class AdminshippingController extends AbstractAdminController implements AdminRepositoriesInterface
 {
     public function onConstruct()
     {
@@ -21,7 +23,7 @@ class AdminshippingController extends AbstractAdminController implements AdminRe
     {
         if ($id) :
             $order = $this->repositories->order->getById($id, false);
-            $shippingType = $this->repositories->shippingType->getById($order->_('shippingType')['_id']);
+            $shippingType = $this->repositories->shippingType->getById((string)$order->_('shippingType')['_id']);
             $shippingType->getLabel($order, $this->request->get('packageType'));
         endif;
 
