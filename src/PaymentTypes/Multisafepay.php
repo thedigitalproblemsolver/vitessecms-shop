@@ -18,6 +18,7 @@ use VitesseCms\Shop\Models\Payment;
 class Multisafepay extends AbstractPaymentType
 {
     protected const API_URL = 'https://api.multisafepay.com/v1/json/';
+
     protected const API_TEST_URL = 'https://testapi.multisafepay.com/v1/json/';
 
     public function buildAdminForm(AbstractForm $form): void
