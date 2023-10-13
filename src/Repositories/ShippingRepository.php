@@ -8,22 +8,24 @@ use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Database\Traits\TraitRepositoryConstructor;
 use VitesseCms\Database\Traits\TraitRepositoryParseFindAll;
 use VitesseCms\Database\Traits\TraitRepositoryParseGetById;
-use VitesseCms\Shop\Models\Payment;
-use VitesseCms\Shop\Models\PaymentIterator;
+use VitesseCms\Shop\AbstractShippingType;
+use VitesseCms\Shop\Models\ShippingIterator;
 
-final class PaymentRepository
+class ShippingRepository
 {
     use TraitRepositoryParseGetById;
     use TraitRepositoryParseFindAll;
     use TraitRepositoryConstructor;
 
-    public function getById(string $id, bool $hideUnpublished = true): ?Payment
+    public function getById(string $id, bool $hideUnpublished = true): ?AbstractShippingType
     {
         return $this->parseGetById($id, $hideUnpublished);
     }
 
-    public function findAll(?FindValueIterator $findValueIterator = null, bool $hideUnpublished = true): PaymentIterator
-    {
+    public function findAll(
+        ?FindValueIterator $findValueIterator = null,
+        bool $hideUnpublished = true
+    ): ShippingIterator {
         return $this->parseFindAll($findValueIterator, $hideUnpublished);
     }
 }

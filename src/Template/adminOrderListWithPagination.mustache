@@ -1,0 +1,62 @@
+<ol class="list-group admin-list">
+    {{#pagination.getSliced}}
+        <li
+                id="{{getId}}"
+                class="list-group-item-{{#isPublished}}success{{/isPublished}}{{^isPublished}}danger{{/isPublished}} list-group-item"
+                data-id="{{getId}}"
+        >
+            <div class="row">
+                <div class="col-2">{{getNameField}}</div>
+                <div class="col-8 text-left">
+                    {{shopper.user.email}}
+                </div>
+                <div class="col-2 text-right">
+                    {{#isPublished}}
+                        <a href="{{actionBaseUri}}/sendemail/{{getId}}" title="%ADMIN_COPY_ITEM%" class="fa fa-envelope"></a>
+                    {{/isPublished}}
+                    {{#canEdit}}
+                        <a href="{{actionBaseUri}}/edit/{{getId}}" title="%ADMIN_EDIT_ITEM%"
+                           class="fa fa-edit openmodal"></a>
+                    {{/canEdit}}
+                    &nbsp;&nbsp;
+                </div>
+                <div class="col-2"></div>
+                <div class="col-4">{{createdAt}}</div>
+                <div class="col-3">{{orderState.name[]}}</div>
+                <div class="col-2 text-nowrap">
+                    {{{SHOP_CURRENCY_BASE}}} {{getTotalDisplay}}
+                </div>
+            </div>
+        </li>
+    {{/pagination.getSliced}}
+</ol>
+{{#pagination.hasPages}}
+    <nav>
+        <ul class="pagination justify-content-end">
+            <li class="page-item">
+                <div class="page-link">{{pagination.count}} %ADMIN_ITEMS%</div>
+            </li>
+            {{#pagination.hasPreviousPage}}
+                <li class="page-item">
+                    <a class="page-link fa fa-fast-backward" href="{{pagination.getFirstPageUrl}}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link fa fa-step-backward" rel="prev" href="{{pagination.getPreviousPageUrl}}"></a>
+                </li>
+            {{/pagination.hasPreviousPage}}
+            <li class="page-item">
+                <div class="page-link">
+                    {{pagination.getFirstNumberInList}} - {{pagination.getLastNumberInList}}
+                </div>
+            </li>
+            {{#pagination.hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link fa fa-step-forward" rel="next" href="{{pagination.getNextPageUrl}}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link fa fa-fast-forward" href="{{pagination.getLastPageUrl}}"></a>
+                </li>
+            {{/pagination.hasNextPage}}
+        </ul>
+    </nav>
+{{/pagination.hasPages}}

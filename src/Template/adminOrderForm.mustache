@@ -12,7 +12,9 @@
             </tr>
             <tr>
                 <th>Orderstatus</th>
-                <td>{{model.orderState.name[]}}</td>
+                <td>
+                    {{{orderStateForm}}}
+                </td>
             </tr>
             {{#model.discount}}
             <tr>
@@ -163,7 +165,7 @@
             </tr>
             <tr>
                 <th>Country</th>
-                <td>{{model.shiptoAddress.countryName}}</td>
+                <td>{{model.shiptoAddress.countryName[]}}</td>
             </tr>
             <tr>
                 <th>Phone-number</th>

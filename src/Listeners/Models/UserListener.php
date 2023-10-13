@@ -22,9 +22,6 @@ class UserListener
         private readonly ShipToAddressRepository $shipToAddressRepository,
         private readonly OrderRepository $orderRepository
     ) {
-        //overige
-        //delete newsletter stuff
-        //
     }
 
     public function beforeDelete(Event $event, User $user): bool

@@ -5,17 +5,27 @@ declare(strict_types=1);
 namespace VitesseCms\Shop\Controllers;
 
 use MongoDB\BSON\ObjectID;
+use stdClass;
 use VitesseCms\Communication\Helpers\CommunicationHelper;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractController;
 use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\Form\Forms\BaseForm;
+use VitesseCms\Shop\Enum\CountryEnum;
 use VitesseCms\Shop\Factories\ShiptoAddressFactory;
 use VitesseCms\Shop\Models\Shopper;
+use VitesseCms\Shop\Repositories\CountryRepository;
 use VitesseCms\User\Models\User;
 
 final class ShopperController extends AbstractController
 {
+    private CountryRepository $countryRepository;
+
+    public function onConstruct()
+    {
+        $this->countryRepository = $this->eventsManager->fire(CountryEnum::GET_REPOSITORY->value, new stdClass());
+    }
+
     public function editAction(): void
     {
         Shopper::setFindValue('userId', (string)$this->user->getId());
@@ -94,7 +104,7 @@ final class ShopperController extends AbstractController
             Item::setFindValue('datagroup', $datagroupId);
             $shiptoAddress = Item::findFirst();
         endif;
-        $shiptoAddress->set('userId', $this->user->getId());
+        $shiptoAddress->set('userId', (string)$this->user->getId());
 
         $form = new BaseForm();
         /** @var Datagroup $datagroup */
@@ -113,8 +123,10 @@ final class ShopperController extends AbstractController
         /** @var Datagroup $datagroup */
         $datagroup = Datagroup::findById($datagroupId);
         $datagroup->buildItemForm($form);
+        $redirectUrl = $this->request->getHTTPReferer();
         if ($form->validate($this)) :
             $post = $this->request->getPost();
+            unset($post['csrf']);
             $shiptoAddress = ShiptoAddressFactory::createFromDatagroup($this->setting);
             if (isset($post['id']) && !empty($post['id'])) :
                 Item::setFindValue('_id', new ObjectID($post['id']));
@@ -122,12 +134,19 @@ final class ShopperController extends AbstractController
                 $shiptoAddress = Item::findFirst();
             endif;
             $shiptoAddress->bind($post);
+            $country = $this->countryRepository->getById($post['country']);
+            $shiptoAddress->set('countryName', $country->getRaw('name'));
             $shiptoAddress->set('published', true);
             $shiptoAddress->save();
+            $redirectUrl = $this->url->addParamsToQuery(
+                'id',
+                (string)$shiptoAddress->getId(),
+                $this->request->getHTTPReferer()
+            );
 
             $this->flash->setSucces('SHOP_SHIPTO_SAVED_SUCCESS');
         endif;
 
-        $this->redirect();
+        $this->redirect($redirectUrl);
     }
 }

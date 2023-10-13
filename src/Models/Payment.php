@@ -10,7 +10,7 @@ use VitesseCms\Database\AbstractCollection;
 
 final class Payment extends AbstractCollection
 {
-    public string $type;
+    public ?string $type;
 
     public function getTypes(): array
     {

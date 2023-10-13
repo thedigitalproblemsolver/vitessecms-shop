@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Helpers;
 
@@ -14,6 +16,7 @@ use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Models\Cart;
 use VitesseCms\Shop\Models\Order;
 use VitesseCms\Shop\Models\OrderState;
+
 use function is_array;
 
 class OrderHelper
@@ -21,8 +24,7 @@ class OrderHelper
     public static function setOrderStateByIds(
         string $orderObjectId,
         string $orderStateId
-    ): Order
-    {
+    ): Order {
         $orderState = OrderState::findById($orderStateId);
 
         Order::setFindPublished(false);
@@ -70,11 +72,17 @@ class OrderHelper
                                 switch ($order->_('orderState')->_('stockAction')) :
                                     case OrderStateEnum::STOCK_ACTION_INCREASE:
                                         $variation['stock'] = (int)$variation['stock'] + $orderItem['quantity'];
-                                        $logMessage = implode(' ', $itemName) . ' stock increased by ' . $orderItem['quantity'];
+                                        $logMessage = implode(
+                                                ' ',
+                                                $itemName
+                                            ) . ' stock increased by ' . $orderItem['quantity'];
                                         break;
                                     case OrderStateEnum::STOCK_ACTION_DECREASE:
                                         $variation['stock'] = (int)$variation['stock'] - $orderItem['quantity'];
-                                        $logMessage = implode(' ', $itemName) . ' stock decreased by ' . $orderItem['quantity'];
+                                        $logMessage = implode(
+                                                ' ',
+                                                $itemName
+                                            ) . ' stock decreased by ' . $orderItem['quantity'];
                                         break;
                                 endswitch;
                                 $itemVariations[$key] = $variation;
@@ -160,6 +168,9 @@ class OrderHelper
         $order->set('tax', $taxTotal);
     }
 
+    /**
+     * @deprecated is this one still in use?
+     */
     public static function setDisplayFormats(Order $order): void
     {
         $fields = [
@@ -174,7 +185,8 @@ class OrderHelper
                 $field . 'Display',
                 number_format(
                     (float)$order->_($field),
-                    2, ',',
+                    2,
+                    ',',
                     '.'
                 )
             );
@@ -183,12 +195,14 @@ class OrderHelper
         $items = $order->_('items');
         $items['vatDisplay'] = number_format(
             (float)$items['vat'],
-            2, ',',
+            2,
+            ',',
             '.'
         );
         $items['subTotalDisplay'] = number_format(
             (float)$items['subTotal'],
-            2, ',',
+            2,
+            ',',
             '.'
         );
         $order->set('items', $items);
@@ -197,8 +211,7 @@ class OrderHelper
     public static function sendEmail(
         Order $order,
         ViewService $viewService
-    ): void
-    {
+    ): void {
         if (!$viewService->getVar('shopOrder')) :
             $shopOrder = $viewService->renderTemplate(
                 'order',

@@ -19,36 +19,60 @@ use VitesseCms\Shop\Forms\ShippingForm;
 use VitesseCms\Shop\Models\Country;
 use VitesseCms\Shop\Models\Order;
 
-class MyparcelShipping extends AbstractShippingType
+final class MyparcelShipping extends AbstractShippingType
 {
-    public function buildAdminForm(ShippingForm $form)
-    {
-        $form->addText('API-key', 'apiKey', (new Attributes())->setRequired(true));
-    }
 
-    public function calculateOrderAmount(Order $order): float
+    public function buildAdminForm(ShippingForm $form): void
     {
-        return 99.99;
+        $form->addText('API-key', 'apiKey', (new Attributes())->setRequired());
+
+        parent::buildAdminForm($form);
     }
 
     public function calculateOrderVat(Order $order): float
     {
-        return 99.99;
+        $taxRate = $this->taxRateRepository->getById($this->shipping->countryCostVAT);
+
+        return ($this->calculateOrderAmount($order) / (100 + $taxRate->taxrate)) * $taxRate->taxrate;
     }
 
-    public function calculateCartAmount(array $items): float
+    public function calculateOrderAmount(Order $order): float
     {
-        return 99.99;
+        if (isset($order->shiptoAddress->country) && $this->shipping->countryCost[$order->shiptoAddress->country]) {
+            return (float)$this->shipping->countryCost[$order->shiptoAddress->country];
+        };
+
+        if (isset($this->shipping->countryCost[$order->shopper->user->country])) {
+            return (float)$this->shipping->countryCost[$order->shopper->user->country];
+        }
+
+        return (float)$this->shipping->_('countryCostDefault');
     }
 
     public function calculateCartTotal(array $items): float
     {
-        return 99.99;
+        echo 'calculateCartTotal';
+        die();
+        return $this->_('countryCostDefault');
     }
 
     public function calculateCartVat(array $items): float
     {
-        return 99.99;
+        $taxRate = $this->taxRateRepository->getById($this->shipping->countryCostVAT);
+
+        return ($this->calculateCartAmount($items) / (100 + $taxRate->taxrate)) * $taxRate->taxrate;
+    }
+
+    public function calculateCartAmount(array $items): float
+    {
+        if ($this->currentUser->isLoggedIn()) {
+            $shopper = $this->shopperRepository->getByUserid((string)$this->currentUser->getId());
+            if ($shopper !== null && isset($this->shipping->countryCost[$shopper->_('country')])) {
+                return (float)$this->shipping->countryCost[$shopper->_('country')];
+            }
+        }
+
+        return (float)$this->shipping->_('countryCostDefault');
     }
 
     public function getLabelLink(Order $order): string
@@ -96,7 +120,6 @@ class MyparcelShipping extends AbstractShippingType
                 ->setCity($order->_('shiptoAddress')['city'])
                 ->setEmail($order->_('shopper')['user']['email'])
                 ->setPackageType($myparcelPackageType);
-
             $myParcelCustomsItem = MyParcelCustomsItemFactory::createFromOrder($order);
             $consignment->addItem($myParcelCustomsItem);
 

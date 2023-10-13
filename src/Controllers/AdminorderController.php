@@ -15,9 +15,11 @@ use VitesseCms\Core\AbstractControllerAdmin;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Database\Models\FindValueIterator;
 use VitesseCms\Shop\Enum\OrderEnum;
+use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Forms\OrderForm;
 use VitesseCms\Shop\Helpers\OrderHelper;
 use VitesseCms\Shop\Repositories\OrderRepository;
+use VitesseCms\Shop\Repositories\OrderStateRepository;
 
 final class AdminorderController extends AbstractControllerAdmin implements
     AdminModelListInterface,
@@ -27,42 +29,37 @@ final class AdminorderController extends AbstractControllerAdmin implements
     use TraitAdminModelEditable;
 
     private readonly OrderRepository $orderRepository;
+    private readonly OrderStateRepository $orderStateRepository;
 
-    public function onConstruct()
+    public function onConstruct(): void
     {
         parent::onConstruct();
 
         $this->orderRepository = $this->eventsManager->fire(OrderEnum::GET_REPOSITORY->value, new stdClass());
+        $this->orderStateRepository = $this->eventsManager->fire(OrderStateEnum::GET_REPOSITORY, new stdClass());
     }
 
-    public function changeOrderStateAction(): void
+    public function changeOrderStateAction(string $id): void
     {
-        if ($this->dispatcher->getParam(0) !== null) :
-            $order = $this->repositories->order->getById($this->dispatcher->getParam(0), false);
-            if ($order !== null) :
-                OrderHelper::setOrderState(
-                    $order,
-                    $this->repositories->orderState->getById($this->request->get('orderState'))
-                );
-                $order->save();
-
-                $this->flash->setSucces('ADMIN_STATE_CHANGE_SUCCESS', ['Order']);
-            endif;
-        endif;
-
-        $this->redirect();
-    }
-
-    public function sendEmailAction(): void
-    {
-        if ($this->dispatcher->getParam(0) !== null) :
-            OrderHelper::sendEmail(
-                $this->repositories->order->getById($this->dispatcher->getParam(0)),
-                $this->view
+        $order = $this->orderRepository->getById($id, false);
+        if ($order !== null) :
+            OrderHelper::setOrderState(
+                $order,
+                $this->orderStateRepository->getById($this->request->get('orderState'))
             );
+            $order->save();
+
+            $this->flashService->setSucces('ADMIN_STATE_CHANGE_SUCCESS', ['Order']);
         endif;
 
-        $this->redirect();
+        $this->redirect($this->request->getHTTPReferer());
+    }
+
+    public function sendEmailAction(string $id): void
+    {
+        OrderHelper::sendEmail($this->orderRepository->getById($id), $this->viewService);
+
+        $this->redirect($this->request->getHTTPReferer());
     }
 
     public function getModelList(?FindValueIterator $findValueIterator): ArrayIterator
@@ -86,5 +83,10 @@ final class AdminorderController extends AbstractControllerAdmin implements
     protected function getTemplate(): string
     {
         return 'adminOrderForm';
+    }
+
+    protected function adminListWithPaginationTemplate(): string
+    {
+        return 'adminOrderListWithPagination';
     }
 }

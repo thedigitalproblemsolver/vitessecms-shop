@@ -65,7 +65,8 @@ final class CartHelper
     {
         $cartItems = $cart->getItems(true);
         $shipping = self::getShipping();
-
+        //var_dump($cart);
+        //die();
         $block->set('cart', $cartItems);
         $block->set('shippingName', $shipping->_('name'));
         $block->set('shippingSubTotal', number_format($shipping->calculateCartAmount($cartItems), 2));

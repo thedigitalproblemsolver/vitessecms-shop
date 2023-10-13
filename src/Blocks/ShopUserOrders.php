@@ -5,47 +5,61 @@ declare(strict_types=1);
 namespace VitesseCms\Shop\Blocks;
 
 use MongoDB\BSON\ObjectID;
+use stdClass;
+use VitesseCms\Admin\Helpers\PaginationHelper;
 use VitesseCms\Block\AbstractBlockModel;
 use VitesseCms\Block\Models\Block;
-use VitesseCms\Core\Factories\PaginationFactory;
-use VitesseCms\Shop\Models\Order;
+use VitesseCms\Database\Models\FindValue;
+use VitesseCms\Database\Models\FindValueIterator;
+use VitesseCms\Mustache\DTO\RenderTemplateDTO;
+use VitesseCms\Mustache\Enum\ViewEnum;
+use VitesseCms\Shop\Enum\OrderEnum;
+use VitesseCms\Shop\Repositories\OrderRepository;
 
-class ShopUserOrders extends AbstractBlockModel
+final class ShopUserOrders extends AbstractBlockModel
 {
+    private readonly OrderRepository $orderRepository;
+
     public function initialize()
     {
         parent::initialize();
 
         $this->excludeFromCache = true;
+        $this->orderRepository = $this->di->get('eventsManager')->fire(
+            OrderEnum::GET_REPOSITORY->value,
+            new stdClass()
+        );
     }
 
     public function parse(Block $block): void
     {
-        parent::parse($block);
-
-        if ($this->getDi()->get('user')->isLoggedIn()) :
-            Order::setFindPublished(false);
-            Order::setFindValue(
-                'shopper.user._id',
-                new ObjectID((string)$this->getDi()->get('user')->getId())
+        if ($this->di->get('user')->isLoggedIn()) {
+            $orders = $this->orderRepository->findAll(
+                new FindValueIterator([
+                    new FindValue(
+                        'shopper.user._id',
+                        new ObjectID((string)$this->di->get('user')->getId())
+                    )
+                ]),
+                false
             );
-            Order::addFindOrder('orderId', -1);
-            $orders = Order::findAll();
-            $pagination = PaginationFactory::createFromArray(
+
+            $pagination = new PaginationHelper(
                 $orders,
-                $this->getDi()->get('request'),
-                $this->getDi()->get('url')
+                $this->di->get('url'),
+                $this->di->get('request')->get('offset', 'int', 0)
             );
 
-            $orderList = $this->view->renderTemplate(
-                'affiliate_orderlist',
-                $this->getDi()->get('configuration')->getRootDir() . 'Template/core/Views/partials/shop',
-                [
-                    'orderlistOrders' => $pagination->items,
-                    'pagination' => $pagination
-                ]
+            $orderList = $this->di->get('eventsManager')->fire(
+                ViewEnum::RENDER_TEMPLATE_EVENT,
+                new RenderTemplateDTO(
+                    'blocks/orderlist',
+                    '',
+                    ['pagination' => $pagination]
+                )
             );
+            
             $block->set('orderList', $orderList);
-        endif;
+        }
     }
 }

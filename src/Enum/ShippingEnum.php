@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Enum;
 
-use VitesseCms\Core\AbstractEnum;
-
-class ShippingEnum extends AbstractEnum
+enum ShippingEnum: string
 {
-    public const PACKAGE = 'package';
-    public const ENVELOPE = 'envelope';
+    case PACKAGE = 'package';
+    case ENVELOPE = 'envelope';
+    case LISTENER = 'ShippingListener';
+    case GET_REPOSITORY = 'ShippingListener:getRepository';
 }
