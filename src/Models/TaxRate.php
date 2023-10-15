@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
@@ -7,17 +9,14 @@ use VitesseCms\Shop\Interfaces\TaxRateInterface;
 
 class TaxRate extends AbstractCollection implements TaxRateInterface
 {
-    /**
-     * @var int
-     */
-    public $taxrate;
+    public int $taxrate;
 
-    public function getAdminlistName(): string
+    public function getNameField(?string $languageShort = null): string
     {
         return $this->getName() . '%';
     }
 
-    public function getName(?string $languageShort = NULL): string
+    public function getName(?string $languageShort = null): string
     {
         return (string)$this->taxrate;
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Blocks;
 
@@ -6,7 +8,7 @@ use VitesseCms\Block\AbstractBlockModel;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Content\Models\Item;
 
-class ShopCart extends AbstractBlockModel
+final class ShopCart extends AbstractBlockModel
 {
     public function initialize()
     {
@@ -19,8 +21,8 @@ class ShopCart extends AbstractBlockModel
     {
         parent::parse($block);
 
-        $cart = $this->di->shop->cart->getCartFromSession();
-        Item::setFindValue('datagroup', $this->di->setting->get('SHOP_DATAGROUP_CHECKOUT'));
+        $cart = $this->getDi()->get('shop')->cart->getCartFromSession();
+        Item::setFindValue('datagroup', $this->getDi()->get('setting')->get('SHOP_DATAGROUP_CHECKOUT'));
         $checkoutPage = Item::findFirst();
 
         $template = explode('/', $this->_('template'));
@@ -34,18 +36,21 @@ class ShopCart extends AbstractBlockModel
                 break;
             case 'large':
                 if (!$cart->hasProducts()) :
-                    $block->set('EmptyCartPage', Item::findById($this->di->setting->get('SHOP_PAGE_EMPTYCART')));
+                    $block->set(
+                        'EmptyCartPage',
+                        Item::findById($this->getDi()->get('setting')->get('SHOP_PAGE_EMPTYCART'))
+                    );
                 else :
-                    Item::setFindValue('datagroup', $this->di->setting->get('SHOP_DATAGROUP_PACKING'));
+                    Item::setFindValue('datagroup', $this->getDi()->get('setting')->get('SHOP_DATAGROUP_PACKING'));
                     $block->set('packingItems', Item::findAll());
                     if ($block->_('packingItems')) :
                         $block->set('packingTeaser', '%SHOP_PACKING_TEASER%');
                     endif;
 
-                    $this->di->shop->cart->setBlockBasics($block, $cart);
+                    $this->getDi()->get('shop')->cart->setBlockBasics($block, $cart);
 
-                    if (!$this->di->request->get('embedded', 'int', 0)) :
-                        $block->set('checkoutLink', $this->di->shop->checkout->getNextStep()->_('slug'));
+                    if (!$this->getDi()->get('request')->get('embedded', 'int', 0)) :
+                        $block->set('checkoutLink', $this->getDi()->get('shop')->checkout->getNextStep()->_('slug'));
                         $block->set('checkoutBar', true);
                     endif;
                 endif;

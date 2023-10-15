@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Listeners\Controllers;
 
@@ -6,16 +8,14 @@ use Phalcon\Events\Event;
 use VitesseCms\Admin\Forms\AdminlistFormInterface;
 use VitesseCms\Shop\Controllers\AdmincountryController;
 
-class AdmincountryControllerListener
+final class AdmincountryControllerListener
 {
-    public function adminListFilter(Event $event, AdmincountryController $controller, AdminlistFormInterface $form): string
-    {
+    public function adminListFilter(
+        Event $event,
+        AdmincountryController $controller,
+        AdminlistFormInterface $form
+    ): void {
         $form->addNameField($form);
         $form->addPublishedField($form);
-
-        return $form->renderForm(
-            $controller->getLink() . '/' . $controller->router->getActionName(),
-            'adminFilter'
-        );
     }
 }

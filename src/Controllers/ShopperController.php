@@ -1,20 +1,31 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
 use MongoDB\BSON\ObjectID;
-use Phalcon\Mvc\Collection\Exception;
+use stdClass;
 use VitesseCms\Communication\Helpers\CommunicationHelper;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractController;
 use VitesseCms\Datagroup\Models\Datagroup;
 use VitesseCms\Form\Forms\BaseForm;
+use VitesseCms\Shop\Enum\CountryEnum;
 use VitesseCms\Shop\Factories\ShiptoAddressFactory;
 use VitesseCms\Shop\Models\Shopper;
+use VitesseCms\Shop\Repositories\CountryRepository;
 use VitesseCms\User\Models\User;
 
-class ShopperController extends AbstractController
+final class ShopperController extends AbstractController
 {
+    private CountryRepository $countryRepository;
+
+    public function onConstruct()
+    {
+        $this->countryRepository = $this->eventsManager->fire(CountryEnum::GET_REPOSITORY->value, new stdClass());
+    }
+
     public function editAction(): void
     {
         Shopper::setFindValue('userId', (string)$this->user->getId());
@@ -29,7 +40,7 @@ class ShopperController extends AbstractController
         $form = new BaseForm();
         $datagroup = $this->getEditForm();
         $datagroup->buildItemForm($form, $shopper);
-        $form->_('submit', 'save');
+        $form->addSubmitButton('save');
 
         $this->view->setVar('content', $form->renderForm('shop/shopper/save/'));
         $this->prepareView();
@@ -75,7 +86,6 @@ class ShopperController extends AbstractController
             $user->addPersonalInformation($post);
             $user->save();
             $shopper->set('user', $user);
-
             $shopper->addShopperInformation($post);
             $shopper->save();
 
@@ -94,13 +104,13 @@ class ShopperController extends AbstractController
             Item::setFindValue('datagroup', $datagroupId);
             $shiptoAddress = Item::findFirst();
         endif;
-        $shiptoAddress->set('userId', $this->user->getId());
+        $shiptoAddress->set('userId', (string)$this->user->getId());
 
         $form = new BaseForm();
         /** @var Datagroup $datagroup */
         $datagroup = Datagroup::findById($datagroupId);
         $datagroup->buildItemForm($form, $shiptoAddress);
-        $form->_('submit', 'save');
+        $form->addSubmitButton('save');
 
         $this->view->setVar('content', $form->renderForm('shop/shopper/saveShipTo/'));
         $this->prepareView();
@@ -113,8 +123,10 @@ class ShopperController extends AbstractController
         /** @var Datagroup $datagroup */
         $datagroup = Datagroup::findById($datagroupId);
         $datagroup->buildItemForm($form);
+        $redirectUrl = $this->request->getHTTPReferer();
         if ($form->validate($this)) :
             $post = $this->request->getPost();
+            unset($post['csrf']);
             $shiptoAddress = ShiptoAddressFactory::createFromDatagroup($this->setting);
             if (isset($post['id']) && !empty($post['id'])) :
                 Item::setFindValue('_id', new ObjectID($post['id']));
@@ -122,12 +134,19 @@ class ShopperController extends AbstractController
                 $shiptoAddress = Item::findFirst();
             endif;
             $shiptoAddress->bind($post);
+            $country = $this->countryRepository->getById($post['country']);
+            $shiptoAddress->set('countryName', $country->getRaw('name'));
             $shiptoAddress->set('published', true);
             $shiptoAddress->save();
+            $redirectUrl = $this->url->addParamsToQuery(
+                'id',
+                (string)$shiptoAddress->getId(),
+                $this->request->getHTTPReferer()
+            );
 
             $this->flash->setSucces('SHOP_SHIPTO_SAVED_SUCCESS');
         endif;
 
-        $this->redirect();
+        $this->redirect($redirectUrl);
     }
 }

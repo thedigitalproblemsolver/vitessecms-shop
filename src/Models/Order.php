@@ -1,12 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Shop\AbstractShippingType;
 use VitesseCms\Shop\Factories\ShippingTypeFactory;
+use VitesseCms\Shop\Utils\PriceUtil;
 
-class Order extends AbstractCollection
+final class Order extends AbstractCollection
 {
     /**
      * @var OrderState
@@ -112,6 +115,11 @@ class Order extends AbstractCollection
      * @var string
      */
     public $totalDisplay;
+
+    public function getNameField(string $languageShort = null): string
+    {
+        return (string)$this->orderId;
+    }
 
     public function getNumber(): int
     {
@@ -286,11 +294,31 @@ class Order extends AbstractCollection
         return $this;
     }
 
+    public function getTotalDisplay(): string
+    {
+        return PriceUtil::formatDisplay($this->total);
+    }
+
     public function setTotalDisplay(string $totalDisplay): Order
     {
         $this->totalDisplay = $totalDisplay;
 
         return $this;
+    }
+
+    public function getTotalVatDisplay(): string
+    {
+        return PriceUtil::formatDisplay($this->tax);
+    }
+
+    public function getItemsSubTotalDisplay(): string
+    {
+        return PriceUtil::formatDisplay($this->items['subTotal']);
+    }
+
+    public function getItemsVatDisplay(): string
+    {
+        return PriceUtil::formatDisplay($this->items['vat']);
     }
 
     public function getProducts(): array

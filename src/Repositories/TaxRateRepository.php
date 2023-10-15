@@ -1,21 +1,29 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Repositories;
 
+use VitesseCms\Database\Models\FindValueIterator;
+use VitesseCms\Database\Traits\TraitRepositoryConstructor;
+use VitesseCms\Database\Traits\TraitRepositoryParseFindAll;
+use VitesseCms\Database\Traits\TraitRepositoryParseGetById;
 use VitesseCms\Shop\Models\TaxRate;
+use VitesseCms\Shop\Models\TaxRateIterator;
 
-class TaxRateRepository
+final class TaxRateRepository
 {
+    use TraitRepositoryParseGetById;
+    use TraitRepositoryParseFindAll;
+    use TraitRepositoryConstructor;
+
     public function getById(string $id, bool $hideUnpublished = true): ?TaxRate
     {
-        TaxRate::setFindPublished($hideUnpublished);
+        return $this->parseGetById($id, $hideUnpublished);
+    }
 
-        /** @var TaxRate $taxrate */
-        $taxrate = TaxRate::findById($id);
-        if (is_object($taxrate)):
-            return $taxrate;
-        endif;
-
-        return null;
+    public function findAll(?FindValueIterator $findValueIterator = null, bool $hideUnpublished = true): TaxRateIterator
+    {
+        return $this->parseFindAll($findValueIterator, $hideUnpublished);
     }
 }

@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
+use VitesseCms\Admin\Interfaces\AdminModelFormInterface;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
@@ -9,33 +12,35 @@ use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Helpers\ShippingHelper;
 use VitesseCms\Shop\Models\Shipping;
 
-class ShippingForm extends AbstractForm
+final class ShippingForm extends AbstractForm implements AdminModelFormInterface
 {
-    public function initialize(Shipping $item = null)
+    public function buildForm(): void
     {
-        if ($item === null) :
-            $item = new Shipping();
-        endif;
+        if ($this->entity === null) {
+            $this->entity = new Shipping();
+        }
 
         $this->addText('%CORE_NAME%', 'name', (new Attributes())->setRequired()->setMultilang());
 
-        if (!$item->_('type')) :
+        if ($this->entity->type === null || !class_exists($this->entity->type)) {
             $this->addDropdown(
                 '%ADMIN_TYPE%',
                 'type',
                 (new Attributes())->setRequired()
-                    ->setOptions(ElementHelper::arrayToSelectOptions(ShippingHelper::getTypes(
-                        $this->configuration->getRootDir(),
-                        $this->configuration->getAccount()
+                    ->setOptions(
+                        ElementHelper::arrayToSelectOptions(
+                            ShippingHelper::getTypes(
+                                $this->configuration->getVendorNameDir(),
+                                $this->configuration->getAccountDir()
+                            )
+                        )
                     )
-                    )
-                    ));
-        else :
-            $object = ShippingHelper::getClass($item->_('type'));
+            );
+        } elseif ($this->entity->type !== null) {
             /** @var AbstractCollection $item */
-            $item = new $object();
+            $item = new $this->entity->type();
             $item->buildAdminForm($this);
-        endif;
+        }
 
         $this->addSubmitButton('%CORE_SAVE%');
     }
