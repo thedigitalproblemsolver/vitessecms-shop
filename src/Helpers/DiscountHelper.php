@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Helpers;
 
 use DateTime;
+use Phalcon\Di\Di;
 use VitesseCms\Core\AbstractInjectable;
 use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
@@ -55,6 +58,27 @@ class DiscountHelper extends AbstractInjectable
         return false;
     }
 
+    public static function calculateFinalPrice(
+        DiscountInterface $discount,
+        float $price
+    ): float {
+        $discountPrice = $price;
+        switch ($discount->_('type')) {
+            case 'currency':
+                $discountPrice = $price - $discount->_('amount');
+                break;
+            case 'percentage':
+                $discountPrice = ($price / 100) * (100 - $discount->_('amount'));
+                break;
+        }
+
+        if ($discountPrice > $price) :
+            return 0.00;
+        endif;
+
+        return $discountPrice;
+    }
+
     public static function getTypes(string $rootDir): array
     {
         $types = [];
@@ -75,28 +99,6 @@ class DiscountHelper extends AbstractInjectable
                 DiscountHelper::calculateFinalPrice($discount, $item->_('price_sale'))
             )
         );
-    }
-
-    public static function calculateFinalPrice(
-        DiscountInterface $discount,
-        float $price
-    ): float
-    {
-        $discountPrice = $price;
-        switch ($discount->_('type')) {
-            case 'currency':
-                $discountPrice = $price - $discount->_('amount');
-                break;
-            case 'percentage':
-                $discountPrice = ($price / 100) * (100 - $discount->_('amount'));
-                break;
-        }
-
-        if ($discountPrice > $price) :
-            return 0.00;
-        endif;
-
-        return $discountPrice;
     }
 
     public function setPriceSale(AbstractCollection $item, DiscountInterface $discount): void
@@ -125,7 +127,7 @@ class DiscountHelper extends AbstractInjectable
 
     public function loadFromSession(?string $target = null): ?Discount
     {
-        if ($this->session->get('discountId')) :
+        if (Di::getDefault()->get('session')->get('discountId')) :
             if ($target):
                 Discount::setFindValue('target', $target);
             endif;

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Fields;
 
@@ -12,15 +14,14 @@ use VitesseCms\Form\Interfaces\AbstractFormInterface;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Enum\SizeAndColorEnum;
 
-class ShopSizeAndColor extends AbstractField
+final class ShopSizeAndColor extends AbstractField
 {
     public function buildItemFormElement(
-        AbstractForm       $form,
-        Datafield          $datafield,
-        Attributes         $attributes,
+        AbstractForm $form,
+        Datafield $datafield,
+        Attributes $attributes,
         AbstractCollection $data = null
-    )
-    {
+    ): void {
         if ($data !== null) {
             $form->assets->loadBootstrapColorPicker();
             $form->assets->loadFileManager();
@@ -56,6 +57,7 @@ class ShopSizeAndColor extends AbstractField
             endif;
 
             $params = [
+                'uploadUri' => $form->configuration->getUploadUri(),
                 'sizeAndColorLabel' => $datafield->getNameField(),
                 'sizeAndColorId' => uniqid('', false),
                 'sizeAndColorVariations' => $variations,
@@ -66,28 +68,29 @@ class ShopSizeAndColor extends AbstractField
                     SizeAndColorEnum::sizes),
                 'colorBaseElement' => Tag::textField(['name' => $fieldName . '[__key__][color]', 'id' => null]),
                 'stockBaseElement' => Tag::numericField(['name' => $fieldName . '[__key__][stock]', 'id' => null]),
-                'stockMinimalBaseElement' => Tag::numericField(['name' => $fieldName . '[__key__][stock]', 'id' => null]),
+                'stockMinimalBaseElement' => Tag::numericField(['name' => $fieldName . '[__key__][stock]', 'id' => null]
+                ),
                 'eanBaseElement' => Tag::numericField([
                     'name' => $fieldName . '[__key__][ean]',
                     'maxlength' => 13,
                     'id' => null,
                 ]),
             ];
-
-            $form->addHtml($form->view->renderTemplate(
-                'adminItemFormSizeAndColor',
-                $form->configuration->getRootDir() . 'datafirld/src/Resources/views/',
-                $params
-            ));
+            $form->addHtml(
+                $form->view->renderTemplate(
+                    'adminItemFormSizeAndColor',
+                    $form->configuration->getRootDir() . '../datafield/src/Resources/views/',
+                    $params
+                )
+            );
         }
     }
 
     public function renderFilter(
         AbstractFormInterface $filter,
-        Datafield             $datafield,
-        AbstractCollection    $data = null
-    ): void
-    {
+        Datafield $datafield,
+        AbstractCollection $data = null
+    ): void {
         $options = [];
         foreach (SizeAndColorEnum::sizes as $key => $label) :
             $options[] = [
@@ -108,7 +111,7 @@ class ShopSizeAndColor extends AbstractField
         );
     }
 
-    public function getSearchValue(AbstractCollection $item, string $languageShort, Datafield $datafield)
+    public function getSearchValue(AbstractCollection $item, string $languageShort, Datafield $datafield): array
     {
         $searchValues = [];
         if (is_array($item->_($datafield->getCallingName()))) :

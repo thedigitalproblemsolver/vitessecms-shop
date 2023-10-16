@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Blocks;
 
@@ -20,7 +21,7 @@ class ShopDiscountForm extends AbstractBlockModel
     {
         parent::parse($block);
 
-        $discount = $this->di->shop->discount->loadFromSession();
+        $discount = $this->getDi()->get('shop')->discount->loadFromSession();
         if ($discount) :
             $block->set(
                 'discountUsedText',
@@ -32,7 +33,8 @@ class ShopDiscountForm extends AbstractBlockModel
                 'form',
                 $form->renderForm(
                     SefHelper::getComponentURL('shop', 'discount', 'parsecode')
-                ));
+                )
+            );
         endif;
     }
 }

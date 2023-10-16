@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Models;
 
@@ -6,17 +8,16 @@ use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
 use VitesseCms\Database\AbstractCollection;
 
-class Payment extends AbstractCollection
+final class Payment extends AbstractCollection
 {
-    /**
-     * @var string
-     */
-    public $type;
+    public ?string $type;
 
     public function getTypes(): array
     {
         $types = [];
-        $files = DirectoryUtil::getFilelist($this->di->config->get('rootDir') . 'shop/src/paymentTypes/');
+        $files = DirectoryUtil::getFilelist(
+            $this->getDI()->get('config')->get('rootDir') . '../shop/src/PaymentTypes/'
+        );
         foreach ($files as $path => $file) :
             $name = FileUtil::getName($file);
             $types[$name] = $name;
@@ -37,10 +38,9 @@ class Payment extends AbstractCollection
     }
 
     public function getTransactionState(
-        int $transactionId,
+        $transactionId,
         string $orderStateParent = null
-    ): OrderState
-    {
+    ): OrderState {
         $object = $this->getTypeClass();
 
         $callingName = (new $object())->getTransactionState($transactionId, $this);

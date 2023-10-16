@@ -1,73 +1,92 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
-use VitesseCms\Admin\AbstractAdminController;
+use ArrayIterator;
+use stdClass;
+use VitesseCms\Admin\Interfaces\AdminModelEditableInterface;
+use VitesseCms\Admin\Interfaces\AdminModelFormInterface;
+use VitesseCms\Admin\Interfaces\AdminModelListInterface;
+use VitesseCms\Admin\Traits\TraitAdminModelEditable;
+use VitesseCms\Admin\Traits\TraitAdminModelList;
+use VitesseCms\Core\AbstractControllerAdmin;
 use VitesseCms\Database\AbstractCollection;
-use VitesseCms\Form\AbstractForm;
+use VitesseCms\Database\Models\FindValueIterator;
+use VitesseCms\Shop\Enum\OrderEnum;
+use VitesseCms\Shop\Enum\OrderStateEnum;
 use VitesseCms\Shop\Forms\OrderForm;
 use VitesseCms\Shop\Helpers\OrderHelper;
-use VitesseCms\Shop\Interfaces\RepositoriesInterface;
-use VitesseCms\Shop\Models\Order;
+use VitesseCms\Shop\Repositories\OrderRepository;
+use VitesseCms\Shop\Repositories\OrderStateRepository;
 
-class AdminorderController extends AbstractAdminController implements RepositoriesInterface
+final class AdminorderController extends AbstractControllerAdmin implements
+    AdminModelListInterface,
+    AdminModelEditableInterface
 {
-    public function onConstruct()
+    use TraitAdminModelList;
+    use TraitAdminModelEditable;
+
+    private readonly OrderRepository $orderRepository;
+    private readonly OrderStateRepository $orderStateRepository;
+
+    public function onConstruct(): void
     {
         parent::onConstruct();
 
-        $this->class = Order::class;
-        $this->classForm = OrderForm::class;
-        $this->listOrder = 'orderId';
-        $this->listOrderDirection = -1;
+        $this->orderRepository = $this->eventsManager->fire(OrderEnum::GET_REPOSITORY->value, new stdClass());
+        $this->orderStateRepository = $this->eventsManager->fire(OrderStateEnum::GET_REPOSITORY, new stdClass());
     }
 
-    public function editAction(
-        string $itemId = null,
-        string $template = 'adminEditForm',
-        string $templatePath = 'core/src/Resources/views/',
-        AbstractForm $form = null
-    ): void
+    public function changeOrderStateAction(string $id): void
     {
-        parent::editAction(
-            $itemId,
-            'orderEdit',
-            'shop/src/Resources/views/admin/'
+        $order = $this->orderRepository->getById($id, false);
+        if ($order !== null) :
+            OrderHelper::setOrderState(
+                $order,
+                $this->orderStateRepository->getById($this->request->get('orderState'))
+            );
+            $order->save();
+
+            $this->flashService->setSucces('ADMIN_STATE_CHANGE_SUCCESS', ['Order']);
+        endif;
+
+        $this->redirect($this->request->getHTTPReferer());
+    }
+
+    public function sendEmailAction(string $id): void
+    {
+        OrderHelper::sendEmail($this->orderRepository->getById($id), $this->viewService);
+
+        $this->redirect($this->request->getHTTPReferer());
+    }
+
+    public function getModelList(?FindValueIterator $findValueIterator): ArrayIterator
+    {
+        return $this->orderRepository->findAll(
+            $findValueIterator,
+            false
         );
     }
 
-    public function saveAction(?string $itemId = null, AbstractCollection $item = null, AbstractForm $form = null): void
+    public function getModel(string $id): ?AbstractCollection
     {
-        die('Order saving not allowed.');
+        return $this->orderRepository->getById($id);
     }
 
-    public function changeOrderStateAction(): void
+    public function getModelForm(): AdminModelFormInterface
     {
-        if ($this->dispatcher->getParam(0) !== null) :
-            $order = $this->repositories->order->getById($this->dispatcher->getParam(0), false);
-            if ($order !== null) :
-                OrderHelper::setOrderState(
-                    $order,
-                    $this->repositories->orderState->getById($this->request->get('orderState'))
-                );
-                $order->save();
-
-                $this->flash->setSucces('ADMIN_STATE_CHANGE_SUCCESS', ['Order']);
-            endif;
-        endif;
-
-        $this->redirect();
+        return new OrderForm();
     }
 
-    public function sendEmailAction(): void
+    protected function getTemplate(): string
     {
-        if ($this->dispatcher->getParam(0) !== null) :
-            OrderHelper::sendEmail(
-                $this->repositories->order->getById($this->dispatcher->getParam(0)),
-                $this->view
-            );
-        endif;
+        return 'adminOrderForm';
+    }
 
-        $this->redirect();
+    protected function adminListWithPaginationTemplate(): string
+    {
+        return 'adminOrderListWithPagination';
     }
 }

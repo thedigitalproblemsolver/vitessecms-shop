@@ -1,20 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
+use VitesseCms\Admin\Interfaces\AdminModelFormInterface;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Shop\Models\Order;
 
-class OrderForm extends AbstractForm
+final class OrderForm extends AbstractForm implements AdminModelFormInterface
 {
-    public function initialize(Order $item = null)
+    public function buildForm(Order $item = null): void
     {
-        $this->addText('Orderid', 'orderId')
-            ->addText('subTotal', 'subTotal')
-            ->addText('tax', 'tax')
-            ->addText('total', 'total')
-            ->addText('shippingAmount', 'shippingAmount')
-            ->addText('shippingTax', 'shippingTax')
-            ->addText('orderState', 'orderState');
     }
 }

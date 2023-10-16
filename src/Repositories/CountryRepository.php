@@ -1,13 +1,29 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Repositories;
 
-class CountryRepository extends AbstractCollectionRepository
-{
-    protected $model;
+use VitesseCms\Database\Models\FindValueIterator;
+use VitesseCms\Database\Traits\TraitRepositoryConstructor;
+use VitesseCms\Database\Traits\TraitRepositoryParseFindAll;
+use VitesseCms\Database\Traits\TraitRepositoryParseGetById;
+use VitesseCms\Shop\Models\Country;
+use VitesseCms\Shop\Models\CountryIterator;
 
-    public function __construct()
+final class CountryRepository
+{
+    use TraitRepositoryParseGetById;
+    use TraitRepositoryParseFindAll;
+    use TraitRepositoryConstructor;
+
+    public function getById(string $id, bool $hideUnpublished = true): ?Country
     {
-        $this->model = new Country;
+        return $this->parseGetById($id, $hideUnpublished);
+    }
+
+    public function findAll(?FindValueIterator $findValueIterator = null, bool $hideUnpublished = true): CountryIterator
+    {
+        return $this->parseFindAll($findValueIterator, $hideUnpublished);
     }
 }

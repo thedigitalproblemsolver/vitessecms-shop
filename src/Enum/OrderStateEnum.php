@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Enum;
 
@@ -6,6 +7,9 @@ use VitesseCms\Core\AbstractEnum;
 
 final class OrderStateEnum extends AbstractEnum
 {
+    public const LISTENER = 'OrderStateListener';
+    public const GET_REPOSITORY = 'OrderStateListener:getRepository';
+
     public const PREORDER = 'PREORDER';
     public const PENDING = 'PENDING';
     public const CONFIRMED = 'CONFIRMED';

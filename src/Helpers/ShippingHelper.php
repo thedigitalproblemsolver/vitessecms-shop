@@ -1,39 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Helpers;
 
-use Phalcon\Di\Di;
 use VitesseCms\Core\Utils\DirectoryUtil;
 use VitesseCms\Core\Utils\FileUtil;
+use VitesseCms\Core\Utils\SystemUtil;
 
-class ShippingHelper
+final class ShippingHelper
 {
-    public static function getClass(string $type): string
-    {
-        if (is_file(
-            Di::getDefault()->get('config')->get('accountDir') . '/sop/src/shippingTypes/' . $type . '.php'
-        )
-        ) :
-            return 'VitesseCms\\' . ucfirst(Di::getDefault()->get('config')->get('account')) . '\Shop\ShippingTypes\\' . $type;
-        endif;
-
-        return 'VitesseCms\Shop\ShippingTypes\\' . $type;
-    }
-
-    public static function getTypes(string $rootDir, string $account): array
+    public static function getTypes(string $vendorDir, string $accountDir): array
     {
         $types = [];
-        $shippingFiles = DirectoryUtil::getFilelist($rootDir . 'shop/src/shippingTypes/');
-        $shippingFilesAccount = DirectoryUtil::getFilelist(
-            $rootDir .
-            'config/account/' .
-            $account .
-            '/shop/src/shippingTypes/'
-        );
+        $shippingFiles = DirectoryUtil::getFilelist($vendorDir . 'shop/src/ShippingTypes/');
+        $shippingFilesAccount = DirectoryUtil::getFilelist($accountDir . '/src/shop/ShippingTypes/');
         $files = array_merge($shippingFilesAccount, $shippingFiles);
         foreach ($files as $path => $file) :
             $name = FileUtil::getName($file);
-            $types[$name] = $name;
+            $types[SystemUtil::createNamespaceFromPath($path)] = $name;
         endforeach;
 
         return $types;

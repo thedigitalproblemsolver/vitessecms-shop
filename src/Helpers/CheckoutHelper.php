@@ -1,18 +1,29 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Helpers;
 
 use Phalcon\Di\Di;
-use Phalcon\Mvc\CollectionInterface;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractInjectable;
+use VitesseCms\Core\Services\ViewService;
 use VitesseCms\Database\AbstractCollection;
 use VitesseCms\Database\Utils\MongoUtil;
+use VitesseCms\Setting\Services\SettingService;
 use VitesseCms\User\Models\User;
-use function is_object;
 
 class CheckoutHelper extends AbstractInjectable
 {
+    private SettingService $setting;
+    private ViewService $view;
+
+    public function __construct()
+    {
+        $this->setting = Di::getDefault()->get('setting');
+        $this->view = Di::getDefault()->get('view');
+    }
+
     /**
      * @param User $user
      *
@@ -48,7 +59,9 @@ class CheckoutHelper extends AbstractInjectable
     public function isCurrentItemCheckout(): bool
     {
         if (is_object($this->view->getVar('currentItem'))) :
-            return $this->view->getVar('currentItem')->_('datagroup') === $this->setting->get('SHOP_DATAGROUP_CHECKOUT');
+            return $this->view->getVar('currentItem')->_('datagroup') === $this->setting->get(
+                    'SHOP_DATAGROUP_CHECKOUT'
+                );
         endif;
 
         return false;

@@ -1,31 +1,37 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Forms;
 
-use VitesseCms\Core\Interfaces\BaseObjectInterface;
 use VitesseCms\Form\AbstractForm;
 use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Shop\Models\OrderState;
+
 use function is_object;
 
 class OrderOrderStateForm extends AbstractForm
 {
-    public function initialize(BaseObjectInterface $item = null)
+    public function initialize()
     {
-        //TODO waar gaat het mis? De reset hoort hier niet
+    }
+
+    public function buildForm(string $orderStateId)
+    {
+        $currentOrderState = OrderState::findById($orderStateId);
         OrderState::reset();
-        $currentOrderState = OrderState::findById($item->_('orderStateId'));
-        OrderState::reset();
-        OrderState::setFindValue('parentId', $item->_('orderStateId'));
+        OrderState::setFindValue('parentId', $orderStateId);
         $orderStates = OrderState::findAll();
         if (count($orderStates) > 0) :
             $this->addDropdown(
                 $currentOrderState->_('name'),
                 'orderState',
-                (new Attributes())->setOptions(ElementHelper::arrayToSelectOptions(
-                    $orderStates, [$item->_('orderStateId')]
-                ))
+                (new Attributes())->setOptions(
+                    ElementHelper::arrayToSelectOptions(
+                        $orderStates, [$orderStateId]
+                    )
+                )
             );
         elseif (is_object($currentOrderState) && (bool)$currentOrderState->_('canSwitchToSameLevel')) :
             OrderState::setFindValue('parentId', $currentOrderState->_('parentId'));
@@ -33,10 +39,11 @@ class OrderOrderStateForm extends AbstractForm
             $this->addDropdown(
                 $currentOrderState->_('name'),
                 'orderState',
-                (new Attributes())->setOptions(ElementHelper::arrayToSelectOptions(
-                    $orderStates,
-                    [$item->_('orderStateId')]
-                )
+                (new Attributes())->setOptions(
+                    ElementHelper::arrayToSelectOptions(
+                        $orderStates,
+                        [$orderStateId]
+                    )
                 )
             );
         else :

@@ -1,0 +1,46 @@
+<table class="table table-bordered">
+    <tr>
+        <th>%SHOP_ORDERID%</th>
+        <th>%SHOP_DATE%</th>
+        <th>%SHOP_AMOUNT%</th>
+        <th>%SHOP_STATE%</th>
+        <th></th>
+    </tr>
+    {{#pagination.getSliced}}
+        <tr>
+            <td>{{orderId}}</td>
+            <td>{{createdAt}}</td>
+            <td>{{{SHOP_CURRENCY_BASE}}} {{getTotalDisplay}}</td>
+            <td>{{orderState.name[]}}</td>
+            <td><a class="openmodal" href="shop/order/vieworder/{{getId}}"><i class="fa fa-eye"></i></a></td>
+        </tr>
+    {{/pagination.getSliced}}
+</table>
+{{#pagination.hasPages}}
+    <nav>
+        <ul class="pagination justify-content-end">
+            <li class="page-item"><div class="page-link">{{pagination.count}} %ADMIN_ITEMS%</div></li>
+            {{#pagination.hasPreviousPage}}
+                <li class="page-item">
+                    <a class="page-link fa fa-fast-backward" href="{{pagination.getFirstPageUrl}}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link fa fa-step-backward" rel="prev" href="{{pagination.getPreviousPageUrl}}"></a>
+                </li>
+            {{/pagination.hasPreviousPage}}
+            <li class="page-item">
+                <div class="page-link">
+                    {{pagination.getFirstNumberInList}} - {{pagination.getLastNumberInList}}
+                </div>
+            </li>
+            {{#pagination.hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link fa fa-step-forward" rel="next" href="{{pagination.getNextPageUrl}}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link fa fa-fast-forward" href="{{pagination.getLastPageUrl}}"></a>
+                </li>
+            {{/pagination.hasNextPage}}
+        </ul>
+    </nav>
+{{/pagination.hasPages}}

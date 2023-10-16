@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Shop\Controllers;
 
@@ -7,17 +9,19 @@ use VitesseCms\Block\Enum\BlockEnum;
 use VitesseCms\Block\Models\Block;
 use VitesseCms\Content\Models\Item;
 use VitesseCms\Core\AbstractController;
-use VitesseCms\Language\Helpers\LanguageHelper;
 use VitesseCms\Shop\Helpers\CartHelper;
 
-class CartController extends AbstractController
+final class CartController extends AbstractController
 {
     public function indexAction(): void
     {
         if ($this->request->get('embedded', 'int', 0)) :
             $block = Block::findById($this->setting->get('SHOP_BLOCK_CARTLARGE'));
             /** @var Block $block */
-            $this->view->setVar('content', $this->getDI()->get('eventsManager')->fire(BlockEnum::LISTENER_RENDER_BLOCK->value, $block));
+            $this->view->setVar(
+                'content',
+                $this->getDI()->get('eventsManager')->fire(BlockEnum::LISTENER_RENDER_BLOCK->value, $block)
+            );
 
             $this->prepareView();
         else :
@@ -76,8 +80,16 @@ class CartController extends AbstractController
             $this->log->write($item->getId(), Item::class, $logMessage);
 
             $this->flash->setSucces('SHOP_CART_PRODUCT_REMOVED');
-            $this->redirect(null,
-                ['successFunction' => "ui.remove('product-row-" . $this->request->getPost('cartItemId') . "');ui.fill('.shopcart-content','" . $this->language->parsePlaceholders($cart->getTotalText()) . "')"]);
+            $this->redirect(
+                null,
+                [
+                    'successFunction' => "ui.remove('product-row-" . $this->request->getPost(
+                            'cartItemId'
+                        ) . "');ui.fill('.shopcart-content','" . $this->language->parsePlaceholders(
+                            $cart->getTotalText()
+                        ) . "')"
+                ]
+            );
         else :
             $this->redirect();
         endif;
@@ -103,8 +115,14 @@ class CartController extends AbstractController
             $this->log->write($item->getId(), Item::class, $logMessage);
 
             $this->flash->setSucces('SHOP_CART_QUANTITY_ADJUSTED');
-            $this->redirect(null,
-                ['successFunction' => "ui.fill('.shopcart-content','" . $this->language->parsePlaceholders($cart->getTotalText()) . "');refresh(false)"]);
+            $this->redirect(
+                null,
+                [
+                    'successFunction' => "ui.fill('.shopcart-content','" . $this->language->parsePlaceholders(
+                            $cart->getTotalText()
+                        ) . "');refresh(false)"
+                ]
+            );
         else :
             $this->redirect();
         endif;
