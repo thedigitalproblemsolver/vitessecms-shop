@@ -67,7 +67,9 @@ class ShopCheckoutInformation extends AbstractBlockModel
             /** @var Datagroup $datagroup */
             $datagroup = Datagroup::findById($this->di->get('setting')->get('SHOP_DATAGROUP_REGISTRATIONFORM'));
             $datagroup->buildItemForm($formRegistration);
-            $formRegistration->_('submit', '%FORM_SUBMIT% %CORE_AND% %CORE_TO% ' . strtolower($nextStep->_('name')));
+            $formRegistration->addSubmitButton(
+                '%FORM_SUBMIT% %CORE_AND% %CORE_TO% ' . strtolower($nextStep->_('name'))
+            );
 
             $formLogin = new LoginForm();
 
