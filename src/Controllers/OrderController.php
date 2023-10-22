@@ -134,6 +134,7 @@ class OrderController extends AbstractController implements RepositoriesInterfac
                 $this->repositories->orderState->getByState(OrderStateEnum::CONFIRMED)
             );
             $order->save();
+            $this->session->set('currentOrderId',(string)$order->getId());
 
             $this->cookies->delete('affiliate-source');
 
