@@ -23,7 +23,7 @@ class ShopPaymentResult extends AbstractBlockModel
             ) && !AdminUtil::isAdminPage()
         ) :
             $this->di->get('flash')->setError('USER_NO_ACCESS');
-            $this->di->get('response')->redirect($this->di->url->getBaseUri());
+            $this->di->get('response')->redirect($this->di->get('url')->getBaseUri());
         endif;
 
         if ($this->di->get('user')->isLoggedIn() && !AdminUtil::isAdminPage()) :
@@ -31,7 +31,7 @@ class ShopPaymentResult extends AbstractBlockModel
             $order = Order::findById($this->di->get('session')->get('currentOrderId'));
             if ($order && (string)$this->di->get('user')->getId() !== $order->_('shopper')['userId']) :
                 $this->di->get('flash')->setError('USER_NO_ACCESS');
-                $this->di->get('response')->redirect($this->di->url->getBaseUri());
+                $this->di->get('response')->redirect($this->di->get('url')->getBaseUri());
             endif;
         endif;
 
@@ -66,7 +66,7 @@ class ShopPaymentResult extends AbstractBlockModel
                 'Order ' . $order->_('orderId') . ' thankyou with orderstate ' . $orderState->_('calling_name')
             );
         else :
-            $this->di->get('flash')->error('Order could not be found');
+            $this->di->get('flash')->setError('Order could not be found');
         endif;
     }
 }
