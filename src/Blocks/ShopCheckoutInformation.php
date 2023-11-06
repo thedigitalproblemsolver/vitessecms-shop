@@ -22,7 +22,6 @@ class ShopCheckoutInformation extends AbstractBlockModel
         parent::initialize();
 
         $this->excludeFromCache = true;
-        $this->di = Di::getDefault();
     }
 
     public function parse(Block $block): void
