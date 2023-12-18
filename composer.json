@@ -35,7 +35,7 @@
     "vitessecms/log": "^1.2.0",
     "vitessecms/content": "^1.5.3",
     "vitessecms/block": "^1.8.2",
-    "vitessecms/database": "^1.4.0",
+    "vitessecms/database": "^1.4.1",
     "vitessecms/mustache": "^1.8.1",
     "ext-mongodb": "*",
     "mollie/mollie-api-php": "^2.61"
