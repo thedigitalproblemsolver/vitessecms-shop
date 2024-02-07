@@ -51,21 +51,21 @@ use VitesseCms\User\Models\User;
 
 class InitiateAdminListeners implements InitiateListenersInterface
 {
-    public static function setListeners(InjectableInterface $di): void
+    public static function setListeners(InjectableInterface $injectable): void
     {
-        if ($di->configuration->isEcommerce()):
-            $di->eventsManager->attach('adminMenu', new AdminMenuListener());
+        if ($injectable->configuration->isEcommerce()):
+            $injectable->eventsManager->attach('adminMenu', new AdminMenuListener());
 
-            self::addControllers($di);
-            self::addModels($di);
+            self::addControllers($injectable);
+            self::addModels($injectable);
 
-            $di->eventsManager->attach(AffiliateInitialize::class, new AffiliateInitializeListener());
-            $di->eventsManager->attach(ShopSizeAndColor::class, new SizeAndColorListener());
+            $injectable->eventsManager->attach(AffiliateInitialize::class, new AffiliateInitializeListener());
+            $injectable->eventsManager->attach(ShopSizeAndColor::class, new SizeAndColorListener());
 
-            $di->eventsManager->attach(
+            $injectable->eventsManager->attach(
                 User::class,
                 new UserListener(
-                    $di->log,
+                    $injectable->log,
                     new ShopperRepository(),
                     new ShipToAddressRepository(),
                     new OrderRepository(Order::class)

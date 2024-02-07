@@ -32,21 +32,21 @@ use VitesseCms\Shop\Models\TaxRate;
 
 final class InitiateListeners implements InitiateListenersInterface
 {
-    public static function setListeners(InjectableInterface $di): void
+    public static function setListeners(InjectableInterface $injectable): void
     {
-        if ($di->configuration->isEcommerce()):
-            if ($di->user->hasAdminAccess()):
-                $di->eventsManager->attach('adminMenu', new AdminMenuListener());
-                $di->eventsManager->attach(ShopPrice::class, new PriceListener());
+        if ($injectable->configuration->isEcommerce()):
+            if ($injectable->user->hasAdminAccess()):
+                $injectable->eventsManager->attach('adminMenu', new AdminMenuListener());
+                $injectable->eventsManager->attach(ShopPrice::class, new PriceListener());
             endif;
-            $di->eventsManager->attach(MainContent::class, new MainContentListener());
-            $di->eventsManager->attach('discount', new DiscountListener($di->shop));
-            $di->eventsManager->attach('user', new DiscountListener($di->shop));
-            $di->eventsManager->attach('contentTag', new TagDiscountListener());
-            $di->eventsManager->attach('contentTag', new TagOrderSendDateListener());
-            $di->eventsManager->attach('contentTag', new TagShopTrackAndTraceListener());
-            $di->eventsManager->attach(ShopPrice::class, new PriceListener());
-            self::addModels($di);
+            $injectable->eventsManager->attach(MainContent::class, new MainContentListener());
+            $injectable->eventsManager->attach('discount', new DiscountListener($injectable->shop));
+            $injectable->eventsManager->attach('user', new DiscountListener($injectable->shop));
+            $injectable->eventsManager->attach('contentTag', new TagDiscountListener());
+            $injectable->eventsManager->attach('contentTag', new TagOrderSendDateListener());
+            $injectable->eventsManager->attach('contentTag', new TagShopTrackAndTraceListener());
+            $injectable->eventsManager->attach(ShopPrice::class, new PriceListener());
+            self::addModels($injectable);
         endif;
     }
 

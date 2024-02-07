@@ -9,7 +9,7 @@ use VitesseCms\Shop\Interfaces\TaxRateInterface;
 
 class TaxRate extends AbstractCollection implements TaxRateInterface
 {
-    public int $taxrate;
+    public $taxrate;
 
     public function getNameField(?string $languageShort = null): string
     {
